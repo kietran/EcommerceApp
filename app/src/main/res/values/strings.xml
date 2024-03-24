@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">EcommerceApp</string>
+    <string name="title_activity_sign_in">SignIn_Activity</string>
+    <string name="title_activity_home_user">HomeUserActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="slide_show_onboarding_activity">Slide Show</string>
+</resources>
