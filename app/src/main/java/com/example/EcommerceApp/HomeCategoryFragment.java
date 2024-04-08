@@ -3,24 +3,18 @@ package com.example.EcommerceApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.EcommerceApp.adapter.ViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeUser#newInstance} factory method to
+ * Use the {@link HomeCategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeUser extends Fragment {
-    private ViewPager2 viewPager;
-    private TabLayout tabLayout;
+public class HomeCategoryFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +24,7 @@ public class HomeUser extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeUser() {
+    public HomeCategoryFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +34,11 @@ public class HomeUser extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeUser.
+     * @return A new instance of fragment fragment_home_category.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeUser newInstance(String param1, String param2) {
-        HomeUser fragment = new HomeUser();
+    public static HomeCategoryFragment newInstance(String param1, String param2) {
+        HomeCategoryFragment fragment = new HomeCategoryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,24 +59,6 @@ public class HomeUser extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home_user, container, false);
-        viewPager = rootView.findViewById(R.id.view_pager);
-        tabLayout = rootView.findViewById(R.id.tab_layout);
-
-        // Tạo adapter và thiết lập cho ViewPager2
-        ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());
-        viewPager.setAdapter(adapter);
-
-        // Kết nối ViewPager2 với TabLayout
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    if (position == 0) {
-                        tab.setText("Home");
-                    } else if (position == 1) {
-                        tab.setText("Category");
-                    }
-                }
-        ).attach();
-        return rootView;
+        return inflater.inflate(R.layout.fragment_home_category, container, false);
     }
 }
