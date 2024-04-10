@@ -77,7 +77,7 @@ public class UserProfile extends Fragment {
 
     private void onClickLogOut() {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(requireActivity(), SignIn_Activity.class));
+        startActivity(new Intent(requireActivity(), com.example.EcommerceApp.SignIn_Activity.class));
         requireActivity().finish();
     }
 

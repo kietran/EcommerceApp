@@ -1,5 +1,6 @@
 package com.example.EcommerceApp.domain.user;
 
+import static android.content.ContentValues.TAG;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
@@ -19,8 +20,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,27 +50,6 @@ public class UserRepository {
         String userEmail = email.getText().toString();
         String userPassword = password.getText().toString();
 
-        // Check if any fields is empty
-        if (TextUtils.isEmpty(userName)){
-            Toast.makeText(context, "Name is Empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(userEmail)){
-            Toast.makeText(context, "Email is Empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(userPassword)){
-            Toast.makeText(context, "Password is Empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (userPassword.length() <= 6){
-            Toast.makeText(context, "Password must be longer than 6 characters!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         //Create user
         auth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -79,6 +63,21 @@ public class UserRepository {
                 }else {
                     Toast.makeText(context, "Error " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+    public void createUserWithEmail(String email) {
+        //
+        Query query = db.collection("users").whereEqualTo("email", email);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().isEmpty()) {
+                    String userId = auth.getCurrentUser().getUid();
+                    String userName = email.substring(0,email.indexOf('@'));
+                    saveUser(userId,userName,email,"");
+                }
+
             }
         });
     }
