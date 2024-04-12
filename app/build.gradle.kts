@@ -83,4 +83,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.firebase:firebase-firestore:24.11.0")
+    implementation ("com.google.android.gms:play-services-auth:19.2.0")
+    implementation ("com.facebook.android:facebook-login:latest.release")
+    implementation ("com.facebook.android:facebook-android-sdk:[5,6)")
+
+
 }

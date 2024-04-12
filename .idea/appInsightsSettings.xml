@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.testauthentication" />
-                  <option name="mobileSdkAppId" value="1:10812165899:android:865635ac598afc1a329c0e" />
-                  <option name="projectId" value="testauth-b1786" />
-                  <option name="projectNumber" value="10812165899" />
+                  <option name="appId" value="com.example.EcommerceApp" />
+                  <option name="mobileSdkAppId" value="1:620103331239:android:53a2b0ccbdb666ffbb5a82" />
+                  <option name="projectId" value="ecommerceapp-d18c4" />
+                  <option name="projectNumber" value="620103331239" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
