@@ -6,22 +6,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button signUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         androidx.core.splashscreen.SplashScreen.installSplashScreen(this);
+
         setContentView(R.layout.activity_onboarding);
 
         ImageSlider imageSlider = findViewById(R.id.imageSlider);
@@ -33,24 +34,22 @@ public class MainActivity extends AppCompatActivity {
         slideModels.add(new SlideModel(R.drawable.onboarding3, ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
 
-
+        skipAuth();
 
     }
 
     public void signUp(View view){
-        startActivity(new Intent(MainActivity.this, com.example.EcommerceApp.SignUp_Activity.class));
+        startActivity(new Intent(MainActivity.this,SignUp_Activity.class));
     }
 
     public void signIn(View view){
-        Toast.makeText(MainActivity.this,"aaaaaa", Toast.LENGTH_SHORT);
-
-        startActivity(new Intent(MainActivity.this,com.example.EcommerceApp.SignIn_Activity.class));
+        startActivity(new Intent(MainActivity.this,SignIn_Activity.class));
     }
-//
-//    private void skipAuth(){
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if(user!=null)
-//            startActivity(new Intent(MainActivity.this,UserActivity.class));
-//        else return;
-//    }
+
+    private void skipAuth(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null)
+            startActivity(new Intent(MainActivity.this,UserActivity.class));
+        else return;
+    }
 }
