@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "620103331239",
+    "firebase_url": "https://ecommerceapp-d18c4-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "ecommerceapp-d18c4",
     "storage_bucket": "ecommerceapp-d18c4.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.EcommerceApp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "620103331239-r2uh65ra9s5rpjj0d130ofcrm6lejg7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.EcommerceApp",
+            "certificate_hash": "037538c23aeaf93dd65e1e400a720f2d05b435e1"
+          }
+        },
+        {
+          "client_id": "620103331239-uc7n87ip332rubtrud8kvceir5u8bhav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAHFtPs7RVZ3ldsDLodfY2Z9hqwUOwYEOY"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620103331239-uc7n87ip332rubtrud8kvceir5u8bhav.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

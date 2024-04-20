@@ -4,8 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main_purple">#514eb7</color>
     <color name="border_ggfb">#fefefe</color>
+
     <color name="brown">#A9625E</color>
     <color name="blue">#2BACBF</color>
     <color name="green">#00D261</color>
     <color name="grey">#F3F3F3</color>
+
+    <color name="com_facebook_button_send_background_color_pressed">#4267B2</color>
+    <color name="red">#FF0000</color>
+
 </resources>
