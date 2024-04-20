@@ -36,7 +36,7 @@ public class UserActivity extends AppCompatActivity {
                 else if (itemId == R.id.navigation_favorite)
                     selectedFragment = new Favorite();
                 else if (itemId == R.id.navigation_myprofile)
-                    selectedFragment = new UserProfile();
+                    selectedFragment = new UserProfileFragment();
 
 
                 if (selectedFragment != null)
