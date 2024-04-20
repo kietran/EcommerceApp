@@ -87,4 +87,7 @@ dependencies {
     implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.thedeanda:lorem:2.2")
+    implementation ("com.google.android.gms:play-services-auth:19.2.0")
+    implementation ("com.facebook.android:facebook-login:latest.release")
+    implementation ("com.facebook.android:facebook-android-sdk:[5,6)")
 }
