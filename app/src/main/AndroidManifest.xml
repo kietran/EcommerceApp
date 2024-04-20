@@ -16,7 +16,18 @@
         android:theme="@style/Theme.EcommerceApp"
         tools:targetApi="31">
 
-
+        <activity
+            android:name=".SellOn23Activity"
+            android:exported="false" />
+        <activity
+            android:name=".LegalAndPoliciesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
         <activity
             android:name="com.example.EcommerceApp.SellerActivity"
             android:exported="false" />
