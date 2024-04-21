@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.R;
-import com.example.EcommerceApp.data.Product;
+import com.example.EcommerceApp.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;

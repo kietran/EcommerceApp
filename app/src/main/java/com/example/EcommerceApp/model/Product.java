@@ -1,4 +1,4 @@
-package com.example.EcommerceApp.data;
+package com.example.EcommerceApp.model;
 
 public class Product {
     String product_image;

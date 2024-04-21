@@ -2,7 +2,7 @@ package com.example.EcommerceApp.domain.user;
 
 import android.content.Context;
 
-import com.example.EcommerceApp.data.Product;
+import com.example.EcommerceApp.model.Product;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

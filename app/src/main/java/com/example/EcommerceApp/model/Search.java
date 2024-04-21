@@ -1,4 +1,4 @@
-package com.example.EcommerceApp.data;
+package com.example.EcommerceApp.model;
 
 import com.google.firebase.Timestamp;
 

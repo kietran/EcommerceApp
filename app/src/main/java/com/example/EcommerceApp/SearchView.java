@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.EcommerceApp.adapter.SearchAdapter;
-import com.example.EcommerceApp.data.Search;
+import com.example.EcommerceApp.model.Search;
 import com.example.EcommerceApp.domain.user.SearchRepository;
 import com.google.android.flexbox.FlexboxLayoutManager;
 

@@ -9,22 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.EcommerceApp.adapter.ProductAdapter;
-import com.example.EcommerceApp.adapter.SearchAdapter;
-import com.example.EcommerceApp.data.Product;
-import com.example.EcommerceApp.data.Search;
+import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.domain.user.ProductRepository;
-import com.example.EcommerceApp.domain.user.SearchRepository;
-import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.

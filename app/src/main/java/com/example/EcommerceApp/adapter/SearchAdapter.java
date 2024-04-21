@@ -1,11 +1,8 @@
 package com.example.EcommerceApp.adapter;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.SearchFilter;
-import com.example.EcommerceApp.SearchView;
-import com.example.EcommerceApp.data.Product;
-import com.example.EcommerceApp.data.Search;
+import com.example.EcommerceApp.model.Search;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
