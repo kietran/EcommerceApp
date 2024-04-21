@@ -38,6 +38,7 @@ public class UserRepository {
     private Context context;
     private FirebaseFirestore db;
 
+
     public UserRepository(Context context) {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
