@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.EcommerceApp.model.UserModel;
+import com.example.EcommerceApp.data.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +34,7 @@ public class UserProfileFragment extends Fragment {
     TextView email;
     ImageView profilePic;
     SwitchCompat nightMode;
-    UserModel currentUserModel;
+    User currentUserModel;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -109,7 +109,7 @@ public class UserProfileFragment extends Fragment {
                 });
 
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
-            currentUserModel = task.getResult().toObject(UserModel.class);
+            currentUserModel = task.getResult().toObject(User.class);
             if(currentUserModel.getUsername() != null)
                 username.setText(currentUserModel.getUsername());
             else

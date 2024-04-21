@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.EcommerceApp.model.UserModel;
+import com.example.EcommerceApp.data.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 
@@ -20,7 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     EditText confirmPasswordET;
     Button updatePassword;
     ProgressBar progressBar;
-    UserModel currentUserModel;
+    User currentUserModel;
 
 
     @Override
@@ -87,7 +87,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     void getUserData() {
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
-            currentUserModel = task.getResult().toObject(UserModel.class);
+            currentUserModel = task.getResult().toObject(User.class);
         });
     }
 
