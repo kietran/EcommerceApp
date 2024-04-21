@@ -2,28 +2,17 @@ package com.example.EcommerceApp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EcommerceApp.adapter.SearchAdapter;
-import com.example.EcommerceApp.adapter.UserSearchAdapter;
-import com.example.EcommerceApp.data.Product;
-import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.domain.user.SearchRepository;
 
-import java.util.List;
 import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity  {

@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 
 import com.example.EcommerceApp.HomeUser;
 import com.example.EcommerceApp.UserActivity;
-import com.example.EcommerceApp.data.User;
+import com.example.EcommerceApp.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

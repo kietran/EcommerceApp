@@ -2,7 +2,6 @@
 
     import android.os.Bundle;
 
-    import androidx.appcompat.app.AppCompatActivity;
     import androidx.appcompat.widget.SearchView;
     import androidx.fragment.app.Fragment;
     import androidx.recyclerview.widget.DividerItemDecoration;
@@ -16,13 +15,12 @@
     import android.widget.Toast;
 
     import com.example.EcommerceApp.adapter.UserSearchAdapter;
-    import com.example.EcommerceApp.data.Product;
+    import com.example.EcommerceApp.model.Product;
     import com.example.EcommerceApp.domain.user.ProductRepository;
 
     import java.util.ArrayList;
     import java.util.List;
     import java.util.Objects;
-    import java.util.concurrent.atomic.AtomicReference;
 
     /**
      * A simple {@link Fragment} subclass.
