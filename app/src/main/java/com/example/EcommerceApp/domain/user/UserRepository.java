@@ -15,12 +15,14 @@ import androidx.annotation.NonNull;
 
 import com.example.EcommerceApp.HomeUser;
 import com.example.EcommerceApp.UserActivity;
+import com.example.EcommerceApp.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserRepository {
     private FirebaseAuth auth;
@@ -100,5 +103,7 @@ public class UserRepository {
                 Log.d("TAG", "onSuccess: User " + userId + "is created!");
             }
         });
+
+
     }
 }

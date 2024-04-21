@@ -1,5 +1,7 @@
 package com.example.EcommerceApp;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,8 +10,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.EcommerceApp.adapter.ViewPagerAdapter;
+import com.example.EcommerceApp.domain.user.UserRepository;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -21,6 +27,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HomeUser extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
+    ImageView btnSearch;
+    TextView hiName;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,8 +67,11 @@ public class HomeUser extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,7 +79,6 @@ public class HomeUser extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home_user, container, false);
         viewPager = rootView.findViewById(R.id.view_pager);
         tabLayout = rootView.findViewById(R.id.tab_layout);
-
         // Tạo adapter và thiết lập cho ViewPager2
         ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());
         viewPager.setAdapter(adapter);
@@ -83,6 +93,18 @@ public class HomeUser extends Fragment {
                     }
                 }
         ).attach();
+
+        btnSearch = rootView.findViewById(R.id.btSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), SearchActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
         return rootView;
     }
 }

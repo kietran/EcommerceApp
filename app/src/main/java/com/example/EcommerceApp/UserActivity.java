@@ -21,6 +21,7 @@ public class UserActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentuser_container, new HomeUser()).commit();
 
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
