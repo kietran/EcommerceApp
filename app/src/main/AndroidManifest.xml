@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.EcommerceApp">
-
+    
     <uses-permission android:name="android.permission.INTERNET" />
-
+    
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,27 +18,37 @@
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
+
         <activity
-            android:name=".Detail1Activity"
+            android:name=".SellOn23Activity"
             android:exported="false" />
         <activity
-            android:name=".SellerActivity"
+            android:name=".LegalAndPoliciesActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity"
+            android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".SignIn_Activity"
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.EcommerceApp.SellerActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.EcommerceApp.UserActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.EcommerceApp.SignIn_Activity"
             android:exported="false"
             android:label="@string/title_activity_sign_in"
             android:theme="@style/Theme.EcommerceApp" />
         <activity
-            android:name=".SignUp_Activity"
+            android:name="com.example.EcommerceApp.SignUp_Activity"
             android:exported="false"
             android:label="SignUp_Activity"
             android:theme="@style/Theme.EcommerceApp" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.EcommerceApp.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AnimatedSplash.SplashScreen">
             <intent-filter>
