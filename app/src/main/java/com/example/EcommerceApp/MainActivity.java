@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signUp(View view){
-        startActivity(new Intent(MainActivity.this,SignUp_Activity.class));
+        startActivity(new Intent(MainActivity.this, com.example.EcommerceApp.SignUp_Activity.class));
     }
 
     public void signIn(View view){
-        startActivity(new Intent(MainActivity.this,SignIn_Activity.class));
+        startActivity(new Intent(MainActivity.this, com.example.EcommerceApp.SignIn_Activity.class));
     }
 
     private void skipAuth(){
