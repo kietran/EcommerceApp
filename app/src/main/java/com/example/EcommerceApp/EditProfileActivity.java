@@ -14,7 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.EcommerceApp.model.UserModel;
+import com.example.EcommerceApp.model.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -32,7 +32,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Button updateProfileButton;
     ProgressBar progressBar;
 
-    UserModel currentUserModel;
+    User currentUserModel;
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri selectedImageUri;
 
@@ -97,7 +97,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
             setInProgress(false);
-            currentUserModel = task.getResult().toObject(UserModel.class);
+            currentUserModel = task.getResult().toObject(User.class);
             if(currentUserModel.getUsername() != null)
                 usernameInput.setText(currentUserModel.getUsername());
             else

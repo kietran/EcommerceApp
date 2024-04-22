@@ -1,6 +1,6 @@
 package com.example.EcommerceApp.model;
 import com.google.firebase.Timestamp;
-public class UserModel {
+public class User {
     private String phone;
     private String username;
     private Timestamp createdTimestamp;
@@ -8,10 +8,10 @@ public class UserModel {
     private String email;
     private String password;
 
-    public UserModel() {
+    public User() {
     }
 
-    public UserModel(String phone, String username, Timestamp createdTimestamp, String address, String email, String password) {
+    public User(String phone, String username, Timestamp createdTimestamp, String address, String email, String password) {
         this.phone = phone;
         this.username = username;
         this.createdTimestamp = createdTimestamp;
