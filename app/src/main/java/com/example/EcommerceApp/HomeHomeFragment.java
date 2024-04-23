@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -82,18 +83,31 @@ public class HomeHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_home, container, false);
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         ArrayList<SlideModel> slideModels = new ArrayList<>();
+        TextView seeAllTextView = view.findViewById(R.id.textView8);
 
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/ac/f8/2e/acf82efc1950addf7e06c6854d966b67.jpg",  ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/56/df/e5/56dfe56ccbd928b020a1480931166c52.jpg", ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/41/28/e5/4128e5984d2e40ef30e6b8ae0eef8095.jpg", ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
         viewArrifals = view.findViewById(R.id.viewArrifals);
-        productRepository.getAllProductsAsList().addOnCompleteListener(task -> {
+        productRepository.get4ProductsAsList().addOnCompleteListener(task -> {
             List<Product> products = task.getResult();
             productAdapter.updateData(products);
             GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
             viewArrifals.setLayoutManager(layoutManagerProduct);
             viewArrifals.setAdapter(productAdapter);
+        });
+        seeAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productRepository.getAllProductsAsList().addOnCompleteListener(task -> {
+                    List<Product> products = task.getResult();
+                    productAdapter.updateData(products);
+                    GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+                    viewArrifals.setLayoutManager(layoutManagerProduct);
+                    viewArrifals.setAdapter(productAdapter);
+                });
+            }
         });
         return view;
     }

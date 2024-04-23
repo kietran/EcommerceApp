@@ -46,6 +46,23 @@ public class ProductRepository {
             return productsList;
         });
     }
+
+    public Task<List<Product>> get4ProductsAsList() {
+        return productsCollection.limit(4).get().continueWith(task -> {
+            List<Product> productsList = new ArrayList<>();
+            if (task.isSuccessful()) {
+                for (Product product : task.getResult().toObjects(Product.class)) {
+                    productsList.add(product);
+                    // Limit the loop to 4 iterations to ensure only 4 products are added
+                    if (productsList.size() == 4) {
+                        break;
+                    }
+                }
+            }
+            return productsList;
+        });
+    }
+
 //    public Task<QuerySnapshot> getAllProducts() {
 //        return productsCollection.get();
 //    }
