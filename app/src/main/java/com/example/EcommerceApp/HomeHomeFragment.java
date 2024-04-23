@@ -1,5 +1,6 @@
 package com.example.EcommerceApp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -72,10 +73,6 @@ public class HomeHomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    public void setListForAdapter(List<Product> products)
-    {
-        productAdapter.updateData(products);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,13 +97,8 @@ public class HomeHomeFragment extends Fragment {
         seeAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                productRepository.getAllProductsAsList().addOnCompleteListener(task -> {
-                    List<Product> products = task.getResult();
-                    productAdapter.updateData(products);
-                    GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
-                    viewArrifals.setLayoutManager(layoutManagerProduct);
-                    viewArrifals.setAdapter(productAdapter);
-                });
+                Intent intent = new Intent(getActivity(), AllArrivalActivity.class);
+                startActivity(intent);
             }
         });
         return view;
