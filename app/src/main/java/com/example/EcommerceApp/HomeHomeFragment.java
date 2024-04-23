@@ -3,7 +3,9 @@ package com.example.EcommerceApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,12 @@ import android.view.ViewGroup;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.EcommerceApp.adapter.ProductAdapter;
+import com.example.EcommerceApp.domain.user.ProductRepository;
+import com.example.EcommerceApp.model.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,8 +36,13 @@ public class HomeHomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    ProductAdapter productAdapter;
+    androidx.recyclerview.widget.RecyclerView viewArrifals;
+    ProductRepository productRepository;
+
     public HomeHomeFragment() {
-        // Required empty public constructor
+        productRepository = new ProductRepository(getContext());
+        productAdapter = new ProductAdapter(new ArrayList<>());
     }
 
     /**
@@ -60,7 +71,10 @@ public class HomeHomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    public void setListForAdapter(List<Product> products)
+    {
+        productAdapter.updateData(products);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,6 +87,14 @@ public class HomeHomeFragment extends Fragment {
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/56/df/e5/56dfe56ccbd928b020a1480931166c52.jpg", ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/41/28/e5/4128e5984d2e40ef30e6b8ae0eef8095.jpg", ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+        viewArrifals = view.findViewById(R.id.viewArrifals);
+        productRepository.getAllProductsAsList().addOnCompleteListener(task -> {
+            List<Product> products = task.getResult();
+            productAdapter.updateData(products);
+            GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+            viewArrifals.setLayoutManager(layoutManagerProduct);
+            viewArrifals.setAdapter(productAdapter);
+        });
         return view;
     }
 }
