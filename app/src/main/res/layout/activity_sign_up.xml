@@ -58,7 +58,7 @@
             android:background="@drawable/edittext_border"
             android:paddingHorizontal="12dp"
             android:layout_marginBottom="8dp"
-            android:drawableStart="@drawable/baseline_account_circle_24"
+            android:drawableStart="@drawable/account_circle_focused"
             android:drawablePadding="4dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 

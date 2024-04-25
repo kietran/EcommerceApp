@@ -21,7 +21,7 @@ public class UserActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentuser_container, new HomeUser()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentuser_container, new HomeUserFragment()).commit();
 
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
@@ -31,7 +31,7 @@ public class UserActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.navigation_home)
-                    selectedFragment = new HomeUser();
+                    selectedFragment = new HomeUserFragment();
                 else if (itemId == R.id.navigation_myorder)
                     selectedFragment = new MyOrder();
                 else if (itemId == R.id.navigation_favorite)

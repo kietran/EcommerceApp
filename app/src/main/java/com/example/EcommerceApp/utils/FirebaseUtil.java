@@ -13,7 +13,7 @@ public class FirebaseUtil {
         return FirebaseAuth.getInstance().getUid();
     }
 
-    public static StorageReference  getCurrentProfilePicStorageRef(){
+    public static StorageReference getCurrentProfilePicStorageRef(){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(FirebaseUtil.currentUserId());
     }
