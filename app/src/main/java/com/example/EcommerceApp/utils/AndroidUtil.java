@@ -1,6 +1,8 @@
 package com.example.EcommerceApp.utils;
 
 import android.net.Uri;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.Context;
@@ -20,4 +22,6 @@ public class AndroidUtil {
     public static void setShopProfilePic(Context context, Uri imageUri, ImageView imageView){
         Glide.with(context).load(imageUri).apply(RequestOptions.centerCropTransform()).into(imageView);
     }
+
+
 }

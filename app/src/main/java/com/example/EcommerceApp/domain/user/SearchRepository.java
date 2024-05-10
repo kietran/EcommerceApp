@@ -38,12 +38,14 @@
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            if (task.getResult() != null && !task.getResult().isEmpty()) {
+                            if (task.getResult() != null && !task.getResult().isEmpty())
+                            {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     String documentId = document.getId();
                                     updateContent(documentId);
                                 }
-                            } else
+                            }
+                            else
                                 addNewContent(content);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -57,7 +59,7 @@
             newContent.put("timestamp", Timestamp.now());
             newContent.put("search_count", 1);
             newContent.put("user_id", auth.getUid());
-
+            Log.println(Log.ASSERT,"new","a");
             searchCollection.add(newContent)
                     .addOnSuccessListener(documentReference -> {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
@@ -68,6 +70,8 @@
         }
 
         void updateContent(String documentId) {
+            Log.println(Log.ASSERT,"update","a");
+
             searchCollection.document(documentId)
                     .update("timestamp", Timestamp.now(),
                             "search_count", FieldValue.increment(1))

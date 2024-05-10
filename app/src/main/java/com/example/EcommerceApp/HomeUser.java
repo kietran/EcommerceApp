@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  * Use the {@link HomeUser#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeUser extends Fragment {
+public class  HomeUser extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
     ImageView btnSearch;
