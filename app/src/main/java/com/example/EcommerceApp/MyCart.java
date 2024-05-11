@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -148,10 +149,19 @@ public class MyCart extends Fragment {
             if(task.isSuccessful())
             {
                 groupedCartItems = task.getResult();
-                cartItemAdapter.updateData(groupedCartItems);
-                Log.println(Log.ASSERT, "load shopping cart item", String.valueOf(cartItemAdapter.getItemCount()));
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                rcv_cart_item.setLayoutManager(linearLayoutManager);
+                if(!groupedCartItems.isEmpty()) {
+                    view.findViewById(R.id.prbCart).setVisibility(View.INVISIBLE);
+                    rcv_cart_item.setVisibility(View.VISIBLE);
+                    cartItemAdapter.updateData(groupedCartItems);
+                    Log.println(Log.ASSERT, "load shopping cart item", String.valueOf(cartItemAdapter.getItemCount()));
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    rcv_cart_item.setLayoutManager(linearLayoutManager);
+                }
+                else {
+                    view.findViewById(R.id.prbCart).setVisibility(View.INVISIBLE);
+                    TextView noProduct =view.findViewById(R.id.noProduct);
+                    noProduct.setVisibility(View.VISIBLE);
+                }
             }
             else
                 Log.println(Log.INFO,"load cart item", "not success");

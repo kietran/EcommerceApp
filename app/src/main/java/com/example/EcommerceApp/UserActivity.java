@@ -24,7 +24,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
-        HomeUser homeUser = new HomeUser();
+        HomeUserFragment homeUser = new HomeUserFragment();
         MyCart myCart = new MyCart();
         MyOrder myOrder = new MyOrder();
         UserProfileFragment userProfile = new UserProfileFragment();

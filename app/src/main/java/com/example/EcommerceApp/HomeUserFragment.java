@@ -3,28 +3,25 @@ package com.example.EcommerceApp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.example.EcommerceApp.adapter.ViewPagerAdapter;
-import com.example.EcommerceApp.domain.user.UserRepository;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeUser#newInstance} factory method to
+ * Use the {@link HomeUserFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class  HomeUser extends Fragment {
+public class HomeUserFragment extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
     ImageView btnSearch;
@@ -38,7 +35,7 @@ public class  HomeUser extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeUser() {
+    public HomeUserFragment() {
         // Required empty public constructor
     }
 
@@ -51,8 +48,8 @@ public class  HomeUser extends Fragment {
      * @return A new instance of fragment HomeUser.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeUser newInstance(String param1, String param2) {
-        HomeUser fragment = new HomeUser();
+    public static HomeUserFragment newInstance(String param1, String param2) {
+        HomeUserFragment fragment = new HomeUserFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
