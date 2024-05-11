@@ -58,6 +58,7 @@ public class SignIn_Activity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         edEmail = findViewById(R.id.edEmail);
+
         edEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -182,6 +183,7 @@ public class SignIn_Activity extends AppCompatActivity {
 
         });
     }
+
     private void onClickSignIn() {
         findViewById(R.id.prbSI).setVisibility(View.VISIBLE);
         btnSignIn.setVisibility(View.INVISIBLE);

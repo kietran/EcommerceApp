@@ -10,7 +10,7 @@
     <string name="slide_show_onboarding_activity">Slide Show</string>
     <string name="default_web_client_id">620103331239-uc7n87ip332rubtrud8kvceir5u8bhav.apps.googleusercontent.com</string>
 
-
+    <string name="welcome_message">Hi, %1$s</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="enter_your_email_or_phone_number">Enter your email</string>
     <string name="send_code">Send Code</string>

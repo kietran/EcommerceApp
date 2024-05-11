@@ -19,6 +19,9 @@
             android:name=".PaymentActivity"
             android:exported="false" />
         <activity
+            android:name=".AllArrivalActivity"
+            android:exported="false" />
+        <activity
             android:name=".SearchActivity"
             android:exported="false" />
         <activity

@@ -2,6 +2,7 @@ package com.example.EcommerceApp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,16 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EcommerceApp.adapter.ViewPagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.EcommerceApp.adapter.ViewPagerAdapter;
+import com.example.EcommerceApp.model.User;
+import com.example.EcommerceApp.utils.AndroidUtil;
+import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -24,6 +35,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HomeUserFragment extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
+    private User currentUserModel;
     ImageView btnSearch;
     TextView hiName;
     // TODO: Rename parameter arguments, choose names that match
@@ -76,6 +88,10 @@ public class HomeUserFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home_user, container, false);
         viewPager = rootView.findViewById(R.id.view_pager);
         tabLayout = rootView.findViewById(R.id.tab_layout);
+        hiName = rootView.findViewById(R.id.hiName);
+
+        getUserData();
+
         // Tạo adapter và thiết lập cho ViewPager2
         ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());
         viewPager.setAdapter(adapter);
@@ -100,8 +116,16 @@ public class HomeUserFragment extends Fragment {
             }
         });
 
-
-
         return rootView;
+    }
+
+    void getUserData(){
+        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
+            currentUserModel = task.getResult().toObject(User.class);
+            if(currentUserModel.getUsername() != null)
+                hiName.setText(getString(R.string.welcome_message, currentUserModel.getUsername()));
+            else
+                hiName.setText(getString(R.string.welcome_message, FirebaseUtil.currentUserId()));
+        });
     }
 }

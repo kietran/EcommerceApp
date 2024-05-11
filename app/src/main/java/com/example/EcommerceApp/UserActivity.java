@@ -30,6 +30,7 @@ public class UserActivity extends AppCompatActivity {
         UserProfileFragment userProfile = new UserProfileFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
 
+
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

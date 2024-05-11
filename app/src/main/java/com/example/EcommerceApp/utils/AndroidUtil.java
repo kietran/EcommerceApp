@@ -22,6 +22,4 @@ public class AndroidUtil {
     public static void setShopProfilePic(Context context, Uri imageUri, ImageView imageView){
         Glide.with(context).load(imageUri).apply(RequestOptions.centerCropTransform()).into(imageView);
     }
-
-
 }
