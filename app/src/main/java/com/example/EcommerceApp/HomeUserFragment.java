@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.shivtechs.maplocationpicker.LocationPickerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +34,7 @@ public class HomeUserFragment extends Fragment {
     private User currentUserModel;
     ImageView btnSearch;
     TextView hiName;
+    Button test;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,6 +88,14 @@ public class HomeUserFragment extends Fragment {
         hiName = rootView.findViewById(R.id.hiName);
 
         getUserData();
+
+        test = rootView.findViewById(R.id.test);
+
+        test.setOnClickListener((v -> {
+            Intent intent = new Intent(getContext(), ShopPageActivity.class);
+            intent.putExtra("shopID", "xAK5ZzLzeiKlnT3fzKfc");
+            startActivity(intent);
+        }));
 
         // Tạo adapter và thiết lập cho ViewPager2
         ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());

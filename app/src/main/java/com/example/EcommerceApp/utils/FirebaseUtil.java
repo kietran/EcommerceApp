@@ -13,14 +13,21 @@ public class FirebaseUtil {
         return FirebaseAuth.getInstance().getUid();
     }
 
-    public static StorageReference getCurrentProfilePicStorageRef(){
-        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+    public static StorageReference getCurrentUserPicStorageRef(String path){
+        return FirebaseStorage.getInstance().getReference().child(path)
                 .child(FirebaseUtil.currentUserId());
+    }
+
+    public static StorageReference getCurrentShopPicStorageRef(String path, String shopId){
+        return FirebaseStorage.getInstance().getReference().child(path)
+                .child(shopId);
     }
 
     public static DocumentReference currentUserDetails(){
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
-
+    public static DocumentReference getShopReference(String shopId){
+        return FirebaseFirestore.getInstance().collection("shop").document(shopId);
+    }
 }

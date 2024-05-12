@@ -2,6 +2,7 @@ package com.example.EcommerceApp.utils;
 
 import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;

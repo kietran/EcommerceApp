@@ -63,6 +63,27 @@
                 }
             });
         }
+
+        public SearchFilter(String shopId) {
+            productRepository = new ProductRepository(getContext());
+            searchAdapter = new UserSearchAdapter(new ArrayList<>());
+            productRepository.getAllProductsAsListByShopId(shopId).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    List<Product> productList = task.getResult();
+                    searchAdapter.updateData(productList,searchView);
+                    Log.println(Log.ASSERT, "Load product", String.valueOf(searchAdapter.getItemCount()));
+
+                }
+                else {
+                    Exception e = task.getException();
+                    if (e != null) {
+                        Log.println(Log.ASSERT, "Load product", Objects.requireNonNull(e.getMessage()));
+
+                        Toast.makeText(getContext(), "Error loading products: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
         public void setSearchView(SearchView searchView) {
             this.searchView=searchView;
         }

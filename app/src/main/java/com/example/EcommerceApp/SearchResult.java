@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.example.EcommerceApp.adapter.ProductAdapter;
 import com.example.EcommerceApp.model.Product;
@@ -74,11 +76,12 @@ public class SearchResult extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
+
         ////// RECYCLERVIEW PRODUCT
         rc_result_product = view.findViewById(R.id.rc_result_product);
-        rc_result_product.setAdapter(productAdapter);
         GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(),2);
         rc_result_product.setLayoutManager(layoutManagerProduct);
+        rc_result_product.setAdapter(productAdapter);
         Log.println(Log.ASSERT, "Load product rs", "fragment");
 
         return view;

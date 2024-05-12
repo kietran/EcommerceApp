@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,7 +18,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.EcommerceApp.domain.user.ShopRepository;
+import com.example.EcommerceApp.domain.user.UserRepository;
 import com.example.EcommerceApp.utils.AndroidUtil;
+import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import kotlin.Unit;
@@ -37,11 +42,13 @@ public class SellOn23Activity extends AppCompatActivity {
     Uri logoSelectedImageUri;
     ActivityResultLauncher<Intent> bannerPickLauncher;
     Uri bannerSelectedImageUri;
+    ShopRepository shopRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_on23);
 
+        shopRepository = new ShopRepository(SellOn23Activity.this);
         shopName = findViewById(R.id.shopNameEditText);
         phoneNumber = findViewById(R.id.phoneNumberEditText);
         shopAddress = findViewById(R.id.shopAddressEditText);
@@ -53,8 +60,9 @@ public class SellOn23Activity extends AppCompatActivity {
         bannerTV = findViewById(R.id.bannerTextView);
         back = findViewById(R.id.backImageView);
 
+
         back.setOnClickListener(view1->{
-            onBackPressed();
+            finish();
         });
 
         String text1 = "<font color='#000000'>Image Size </font><font color='#FF0000'>(1:1)</font>";
@@ -65,6 +73,10 @@ public class SellOn23Activity extends AppCompatActivity {
 
         String text3 = "I agree to all the <b>Terms & Conditions</b>";
         agreeTermsAndConditions.setText(Html.fromHtml(text3));
+
+        submit.setOnClickListener((v -> {
+            submitBtnClick();
+        }));
 
         agreeTermsAndConditions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,5 +137,63 @@ public class SellOn23Activity extends AppCompatActivity {
                         }
                     });
         });
+    }
+
+    void submitBtnClick(){
+        boolean check = true;
+        check = checkValidInformation();
+
+        if(check){
+            shopRepository.saveShop(shopName.getText().toString(),phoneNumber.getText().toString()
+                    ,shopAddress.getText().toString(),logoSelectedImageUri.toString(),bannerSelectedImageUri.toString(), new ShopRepository.OnShopSaveListener(){
+                        @Override
+                        public void onShopSaved(String shopId) {
+                            FirebaseUtil.getCurrentShopPicStorageRef("logo_shop_pic", shopId).putFile(logoSelectedImageUri)
+                                    .addOnCompleteListener(task -> {
+                                        updateToFirestore();
+                                    });
+
+                            FirebaseUtil.getCurrentShopPicStorageRef("banner_shop_pic", shopId).putFile(bannerSelectedImageUri)
+                                    .addOnCompleteListener(task -> {
+                                        updateToFirestore();
+                                    });
+                        }
+                    });
+            finish();
+        }
+    }
+
+    boolean checkValidInformation(){
+        boolean check = true;
+        if (TextUtils.isEmpty(shopName.getText().toString())){
+            shopName.setError("Shop name is empty!");
+            check = false;
+        }
+
+        if (TextUtils.isEmpty(phoneNumber.getText().toString())){
+            phoneNumber.setError("Phone number is empty!");
+            check = false;
+        }
+
+        if (TextUtils.isEmpty(shopAddress.getText().toString())){
+            shopAddress.setError("Shop address is empty!");
+            check = false;
+        }
+
+        if (logoSelectedImageUri == null){
+            AndroidUtil.showToast(this, "Logo Image is required!");
+            check = false;
+        }
+
+        if (bannerSelectedImageUri == null){
+            AndroidUtil.showToast(this, "Banner Image is required!");
+            check = false;
+        }
+
+        return check;
+    }
+
+    void updateToFirestore(){
+
     }
 }

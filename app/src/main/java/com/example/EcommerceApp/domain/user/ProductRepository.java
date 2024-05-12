@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.EcommerceApp.model.Product;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -49,6 +50,40 @@ public class ProductRepository {
 
     public Task<List<Product>> get4ProductsAsList() {
         return productsCollection.limit(4).get().continueWith(task -> {
+            List<Product> productsList = new ArrayList<>();
+            if (task.isSuccessful()) {
+                for (Product product : task.getResult().toObjects(Product.class)) {
+                    productsList.add(product);
+                    // Limit the loop to 4 iterations to ensure only 4 products are added
+                    if (productsList.size() == 4) {
+                        break;
+                    }
+                }
+            }
+            return productsList;
+        });
+    }
+
+    public Task<List<Product>> getAllProductsAsListByShopId(String shopId) {
+        return productsCollection
+                .whereEqualTo("shop_id", shopId)
+                .get().continueWith(task -> {
+                    List<Product> productsList = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Product product = document.toObject(Product.class);
+                            productsList.add(product);
+                        }
+                    }
+                    return productsList;
+                });
+    }
+
+    public Task<List<Product>> get4ProductsAsListByShop(String shopId) {
+        return productsCollection
+                .whereEqualTo("shop_id", shopId)
+                .limit(4)
+                .get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
                 for (Product product : task.getResult().toObjects(Product.class)) {

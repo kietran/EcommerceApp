@@ -100,7 +100,7 @@ public class UserProfileFragment extends Fragment {
     }
 
     void getUserData(){
-        FirebaseUtil.getCurrentProfilePicStorageRef().getDownloadUrl()
+        FirebaseUtil.getCurrentUserPicStorageRef("profile_pic").getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         Uri uri  = task.getResult();

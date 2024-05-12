@@ -1,5 +1,6 @@
 package com.example.EcommerceApp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.model.Product;
+import com.example.EcommerceApp.model.Shop;
+import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> mListProducts;
+    private Shop shopModel;
 
     public ProductAdapter(List<Product> mListProducts) {
         this.mListProducts = mListProducts;
@@ -36,8 +40,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if(product==null)
             return;
 
+        setShopName(holder, product.getShop_id());
         holder.product_name.setText(product.getName());
-        holder.shop_name.setText(product.getShop_id());
         holder.product_price.setText(String.valueOf(product.getPrice()));
         Picasso.get().load(product.getProduct_image())
                 .placeholder(R.drawable.ic_launcher_foreground)
@@ -58,7 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
         private final TextView product_name;
         private final TextView product_price;
-        private final TextView shop_name;
+        private TextView shop_name;
         private final ImageView product_image;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -68,5 +72,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             shop_name = itemView.findViewById(R.id.shop_name);
             product_image = itemView.findViewById(R.id.product_image);
         }
+    }
+
+    public void setShopName(@NonNull ProductViewHolder holder, String shopId){
+        FirebaseUtil.getShopReference(shopId).get().addOnCompleteListener(task -> {
+            shopModel = task.getResult().toObject(Shop.class);
+            holder.shop_name.setText(shopModel.getShopName());
+        });
+
     }
 }

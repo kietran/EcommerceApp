@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setInProgress(false);
 
         backButton.setOnClickListener((v -> {
-            onBackPressed();
+            finish();
         }));
 
         updatePassword.setOnClickListener((v -> {
