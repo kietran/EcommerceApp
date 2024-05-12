@@ -3,7 +3,9 @@ package com.example.EcommerceApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,7 +85,6 @@ public class SearchResult extends Fragment {
         rc_result_product.setLayoutManager(layoutManagerProduct);
         rc_result_product.setAdapter(productAdapter);
         Log.println(Log.ASSERT, "Load product rs", "fragment");
-
         return view;
     }
 }

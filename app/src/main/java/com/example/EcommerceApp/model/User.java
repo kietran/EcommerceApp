@@ -1,5 +1,9 @@
 package com.example.EcommerceApp.model;
 import com.google.firebase.Timestamp;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.PropertyName;
+import com.google.firebase.firestore.DocumentReference;
+
 public class User {
     private String phone;
     private String username;

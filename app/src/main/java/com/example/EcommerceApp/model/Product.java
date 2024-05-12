@@ -7,6 +7,7 @@ public class Product {
     String shop_id;
     String category_id;
     float price;
+
     public Product(String product_img, String name, String description, String shop_id, String category_id, float price) {
         this.product_image = product_img;
         this.name = name;
@@ -69,5 +70,17 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "product_image='" + product_image + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", shop_id='" + shop_id + '\'' +
+                ", category_id='" + category_id + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

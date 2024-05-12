@@ -7,13 +7,13 @@
         android:title="Home"
         />
     <item
-        android:id="@+id/navigation_myorder"
+        android:id="@+id/navigation_mycart"
         android:icon="@drawable/baseline_shopping_cart_24"
-        android:title="My Order" />
+        android:title="My Cart" />
     <item
-        android:id="@+id/navigation_favorite"
-        android:icon="@drawable/baseline_favorite_border_24"
-        android:title="Favorite" />
+        android:id="@+id/navigation_myorder"
+        android:icon="@drawable/icons8_order_50"
+        android:title="My Order" />
     <item
         android:id="@+id/navigation_myprofile"
         android:icon="@drawable/baseline_account_circle_24"

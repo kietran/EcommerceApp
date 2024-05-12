@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_detail_checkout"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:elevation="8dp"
+    >
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Enter your promote code"
+            android:backgroundTint="@color/grey_font"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:layout_marginVertical="12dp"
+        android:columnCount="2"
+        >
+        <TextView
+            android:layout_marginTop="12dp"
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtotal"
+            android:textSize="16dp"
+            android:layout_gravity="left"
+            android:textColor="@color/grey_font"
+            />
+        <TextView
+            android:layout_marginTop="12dp"
+
+            android:id="@+id/subTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99"
+            android:textSize="16dp"
+            android:layout_gravity="right"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/grey_font"
+            android:text="Shipping"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+
+            android:id="@+id/shipping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="10"
+            android:layout_gravity="right"
+            android:textStyle="bold"/>
+    </GridLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:layout_marginVertical="12dp"
+        >
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total amount"
+            android:textSize="16dp"
+            android:layout_gravity="left|top"
+            android:textColor="@color/grey_font"/>
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="109"
+            android:textSize="16dp"
+            android:layout_gravity="right|top"
+            android:textStyle="bold"/>
+
+
+    </GridLayout>
+    <Button
+
+        android:layout_marginTop="12dp"
+        android:id="@+id/btCheckout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Checkout"
+        android:textSize="16dp"
+/>
+
+
+
+</LinearLayout>
