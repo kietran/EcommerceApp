@@ -2,6 +2,7 @@ package com.example.EcommerceApp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,11 +20,14 @@ import com.example.EcommerceApp.model.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.shivtechs.maplocationpicker.LocationPickerActivity;
+import com.shivtechs.maplocationpicker.MapUtility;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class EditProfileActivity extends AppCompatActivity {
+    private static final int ADDRESS_PICKER_REQUEST = 99;
     ImageView profilePic;
     ImageView backButton;
     EditText usernameInput;
@@ -30,8 +35,8 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText phoneInput;
     EditText emailInput;
     Button updateProfileButton;
+    TextView addAddress;
     ProgressBar progressBar;
-
     User currentUserModel;
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri selectedImageUri;
@@ -40,6 +45,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        MapUtility.apiKey = getResources().getString(R.string.google_maps_api_key);
 
         profilePic = findViewById(R.id.profieImageView);
         usernameInput = findViewById(R.id.userNameEditText);
@@ -47,17 +53,25 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneInput = findViewById(R.id.phoneNumberEditText);
         emailInput = findViewById(R.id.emailEditText);
         updateProfileButton = findViewById(R.id.updateProfileButton);
+        addAddress = (TextView) findViewById(R.id.add_address);
         backButton = findViewById(R.id.backImageView);
         progressBar = findViewById(R.id.progressBar);
+        // Create an underline for the text in the TextView
+        addAddress.setPaintFlags(addAddress.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         getUserData();
 
         backButton.setOnClickListener((v -> {
-            onBackPressed();
+            finish();
         }));
 
         updateProfileButton.setOnClickListener((v -> {
             updateBtnClick();
+        }));
+
+        addAddress.setOnClickListener((v -> {
+            Intent i = new Intent(this, LocationPickerActivity.class);
+            startActivityForResult(i, ADDRESS_PICKER_REQUEST);
         }));
 
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -87,7 +101,7 @@ public class EditProfileActivity extends AppCompatActivity {
     void getUserData(){
         setInProgress(true);
 
-        FirebaseUtil.getCurrentProfilePicStorageRef().getDownloadUrl()
+        FirebaseUtil.getCurrentUserPicStorageRef("profile_pic").getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         Uri uri  = task.getResult();
@@ -149,7 +163,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         if(selectedImageUri!=null){
-            FirebaseUtil.getCurrentProfilePicStorageRef().putFile(selectedImageUri)
+            FirebaseUtil.getCurrentUserPicStorageRef("profile_pic").putFile(selectedImageUri)
                     .addOnCompleteListener(task -> {
                         updateToFirestore();
                     });
@@ -168,4 +182,33 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADDRESS_PICKER_REQUEST) {
+            try {
+                if (data != null && data.getStringExtra(MapUtility.ADDRESS) != null) {
+                    String address = data.getStringExtra(MapUtility.ADDRESS);
+                    double currentLatitude = data.getDoubleExtra(MapUtility.LATITUDE, 0.0);
+                    double currentLongitude = data.getDoubleExtra(MapUtility.LONGITUDE, 0.0);
+                    Bundle completeAddress =data.getBundleExtra("fullAddress");
+                    /* data in completeAddress bundle
+                    "fulladdress"
+                    "city"
+                    "state"
+                    "postalcode"
+                    "country"
+                    "addressline1"
+                    "addressline2"
+                     */
+                    addressInput.setText(new StringBuilder().append(completeAddress.getString("addressline2")).toString());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }
