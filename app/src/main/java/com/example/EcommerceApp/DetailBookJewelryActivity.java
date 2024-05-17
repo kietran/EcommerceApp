@@ -1,20 +1,18 @@
 package com.example.EcommerceApp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.EcommerceApp.model.Product;
 import com.squareup.picasso.Picasso;
 
 public class DetailBookJewelryActivity extends AppCompatActivity {
-
+    ImageView btBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,5 +33,14 @@ public class DetailBookJewelryActivity extends AppCompatActivity {
         Picasso.get().load(product.getProduct_image())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(product_image);
+        btBack = findViewById(R.id.btnBackDetail);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetailBookJewelryActivity.this, UserActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }

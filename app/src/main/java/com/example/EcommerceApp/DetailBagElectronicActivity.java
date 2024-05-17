@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.EcommerceApp.databinding.ActivityBagElectronicDetailBinding;
 import com.example.EcommerceApp.model.Product;
 import com.squareup.picasso.Picasso;
 
 public class DetailBagElectronicActivity extends AppCompatActivity {
+    ImageView btBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,5 +33,14 @@ public class DetailBagElectronicActivity extends AppCompatActivity {
         Picasso.get().load(product.getProduct_image())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(product_image);
+        btBack = findViewById(R.id.btnBackDetail);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetailBagElectronicActivity.this, UserActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }

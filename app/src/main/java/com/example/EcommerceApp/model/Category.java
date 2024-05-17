@@ -10,17 +10,29 @@ import android.view.ViewGroup;
 
 import com.example.EcommerceApp.R;
 
-public class Category{
+import java.io.Serializable;
+
+public class Category implements Serializable {
+    String id;
     String category_image;
     String name;
     int numProduct;
 
     public Category(){}
 
-    public Category(String category_image, String name, int numProduct) {
+    public Category(String id, String category_image, String name, int numProduct) {
+        this.id = id;
         this.category_image = category_image;
         this.name = name;
         this.numProduct = numProduct;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCategory_image() {

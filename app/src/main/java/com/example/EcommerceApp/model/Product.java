@@ -1,6 +1,8 @@
 package com.example.EcommerceApp.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     String product_image;
     String name;
     String description;

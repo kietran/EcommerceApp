@@ -163,17 +163,6 @@
                         android:layout_marginEnd="18dp"
                         android:background="@drawable/background_btn_detail"
                         android:orientation="horizontal"
-
-                    <TextView
-                        android:id="@+id/add1"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/add_sub_background"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -219,8 +208,6 @@
 
                     <TextView
                         android:id="@+id/textView13"
-
-                        android:id="@+id/count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Choose ammount"
@@ -229,25 +216,6 @@
                         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-                        app:layout_constraintBottom_toBottomOf="@+id/add1"
-                        app:layout_constraintEnd_toEndOf="@+id/add1"
-                        app:layout_constraintStart_toStartOf="@+id/sub1"
-                        app:layout_constraintTop_toTopOf="@+id/add1" />
-
-                    <TextView
-                        android:id="@+id/sub1"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/add_sub_background"
-                        android:gravity="center"
-                        android:text="-"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> master:app/src/main/res/layout/activity_detail1.xml
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
@@ -344,21 +312,31 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="18dp"
-                    android:text="Color: "
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-                <androidx.recyclerview.widget.RecyclerView
+                android:orientation="horizontal">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="18dp"
+                        android:text="Color: "
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
             </LinearLayout>
 
 

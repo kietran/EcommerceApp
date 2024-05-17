@@ -48,14 +48,14 @@ public class ProductRepository {
         });
     }
 
-    public Task<List<Product>> get4ProductsAsList() {
-        return productsCollection.limit(4).get().continueWith(task -> {
+    public Task<List<Product>> get2ProductsAsList() {
+        return productsCollection.limit(2).get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
                 for (Product product : task.getResult().toObjects(Product.class)) {
                     productsList.add(product);
                     // Limit the loop to 4 iterations to ensure only 4 products are added
-                    if (productsList.size() == 4) {
+                    if (productsList.size() == 2) {
                         break;
                     }
                 }
@@ -97,6 +97,50 @@ public class ProductRepository {
             return productsList;
         });
     }
+
+    public Task<Integer> countProductsByCategory(String categoryId) {
+        return productsCollection
+                .whereEqualTo("category_id", categoryId)
+                .get().continueWith(task -> {
+                    int count = 0;
+                    if (task.isSuccessful()) {
+                        count = task.getResult().size();
+                    }
+                    return count;
+                });
+    }
+
+    public Task<List<Product>> getAllProductsAsListByCategoryID(String categoryID) {
+        return productsCollection
+                .whereEqualTo("category_id", categoryID)
+                .get().continueWith(task -> {
+                    List<Product> productsList = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Product product = document.toObject(Product.class);
+                            productsList.add(product);
+                        }
+                    }
+                    return productsList;
+                });
+    }
+
+    public Task<Product> getProductByProductId(String productId) {
+        return productsCollection
+                .document(productId)
+                .get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            return document.toObject(Product.class);
+                        }
+                    }
+                    return null;
+                });
+    }
+
+
 
 //    public Task<QuerySnapshot> getAllProducts() {
 //        return productsCollection.get();

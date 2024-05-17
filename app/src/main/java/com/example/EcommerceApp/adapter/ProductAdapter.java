@@ -1,5 +1,8 @@
 package com.example.EcommerceApp.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EcommerceApp.DetailBagElectronicActivity;
+import com.example.EcommerceApp.DetailBookJewelryActivity;
+import com.example.EcommerceApp.DetailClothesSneakerActivity;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.Shop;
@@ -21,9 +28,11 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> mListProducts;
     private Shop shopModel;
+    private Context mContext;
 
-    public ProductAdapter(List<Product> mListProducts) {
+    public ProductAdapter(Context context, List<Product> mListProducts) {
         this.mListProducts = mListProducts;
+        this.mContext = context;
     }
 
     @NonNull
@@ -46,6 +55,36 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Picasso.get().load(product.getProduct_image())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.product_image);
+        holder.imageProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickGoToDetail(product);
+            }
+        });
+    }
+
+    private void onClickGoToDetail(Product product) {
+        Intent intent;
+        switch (product.getCategory_id()) {
+            case "bag":
+            case "electronic"    :
+                intent = new Intent(mContext, DetailBagElectronicActivity.class);
+                break;
+            case "book":
+            case "jewelry":
+                intent = new Intent(mContext, DetailBookJewelryActivity.class);
+                break;
+            case "cloth":
+            case "sneaker"  :
+                intent = new Intent(mContext, DetailClothesSneakerActivity.class);
+                break;
+            default:
+                return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("object_product", product);
+        intent.putExtras(bundle);
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -64,9 +103,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private final TextView product_price;
         private TextView shop_name;
         private final ImageView product_image;
+        private final ImageView imageProduct;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageProduct = itemView.findViewById(R.id.product_image);
             product_name = itemView.findViewById(R.id.product_name);
             product_price = itemView.findViewById(R.id.product_price);
             shop_name = itemView.findViewById(R.id.shop_name);
@@ -79,6 +120,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             shopModel = task.getResult().toObject(Shop.class);
             holder.shop_name.setText(shopModel.getShopName());
         });
-
     }
 }

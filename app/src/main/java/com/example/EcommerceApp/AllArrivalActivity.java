@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +29,7 @@ public class AllArrivalActivity extends AppCompatActivity {
 
     public AllArrivalActivity() {
         productRepository = new ProductRepository(this);
-        productAdapter = new ProductAdapter(new ArrayList<>());
+        productAdapter = new ProductAdapter(this, new ArrayList<>());
     }
 
     @Override
@@ -44,7 +43,7 @@ public class AllArrivalActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        viewArrifals = findViewById(R.id.viewArrifals);
+        viewArrifals = findViewById(R.id.viewArrivals);
         productRepository.getAllProductsAsList().addOnCompleteListener(task -> {
             List<Product> products = task.getResult();
             productAdapter.updateData(products);

@@ -29,7 +29,7 @@ public class ShopAllProductsFragment extends Fragment {
 
     public ShopAllProductsFragment() {
         productRepository = new ProductRepository(getContext());
-        productAdapter = new ProductAdapter(new ArrayList<>());
+        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
     }
     @Nullable
     @Override
