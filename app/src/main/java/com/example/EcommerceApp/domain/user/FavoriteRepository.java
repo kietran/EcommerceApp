@@ -25,15 +25,15 @@ public class FavoriteRepository {
     // Phương thức để lấy toàn bộ danh sách các item từ Firestore
 
 
-    public Task<List<Favorite>> getAllFavoriteAsListByUserID(String userID) {
+    public Task<List<String>> getAllFavoriteAsListByUserID(String userID) {
         return favoritesCollection
                 .whereEqualTo("user_id", userID)
                 .get().continueWith(task -> {
-                    List<Favorite> favoritesList = new ArrayList<>();
+                    List<String> favoritesList = new ArrayList<>();
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot document : task.getResult()) {
                             Favorite favorite = document.toObject(Favorite.class);
-                            favoritesList.add(favorite);
+                            favoritesList.add(favorite.getProduct_id());
                         }
                     }
                     return favoritesList;

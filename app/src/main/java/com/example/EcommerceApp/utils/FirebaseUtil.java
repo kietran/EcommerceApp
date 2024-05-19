@@ -1,14 +1,46 @@
 package com.example.EcommerceApp.utils;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FirebaseUtil {
+
+    public static void addFavorite(String productId, String userId) {
+        Map<String, Object> favorite = new HashMap<>();
+        favorite.put("product_id", productId);
+        favorite.put("user_id", userId);
+
+        FirebaseFirestore.getInstance().collection("test_favorite").add(favorite)
+                .addOnSuccessListener(documentReference -> Log.d("FirebaseUtil", "Favorite added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("FirebaseUtil", "Error adding favorite", e));
+    }
+
+    public static void removeFavorite(String productId, String userId) {
+        Query query = FirebaseFirestore.getInstance().collection("test_favorite")
+                .whereEqualTo("product_id", productId)
+                .whereEqualTo("user_id", userId);
+
+        query.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            document.getReference().delete();
+                        }
+                    }
+                });
+    }
     public static String currentUserId(){
         return FirebaseAuth.getInstance().getUid();
     }

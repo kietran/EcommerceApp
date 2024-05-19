@@ -108,8 +108,8 @@
 
                     <TextView
                         android:id="@+id/product_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="250dp"
+                        android:layout_height="25dp"
                         android:layout_marginStart="18dp"
                         android:text="product name"
                         android:textColor="@color/black"

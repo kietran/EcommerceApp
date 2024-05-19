@@ -1,17 +1,20 @@
 package com.example.EcommerceApp.adapter;
 
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.DetailBagElectronicActivity;
@@ -20,15 +23,25 @@ import com.example.EcommerceApp.DetailClothesSneakerActivity;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.Shop;
+import com.example.EcommerceApp.utils.FavoriteUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> mListProducts;
     private Shop shopModel;
     private Context mContext;
+    private List<String> favoriteProductID = new ArrayList<>();
+    @SuppressLint("NotififyDataSetChanged")
+    public void setFavoriteProductID(List<String> favoriteProductID) {
+        this.favoriteProductID = favoriteProductID;
+        notifyDataSetChanged();
+    }
+
 
     public ProductAdapter(Context context, List<Product> mListProducts) {
         this.mListProducts = mListProducts;
@@ -49,16 +62,50 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if(product==null)
             return;
 
+        int drawableId = R.drawable.red_favorite;
+        int drawableId2 = R.drawable.fav_icon;
+        Drawable drawable = mContext.getResources().getDrawable(drawableId);
+        Drawable drawable2 = mContext.getResources().getDrawable(drawableId2);
+        holder.btnFav.setImageDrawable(drawable);
         setShopName(holder, product.getShop_id());
         holder.product_name.setText(product.getName());
         holder.product_price.setText(String.valueOf(product.getPrice()));
+
+        if(favoriteProductID.size() != 0 && favoriteProductID.contains(product.getId())) {
+            holder.btnFav.setImageDrawable(drawable);
+        }
+        else{
+            holder.btnFav.setImageDrawable(drawable2);
+        }
         Picasso.get().load(product.getProduct_image())
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .into(holder.product_image);
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .into(holder.product_image);
         holder.imageProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickGoToDetail(product);
+            }
+        });
+
+        holder.btnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = product.getId();
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (favoriteProductID.contains(productId)) {
+//                    FirebaseUtil.removeFavorite(productId, userId);
+//                    favoriteProductID.remove(productId);
+                    FavoriteUtil.removeFavorite(productId, userId);
+                    holder.btnFav.setImageDrawable(mContext.getResources().getDrawable(R.drawable.fav_icon));
+                    Log.i("fav ID", ""+favoriteProductID);
+                } else {
+//                    FirebaseUtil.addFavorite(productId, userId);
+//                    favoriteProductID.add(productId);
+                    FavoriteUtil.addFavorite(productId, userId);
+                    Log.i("fav ID", ""+favoriteProductID);
+                    holder.btnFav.setImageDrawable(mContext.getResources().getDrawable(R.drawable.red_favorite));
+
+                }
             }
         });
     }
@@ -105,6 +152,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private final ImageView product_image;
         private final ImageView imageProduct;
 
+        private final ImageView btnFav;
+
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imageProduct = itemView.findViewById(R.id.product_image);
@@ -112,6 +161,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             product_price = itemView.findViewById(R.id.product_price);
             shop_name = itemView.findViewById(R.id.shop_name);
             product_image = itemView.findViewById(R.id.product_image);
+            btnFav = itemView.findViewById(R.id.btn_favorite);
         }
     }
 

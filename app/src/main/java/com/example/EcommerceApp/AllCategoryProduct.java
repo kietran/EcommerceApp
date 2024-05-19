@@ -14,9 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.EcommerceApp.adapter.ProductAdapter;
+import com.example.EcommerceApp.domain.user.FavoriteRepository;
 import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.model.Category;
 import com.example.EcommerceApp.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -27,11 +29,12 @@ public class AllCategoryProduct extends AppCompatActivity {
     ProductAdapter productAdapter;
     androidx.recyclerview.widget.RecyclerView viewCategory;
     ProductRepository productRepository;
-
+    FavoriteRepository favoriteRepository;
     ImageView btBack;
 
     public AllCategoryProduct() {
         productRepository = new ProductRepository(this);
+        favoriteRepository = new FavoriteRepository(this);
         productAdapter = new ProductAdapter(this, new ArrayList<>());
     }
     @Override
@@ -46,6 +49,9 @@ public class AllCategoryProduct extends AppCompatActivity {
         Category category = (Category) bundle.get("object category");
         TextView categoryName = findViewById(R.id.category_name);
         categoryName.setText(category.getName());
+        favoriteRepository.getAllFavoriteAsListByUserID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(task -> {
+            List<String> favorites = task.getResult();
+            productAdapter.setFavoriteProductID(favorites);});
         viewCategory = findViewById(R.id.viewCategory);
         productRepository.getAllProductsAsListByCategoryID(category.getId()).addOnCompleteListener(task -> {
             List<Product> products = task.getResult();

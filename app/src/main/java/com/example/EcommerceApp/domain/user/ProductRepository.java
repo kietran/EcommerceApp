@@ -27,7 +27,9 @@ public class ProductRepository {
         return productsCollection.get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
-                for (Product product : task.getResult().toObjects(Product.class)) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    Product product = document.toObject(Product.class);
+                    product.setId(document.getId());
                     productsList.add(product);
                 }
             }
@@ -40,7 +42,9 @@ public class ProductRepository {
                 .get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
-                for (Product product : task.getResult().toObjects(Product.class)) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    Product product = document.toObject(Product.class);
+                    product.setId(document.getId());
                     productsList.add(product);
                 }
             }
@@ -52,9 +56,10 @@ public class ProductRepository {
         return productsCollection.limit(2).get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
-                for (Product product : task.getResult().toObjects(Product.class)) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    Product product = document.toObject(Product.class);
+                    product.setId(document.getId());
                     productsList.add(product);
-                    // Limit the loop to 4 iterations to ensure only 4 products are added
                     if (productsList.size() == 2) {
                         break;
                     }
@@ -72,6 +77,7 @@ public class ProductRepository {
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot document : task.getResult()) {
                             Product product = document.toObject(Product.class);
+                            product.setId(document.getId());
                             productsList.add(product);
                         }
                     }
@@ -118,6 +124,7 @@ public class ProductRepository {
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot document : task.getResult()) {
                             Product product = document.toObject(Product.class);
+                            product.setId(document.getId());
                             productsList.add(product);
                         }
                     }
@@ -133,7 +140,9 @@ public class ProductRepository {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            return document.toObject(Product.class);
+                            Product product = document.toObject(Product.class);
+                            product.setId(document.getId());
+                            return product;
                         }
                     }
                     return null;
