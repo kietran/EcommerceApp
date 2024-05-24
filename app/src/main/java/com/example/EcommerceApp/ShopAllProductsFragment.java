@@ -29,7 +29,7 @@ public class ShopAllProductsFragment extends Fragment {
 
     public ShopAllProductsFragment() {
         productRepository = new ProductRepository(getContext());
-        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
+        productAdapter = new ProductAdapter(ShopPageActivity.context, new ArrayList<>());
     }
     @Nullable
     @Override
@@ -44,7 +44,7 @@ public class ShopAllProductsFragment extends Fragment {
         SearchView searchView1 = new SearchView();
         SearchFilter searchFilter = new SearchFilter(shopId);
         SearchResult searchResult = new SearchResult();
-
+        searchResult.setContext1(ShopPageActivity.context);
         /////// RECYCLE VIEW
         productRepository.getAllProductsAsListByShopId(shopId).addOnCompleteListener(task -> {
         List<Product> products = task.getResult();

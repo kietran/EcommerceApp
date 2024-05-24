@@ -1,5 +1,7 @@
 package com.example.EcommerceApp;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +49,12 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
     String product_id;
     boolean isHaveColor, isHaveSize;
     LinearLayout layoutForSizeAndColor, layoutForSize, layoutForColor;
+    Button btnViewShop;
+    String shopId;
+    TextView shopName;
+    ImageView shopAvt;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,7 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         }
         product = (Product) bundle.get("object_product");
         product_id = (String) bundle.get("id");
+        shopId = product.getShop_id();
         isHaveColor = (Boolean) bundle.get("haveColor");
         isHaveSize = (Boolean) bundle.get("haveSize");
         product_name = findViewById(R.id.product_name);
@@ -73,6 +81,15 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         layoutForSizeAndColor = findViewById(R.id.layoutforSizeandColor);
         layoutForColor = findViewById(R.id.layoutforColor);
         layoutForSize = findViewById(R.id.layoutforSize);
+        btnViewShop = findViewById(R.id.btnViewShop);
+        shopName = findViewById(R.id.shop_name);
+        shopAvt = findViewById(R.id.shop_avatar);
+        btnViewShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToShop();
+            }
+        });
         product_name.setText(product.getName());
         product_description.setText(product.getDescription());
         price.setText(product.getPrice()+"");
@@ -153,6 +170,7 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
             }
         });
         btnTru.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SuspiciousIndentation")
             @Override
             public void onClick(View v) {
                 if (count > 0)
@@ -214,6 +232,27 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
                 }
             }
         });
+        //Set shop view
+        setShopView();
+    }
+
+    private void setShopView() {
+        ShopRepository shopRepository = new ShopRepository(this);
+        shopRepository.getShopByShopID(shopId).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Shop shop = task.getResult();
+                shopName.setText(shop.getShopName());
+                Picasso.get().load(shop.getProfileImage())
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .into(shopAvt);
+            }
+        });
+    }
+
+    private void navigateToShop() {
+        Intent i = new Intent(DetailTwoAttributeActivity.this, ShopPageActivity.class);
+        i.putExtra("shopID", shopId);
+        startActivity(i);
     }
 
     private void handleAddToCart(){

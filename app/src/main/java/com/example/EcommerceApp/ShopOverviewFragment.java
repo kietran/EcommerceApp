@@ -24,7 +24,7 @@ public class ShopOverviewFragment extends Fragment {
 
     public ShopOverviewFragment() {
         productRepository = new ProductRepository(getContext());
-        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
+        productAdapter = new ProductAdapter(ShopPageActivity.context, new ArrayList<>());
     }
 
     @Nullable

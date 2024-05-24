@@ -256,52 +256,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:text="shop name"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/shop_avatar"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/shop_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="104 Products"
-                    android:textSize="12sp"
-                    android:textColor="#9F9D9D"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shop_avatar" />
 
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="13dp"
                     android:layout_height="13dp"
                     android:layout_marginStart="4dp"
-                    app:layout_constraintBottom_toTopOf="@+id/shop_follower"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/shop_name"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/check" />
 
-                <TextView
-                    android:id="@+id/shop_follower"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="1k3 Followers"
-                    android:textColor="#9F9D9D"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/shop_product" />
-
                 <Button
-                    android:id="@+id/button"
-                    android:layout_width="90dp"
+                    android:id="@+id/btnViewShop"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:layout_marginEnd="24dp"
-                    android:text="Follow"
+                    android:text="View Shop"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

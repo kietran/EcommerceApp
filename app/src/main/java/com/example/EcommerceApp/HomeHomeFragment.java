@@ -1,5 +1,6 @@
 package com.example.EcommerceApp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -62,8 +63,6 @@ public class HomeHomeFragment extends Fragment {
     public HomeHomeFragment() {
         productRepository = new ProductRepository(getContext());
         favoriteRepository = new FavoriteRepository(getContext());
-        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
-        productAdapterforFavorite = new ProductAdapter(getContext(), new ArrayList<>());
     }
 
     /**
@@ -92,6 +91,7 @@ public class HomeHomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,10 +111,13 @@ public class HomeHomeFragment extends Fragment {
         productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
         productRepository.get2ProductsAsList().addOnCompleteListener(task -> {
             List<Product> products = task.getResult();
-            productAdapter.updateData(products);
-            GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
-            viewArrifals.setLayoutManager(layoutManagerProduct);
-            viewArrifals.setAdapter(productAdapter);
+            if (products.size() != 0)
+                view.findViewById(R.id.pbNewArrive).setVisibility(View.INVISIBLE);
+                viewArrifals.setVisibility(View.VISIBLE);
+                productAdapter.updateData(products);
+                GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+                viewArrifals.setLayoutManager(layoutManagerProduct);
+                viewArrifals.setAdapter(productAdapter);
         });
         seeAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override

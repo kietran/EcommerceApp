@@ -1,5 +1,6 @@
 package com.example.EcommerceApp;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -71,13 +72,13 @@ public class SearchResult extends Fragment {
     }
     public void setListForAdapter(List<Product> products)
     {
+        productAdapter = new ProductAdapter(mContext, new ArrayList<>());
         productAdapter.updateData(products);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
-        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
         ////// RECYCLERVIEW PRODUCT
         rc_result_product = view.findViewById(R.id.rc_result_product);
         GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(),2);
@@ -86,4 +87,12 @@ public class SearchResult extends Fragment {
         Log.println(Log.ASSERT, "Load product rs", "fragment");
         return view;
     }
+    Context mContext;
+    public void setContext(SearchActivity searchActivity) {
+        this.mContext = searchActivity;
+    }
+    public void setContext1(Context context) {
+        this.mContext = context;
+    }
+
 }

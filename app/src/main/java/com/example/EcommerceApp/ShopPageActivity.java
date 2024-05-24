@@ -1,8 +1,10 @@
 package com.example.EcommerceApp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,9 +31,13 @@ public class ShopPageActivity extends AppCompatActivity {
     private Shop shopModel;
     private TextView shopName;
     private TextView shopInfo;
+    static Context context;
+
+    ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_shop_page);
@@ -40,6 +46,7 @@ public class ShopPageActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        context = this;
         // Get the Intent that started this activity
         Intent intent = getIntent();
         // Get the shopID from the intent extras
@@ -52,6 +59,13 @@ public class ShopPageActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         shopName = findViewById(R.id.shopName_tv);
         shopInfo = findViewById(R.id.shopInfo_tv);
+        btnBack = findViewById(R.id.btBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Tạo adapter và thiết lập cho ViewPager2
         ShopPageAdapter adapter = new ShopPageAdapter(this);
