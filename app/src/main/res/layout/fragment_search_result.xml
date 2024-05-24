@@ -32,5 +32,5 @@
         android:textStyle="bold"
         app:icon="@drawable/ic_sort"
         app:iconTint="@android:color/white"
-        android:backgroundTint="@color/main_purple"/>
+        android:backgroundTint="@color/main_purple_transparant"/>
 </RelativeLayout>
