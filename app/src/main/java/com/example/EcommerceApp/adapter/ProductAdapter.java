@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -178,5 +179,37 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             shopModel = task.getResult().toObject(Shop.class);
             holder.shop_name.setText(shopModel.getShopName());
         });
+    }
+
+    public void sortByNameAZ() {
+        Collections.sort(mListProducts, (p1, p2) -> p1.getName().compareTo(p2.getName()));
+    }
+
+    public void sortByNameZA() {
+        Collections.sort(mListProducts, (p1, p2) -> p2.getName().compareTo(p1.getName()));
+    }
+
+    public void sortPriceLowToHigh() {
+        Collections.sort(mListProducts, (p1, p2) -> Float.compare(p1.getPrice(), p2.getPrice()));
+    }
+
+    public void sortPriceHighToLow() {
+        Collections.sort(mListProducts, (p1, p2) -> Float.compare(p2.getPrice(), p1.getPrice()));
+    }
+
+    public List<Product> filterPriceRange(float minPrice, float maxPrice) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : mListProducts) {
+            float price = product.getPrice();
+            if (price >= minPrice && price <= maxPrice) {
+                filteredList.add(product);
+            }
+        }
+
+        return filteredList;
+    }
+
+    public List<Product> resetFilter(){
+        return mListProducts;
     }
 }
