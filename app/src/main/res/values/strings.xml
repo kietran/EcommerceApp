@@ -16,4 +16,8 @@
     <string name="send_code">Send Code</string>
     <string name="google_maps_api_key">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</string>
     <string name="title_activity_bag_electronic_detail">activity_bag_electronic_detail</string>
+    <string-array name="range_slider_values">
+        <item>0</item>
+        <item>0</item>
+    </string-array>
 </resources>
