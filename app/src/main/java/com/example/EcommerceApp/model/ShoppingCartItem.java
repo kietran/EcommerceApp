@@ -7,6 +7,7 @@ public class ShoppingCartItem
     private Map<String,Object> cart;
     private  Map<String,Object> product_item;
     private Map<String,Object> shop;
+    private Map<String, Object> product;
     private String id;
 
     private int qty;
@@ -34,6 +35,14 @@ public class ShoppingCartItem
 
     }
 
+
+    public Map<String, Object> getProduct() {
+        return product;
+    }
+
+    public void setProduct(Map<String, Object> product) {
+        this.product = product;
+    }
 
     public String getId() {
         return id;

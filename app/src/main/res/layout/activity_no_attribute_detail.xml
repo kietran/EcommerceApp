@@ -5,7 +5,7 @@
     android:id="@+id/ConstraintLayout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".DetailBookJewelryActivity">
+    tools:context=".DetailNoAttributeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -282,7 +282,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/btnCong"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_marginEnd="10dp"
@@ -295,19 +295,19 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView14"
+                        android:id="@+id/productCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView12"
-                        app:layout_constraintEnd_toEndOf="@+id/textView12"
-                        app:layout_constraintStart_toStartOf="@+id/textView15"
-                        app:layout_constraintTop_toTopOf="@+id/textView12" />
+                        app:layout_constraintBottom_toBottomOf="@+id/btnCong"
+                        app:layout_constraintEnd_toEndOf="@+id/btnCong"
+                        app:layout_constraintStart_toStartOf="@+id/btnTru"
+                        app:layout_constraintTop_toTopOf="@+id/btnCong" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/btnTru"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_marginStart="10dp"

@@ -11,15 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EcommerceApp.DetailBagElectronicActivity;
-import com.example.EcommerceApp.DetailBookJewelryActivity;
-import com.example.EcommerceApp.DetailClothesSneakerActivity;
+import com.example.EcommerceApp.DetailOneAttributeActivity;
+import com.example.EcommerceApp.DetailNoAttributeActivity;
+import com.example.EcommerceApp.DetailTwoAttributeActivity;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.Shop;
@@ -36,6 +35,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Shop shopModel;
     private Context mContext;
     private List<String> favoriteProductID = new ArrayList<>();
+    private boolean isHaveColor = false, isHaveSize = false;
     @SuppressLint("NotififyDataSetChanged")
     public void setFavoriteProductID(List<String> favoriteProductID) {
         this.favoriteProductID = favoriteProductID;
@@ -114,22 +114,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Intent intent;
         switch (product.getCategory_id()) {
             case "bag":
-            case "electronic"    :
-                intent = new Intent(mContext, DetailBagElectronicActivity.class);
+                isHaveColor = true;
+                break;
+            case "sneaker"  :
+                isHaveSize = true;
+                break;
+            case "electronic":
                 break;
             case "book":
+                break;
             case "jewelry":
-                intent = new Intent(mContext, DetailBookJewelryActivity.class);
                 break;
             case "cloth":
-            case "sneaker"  :
-                intent = new Intent(mContext, DetailClothesSneakerActivity.class);
+                isHaveColor = true;
+                isHaveSize = true;
                 break;
             default:
                 return;
         }
+        intent = new Intent(mContext, DetailTwoAttributeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("object_product", product);
+        bundle.putString("id", product.getId());
+        bundle.putBoolean("haveColor", isHaveColor);
+        bundle.putBoolean("haveSize", isHaveSize);
         intent.putExtras(bundle);
         mContext.startActivity(intent);
     }

@@ -64,8 +64,6 @@ public class AllCategoryProduct extends AppCompatActivity {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AllCategoryProduct.this, UserActivity.class);
-                startActivity(i);
                 finish();
             }
         });

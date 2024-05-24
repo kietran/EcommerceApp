@@ -60,7 +60,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         Map<String,Object> product = (Map<String,Object>)item.getProduct_item().get("product");
         long qty_in_stock=(long)item.getProduct_item().get("qty_in_stock");
         String name = (String) product.get("name");
-        long price =(long) product.get("price");
+        double price =(double) product.get("price");
         int qty = item.getQty();
         String product_image =(String) product.get("product_image");
         if(qty_in_stock<1||qty_in_stock<qty)

@@ -5,7 +5,7 @@
     android:id="@+id/ConstraintLayout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".DetailBagElectronicActivity">
+    tools:context=".DetailTwoAttributeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bag2" />
+            app:srcCompat="@drawable/shoes2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -108,8 +108,10 @@
 
                     <TextView
                         android:id="@+id/product_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="240dp"
+                        android:layout_height="25dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_marginStart="18dp"
                         android:text="product name"
                         android:textColor="@color/black"
@@ -167,7 +169,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/textView12"
+                            android:id="@+id/btnCong"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_marginEnd="10dp"
@@ -180,19 +182,19 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textView14"
+                            android:id="@+id/productCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-                            app:layout_constraintEnd_toEndOf="@+id/textView12"
-                            app:layout_constraintStart_toStartOf="@+id/textView15"
-                            app:layout_constraintTop_toTopOf="@+id/textView12" />
+                            app:layout_constraintBottom_toBottomOf="@+id/btnCong"
+                            app:layout_constraintEnd_toEndOf="@+id/btnCong"
+                            app:layout_constraintStart_toStartOf="@+id/btnTru"
+                            app:layout_constraintTop_toTopOf="@+id/btnCong" />
 
                         <TextView
-                            android:id="@+id/textView15"
+                            android:id="@+id/btnTru"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_marginStart="10dp"
@@ -207,10 +209,10 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose ammount"
+                        android:text="Available"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
@@ -305,40 +307,136 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
+                    android:id="@+id/layoutforSizeandColor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:visibility="invisible"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="18dp"
-                        android:text="Color: "
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <androidx.recyclerview.widget.RecyclerView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="18dp"
+                            android:gravity="center"
+                            android:text="Color: "
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcColorFor2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="18dp"
+                            android:gravity="center"
+                            android:text="Size:"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcSizeFor2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutforColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="18dp"
+                            android:text="Color: "
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcColorFor1"
+                            android:layout_width="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layoutforSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="18dp"
+                            android:text="Size: "
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcSizeFor1"
+                            android:layout_width="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </FrameLayout>
 
 
             <LinearLayout

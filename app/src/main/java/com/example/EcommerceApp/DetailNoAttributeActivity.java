@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.EcommerceApp.model.Product;
 import com.squareup.picasso.Picasso;
 
-public class DetailClothesSneakerActivity extends AppCompatActivity {
+public class DetailNoAttributeActivity extends AppCompatActivity {
     ImageView btBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clothes_sneaker_detail);
+        setContentView(R.layout.activity_no_attribute_detail);
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
             return;
@@ -37,8 +37,6 @@ public class DetailClothesSneakerActivity extends AppCompatActivity {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DetailClothesSneakerActivity.this, UserActivity.class);
-                startActivity(i);
                 finish();
             }
         });

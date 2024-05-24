@@ -26,16 +26,16 @@
             android:name=".AllCategoryProduct"
             android:exported="false" />
         <activity
-            android:name=".DetailBagElectronicActivity"
+            android:name=".DetailOneAttributeActivity"
             android:exported="false"
             android:label="@string/title_activity_bag_electronic_detail"
             android:theme="@style/Theme.EcommerceApp" />
         <activity
-            android:name=".DetailClothesSneakerActivity"
+            android:name=".DetailTwoAttributeActivity"
             android:exported="false"
             android:theme="@style/Theme.EcommerceApp" />
         <activity
-            android:name=".DetailBookJewelryActivity"
+            android:name=".DetailNoAttributeActivity"
             android:exported="false"
             android:theme="@style/Theme.EcommerceApp" />
         <activity

@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -89,4 +90,20 @@ public class ShopRepository {
         });
     }
 
+    public Task<Shop> getShopByShopID (String shopId) {
+        DocumentReference docRef = shopCollection.document(shopId);
+        return docRef.get().continueWith(task -> {
+            Shop shop = new Shop();
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    // Assuming you have a constructor or method to convert a DocumentSnapshot to a Shop object
+                    String id = document.getId();
+                    shop = document.toObject(Shop.class);
+                    shop.setShopId(id);
+                }
+            }
+            return shop;
+        });
+    }
 }

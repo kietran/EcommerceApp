@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.EcommerceApp.model.Product;
 import com.squareup.picasso.Picasso;
 
-public class DetailBookJewelryActivity extends AppCompatActivity {
+public class DetailOneAttributeActivity extends AppCompatActivity {
     ImageView btBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_jewelry_detail);
+        setContentView(R.layout.activity_one_attribute_detail);
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
             return;
@@ -37,8 +37,6 @@ public class DetailBookJewelryActivity extends AppCompatActivity {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DetailBookJewelryActivity.this, UserActivity.class);
-                startActivity(i);
                 finish();
             }
         });

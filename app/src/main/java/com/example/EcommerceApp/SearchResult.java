@@ -41,7 +41,6 @@ public class SearchResult extends Fragment {
     ProductRepository productRepository;
     public SearchResult() {
         productRepository = new ProductRepository(getContext());
-        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
     }
 
     /**
@@ -78,7 +77,7 @@ public class SearchResult extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
-
+        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
         ////// RECYCLERVIEW PRODUCT
         rc_result_product = view.findViewById(R.id.rc_result_product);
         GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(),2);

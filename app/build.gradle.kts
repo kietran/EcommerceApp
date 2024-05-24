@@ -93,6 +93,7 @@ dependencies {
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("com.squareup.picasso:picasso:2.5.2")
     implementation ("com.github.shivpujan12:LocationPicker:2.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.android.volley:volley:1.2.0")
 }
 
