@@ -28,7 +28,7 @@ public class LegalAndPoliciesActivity extends AppCompatActivity {
         lorem = LoremIpsum.getInstance();
         generateText();
         backButton.setOnClickListener(view1->{
-            onBackPressed();
+            finish();
         });
     }
 

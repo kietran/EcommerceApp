@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity  {
         SearchView searchView1 = new SearchView();
         SearchFilter searchFilter = new SearchFilter();
         SearchResult searchResult = new SearchResult();
-
+        searchResult.setContext(this);
 
 
         searchView = findViewById(R.id.sv_item);

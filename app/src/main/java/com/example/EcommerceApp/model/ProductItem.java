@@ -2,7 +2,9 @@ package com.example.EcommerceApp.model;
 
 public class ProductItem {
     String color;
+    String product_id;
     String size;
+    int qty_in_stock;
 
     public String getColor() {
         return color;
@@ -10,14 +12,6 @@ public class ProductItem {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getProduct_id() {
@@ -28,16 +22,43 @@ public class ProductItem {
         this.product_id = product_id;
     }
 
-    public long getQty_in_stock() {
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public int getQty_in_stock() {
         return qty_in_stock;
     }
 
-    public void setQty_in_stock(long qty_in_stock) {
+    public void setQty_in_stock(int qty_in_stock) {
         this.qty_in_stock = qty_in_stock;
     }
 
-    String product_id;
-    long qty_in_stock;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    String id;
+
+
+
+    public ProductItem(String id, String color, String product_id, String size, int QTY) {
+        this.id = id;
+        this.color = color;
+        this.product_id = product_id;
+        this.size = size;
+        this.qty_in_stock = QTY;
+    }
+
     public ProductItem() {
     }
 }
+

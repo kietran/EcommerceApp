@@ -172,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity {
         String productItemId = (String)item.getProduct_item().get("id");
 
 
-        ProductItemRepository productItemRepository = new ProductItemRepository();
+        ProductItemRepository productItemRepository = new ProductItemRepository(this);
         productItemRepository.getQtyInStock(productItemId).addOnCompleteListener(new OnCompleteListener<Long>() {
             @Override
             public void onComplete(@NonNull Task<Long> task) {
@@ -193,7 +193,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void updateQtyProductItem(String productItemId, int qty) {
         Log.i("update qty in product item", "start");
-        ProductItemRepository productItemRepository = new ProductItemRepository();
+        ProductItemRepository productItemRepository = new ProductItemRepository(this);
         productItemRepository.updateQtyInStock(productItemId,qty);
     }
 

@@ -3,10 +3,23 @@ package com.example.EcommerceApp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.EcommerceApp.adapter.CategoryAdapter;
+import com.example.EcommerceApp.adapter.ProductAdapter;
+import com.example.EcommerceApp.domain.user.CategoryRepository;
+import com.example.EcommerceApp.domain.user.ProductRepository;
+import com.example.EcommerceApp.model.Category;
+import com.example.EcommerceApp.model.Product;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,8 +37,12 @@ public class HomeCategoryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    CategoryAdapter categoryAdapter;
+    androidx.recyclerview.widget.RecyclerView recyclerView;
+    CategoryRepository categoryRepository;
     public HomeCategoryFragment() {
-        // Required empty public constructor
+        categoryRepository = new CategoryRepository(getContext());
+        categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>());
     }
 
     /**
@@ -59,6 +76,16 @@ public class HomeCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_category, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        categoryAdapter = new CategoryAdapter(getContext(), new ArrayList<>());
+        categoryRepository.getAllCategoriesAsList().addOnCompleteListener(task -> {
+            List<Category> categories = task.getResult();
+            categoryAdapter.updateData(categories);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(categoryAdapter);
+        });
+        return view;
     }
 }

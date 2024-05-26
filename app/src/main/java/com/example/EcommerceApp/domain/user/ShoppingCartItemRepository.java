@@ -1,11 +1,17 @@
 package com.example.EcommerceApp.domain.user;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.EcommerceApp.model.Product;
+import com.example.EcommerceApp.model.ProductItem;
+import com.example.EcommerceApp.model.Shop;
+import com.example.EcommerceApp.model.ShoppingCart;
 import com.example.EcommerceApp.model.ShoppingCartItem;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -25,6 +31,73 @@ public class ShoppingCartItemRepository {
         shoppingCartItem = db.collection("shopping_cart_item");
         Map<String, List<ShoppingCartItem>> listCartItem = new HashMap<>();
     }
+
+    public void addNewCartItem(ShoppingCart shoppingCart, ProductItem productItem, Product product, Shop shop, int qty){
+        Map<String, Object> shoppingCartItem = new HashMap<>();
+        Map<String, Object> cart = new HashMap<>();
+        Map<String, Object> _productItem = new HashMap<>();
+        Map<String, Object> _product = new HashMap<>();
+        Map<String, Object> _shop = new HashMap<>();
+        cart.put("id", shoppingCart.getId());
+        cart.put("user_id", shoppingCart.getUserID());
+        _product.put("id", product.getId());
+        _product.put("name", product.getName());
+        _product.put("price", product.getPrice());
+        _product.put("product_image", product.getProduct_image());
+        _shop.put("id", shop.getShopId());
+        _shop.put("name", shop.getShopName());
+        _product.put("shop", _shop);
+        _productItem.put("id", productItem.getId());
+        _productItem.put("product", _product);
+        _productItem.put("color", productItem.getColor());
+        _productItem.put("size", productItem.getSize());
+        _productItem.put("qty_in_stock", productItem.getQty_in_stock());
+        shoppingCartItem.put("cart", cart);
+        shoppingCartItem.put("product_item", _productItem);
+        shoppingCartItem.put("qty", qty);
+        FirebaseFirestore.getInstance().collection("shopping_cart_item").add(shoppingCartItem)
+                .addOnSuccessListener(documentReference -> Log.d("FirebaseUtil", "Shoppingcartitem added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("FirebaseUtil", "Error adding shopping_cart_item", e));
+
+    }
+
+    public Task<String> getCartItem(String product_item_id, String cart_id){
+        return shoppingCartItem
+                .whereEqualTo("cart.id", cart_id)
+                .whereEqualTo("product_item.id", product_item_id)
+                .get().continueWith(task -> {
+                    String cartItemID = null;
+                    if(task.isSuccessful()){
+                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                        if (!documents.isEmpty()) {
+                            DocumentSnapshot document = documents.get(0);
+                            cartItemID = document.getId();
+                        }
+                    }
+                    return cartItemID;
+                });
+    }
+
+    public static void updateQty2(String cartItemId, int qtyToAdd) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("shopping_cart_item").document(cartItemId);
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Long currentQty = documentSnapshot.getLong("qty");
+                if (currentQty != null) {
+                    long newQty = currentQty + qtyToAdd;
+                    docRef.update("qty", newQty)
+                            .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Quantity updated successfully"))
+                            .addOnFailureListener(e -> Log.e("ShoppingCartItemRepo", "Failed to update quantity: " + e.getMessage()));
+                } else {
+                    Log.e("ShoppingCartItemRepo", "Current quantity is null");
+                }
+            } else {
+                Log.e("ShoppingCartItemRepo", "Document does not exist");
+            }
+        }).addOnFailureListener(e -> Log.e("ShoppingCartItemRepo", "Failed to get document: " + e.getMessage()));
+    }
+
     public void updateQty(String cartItemId, int qty){
         shoppingCartItem.document(cartItemId).update("qty", qty)
                 .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Quantity updated successfully"))

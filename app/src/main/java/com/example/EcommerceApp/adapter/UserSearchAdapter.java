@@ -32,6 +32,11 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         this.mListOldProducts= products;
     }
 
+    public UserSearchAdapter(List<Product> products, String userId) {
+        this.mListProducts = products;
+        this.mListOldProducts= products;
+    }
+
     @NonNull
     @Override
     public UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

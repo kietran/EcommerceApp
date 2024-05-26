@@ -12,6 +12,7 @@
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,7 +27,29 @@
             android:name=".AddressSetting"
             android:exported="false" />
         <activity
+            android:name=".AllFavoriteActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AllCategoryProduct"
+            android:exported="false" />
+        <activity
+            android:name=".DetailOneAttributeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_bag_electronic_detail"
+            android:theme="@style/Theme.EcommerceApp" />
+        <activity
+            android:name=".DetailTwoAttributeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.EcommerceApp" />
+        <activity
+            android:name=".DetailNoAttributeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.EcommerceApp" />
+        <activity
+            android:name=".ShopPageActivity"
             android:exported="false" />
         <activity
             android:name=".PaymentActivity"
@@ -75,6 +98,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="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" />
     </application>
 
 </manifest>

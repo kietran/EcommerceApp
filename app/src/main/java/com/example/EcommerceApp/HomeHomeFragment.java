@@ -1,23 +1,28 @@
 package com.example.EcommerceApp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.EcommerceApp.adapter.ProductAdapter;
+import com.example.EcommerceApp.domain.user.FavoriteRepository;
 import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.model.Product;
+import com.example.EcommerceApp.utils.FavoriteUtil;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +42,20 @@ public class HomeHomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-    ProductAdapter productAdapter;
+    ProductAdapter productAdapter, productAdapterforFavorite;
+
     androidx.recyclerview.widget.RecyclerView viewArrifals;
+    androidx.recyclerview.widget.RecyclerView viewFavorites;
+    LinearLayout hide_layout_favorite;
     ProductRepository productRepository;
+
+    FavoriteRepository favoriteRepository;
 
     public HomeHomeFragment() {
         productRepository = new ProductRepository(getContext());
-        productAdapter = new ProductAdapter(new ArrayList<>());
+        favoriteRepository = new FavoriteRepository(getContext());
     }
 
     /**
@@ -73,6 +84,7 @@ public class HomeHomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,19 +92,25 @@ public class HomeHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_home, container, false);
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         ArrayList<SlideModel> slideModels = new ArrayList<>();
-        TextView seeAllTextView = view.findViewById(R.id.textView8);
-
+        TextView seeAllTextView = view.findViewById(R.id.btnSeeAll1);
+        TextView btnSeeAll2 = view.findViewById(R.id.btnSeeAll2);
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/ac/f8/2e/acf82efc1950addf7e06c6854d966b67.jpg",  ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/56/df/e5/56dfe56ccbd928b020a1480931166c52.jpg", ScaleTypes.FIT));
         slideModels.add(new SlideModel("https://i.pinimg.com/564x/41/28/e5/4128e5984d2e40ef30e6b8ae0eef8095.jpg", ScaleTypes.FIT));
         imageSlider.setImageList(slideModels, ScaleTypes.FIT);
-        viewArrifals = view.findViewById(R.id.viewArrifals);
-        productRepository.get4ProductsAsList().addOnCompleteListener(task -> {
+        viewArrifals = view.findViewById(R.id.viewArrivals);
+        viewFavorites = view.findViewById(R.id.viewFavorites);
+        hide_layout_favorite = view.findViewById(R.id.hide_layout_fav);
+        productAdapter = new ProductAdapter(getContext(), new ArrayList<>());
+        productRepository.get2ProductsAsList().addOnCompleteListener(task -> {
             List<Product> products = task.getResult();
-            productAdapter.updateData(products);
-            GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
-            viewArrifals.setLayoutManager(layoutManagerProduct);
-            viewArrifals.setAdapter(productAdapter);
+            if (products.size() != 0)
+                view.findViewById(R.id.pbNewArrive).setVisibility(View.INVISIBLE);
+                viewArrifals.setVisibility(View.VISIBLE);
+                productAdapter.updateData(products);
+                GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+                viewArrifals.setLayoutManager(layoutManagerProduct);
+                viewArrifals.setAdapter(productAdapter);
         });
         seeAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +119,87 @@ public class HomeHomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        favoriteRepository.getNFavoriteAsListByUserID(FirebaseAuth.getInstance().getCurrentUser().getUid(),2).addOnCompleteListener(task -> {
+            List<String> favorites = task.getResult();
+            List<Product> products = new ArrayList<>();
+            ProductAdapter productAdapterforFavorite = new ProductAdapter(getContext(), products);
+            FavoriteUtil.setAdapter(productAdapter, productAdapterforFavorite);
+            FavoriteUtil.setFavoriteProductID(favorites);
+            productAdapterforFavorite.setFavoriteProductID(favorites);
+            productAdapter.setFavoriteProductID(favorites);
+                for (String favorite : favorites) {
+                    String productId = favorite;
+
+                    productRepository.getProductByProductId(productId).addOnCompleteListener(task1 -> {
+                            Product product = task1.getResult();
+                            product.setFavorite(true);
+                            products.add(product);
+                            productAdapterforFavorite.notifyDataSetChanged();
+                    });
+                }
+                Log.i("DASDsadasdasd", "" + favorites.size());
+            if (favorites.size() == 0){
+                hide_layout_favorite.setVisibility(View.GONE);
+                viewFavorites.setVisibility(View.GONE);
+
+            }
+            else {
+                hide_layout_favorite.setVisibility(View.VISIBLE);
+                viewFavorites.setVisibility(View.VISIBLE);
+                productAdapterforFavorite.updateData(products);
+                GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+                viewFavorites.setLayoutManager(layoutManagerProduct);
+                viewFavorites.setAdapter(productAdapterforFavorite);
+            }
+        });
+        btnSeeAll2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AllFavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadThisFragment();
+            }
+        });
         return view;
+    }
+    private void reloadThisFragment() {
+        favoriteRepository.getAllFavoriteAsListByUserID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener(task -> {
+            List<String> favorites = task.getResult();
+            List<Product> products = new ArrayList<>();
+            ProductAdapter productAdapterforFavorite = new ProductAdapter(getContext(), products);
+            FavoriteUtil.setAdapter(productAdapter, productAdapterforFavorite);
+            FavoriteUtil.setFavoriteProductID(favorites);
+            productAdapterforFavorite.setFavoriteProductID(favorites);
+            productAdapter.setFavoriteProductID(favorites);
+            for (String favorite : favorites) {
+                String productId = favorite;
+
+                productRepository.getProductByProductId(productId).addOnCompleteListener(task1 -> {
+                    Product product = task1.getResult();
+                    product.setFavorite(true);
+                    products.add(product);
+                    productAdapterforFavorite.notifyDataSetChanged();
+                });
+            }
+            if (favorites.size() == 0){
+                hide_layout_favorite.setVisibility(View.GONE);
+                viewFavorites.setVisibility(View.GONE);
+            }
+            else {
+                hide_layout_favorite.setVisibility(View.VISIBLE);
+                viewFavorites.setVisibility(View.VISIBLE);
+                productAdapterforFavorite.updateData(products);
+                GridLayoutManager layoutManagerProduct = new GridLayoutManager(getContext(), 2);
+                viewFavorites.setLayoutManager(layoutManagerProduct);
+                viewFavorites.setAdapter(productAdapterforFavorite);
+            }
+        });
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

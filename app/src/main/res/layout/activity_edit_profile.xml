@@ -119,14 +119,31 @@
                     android:drawablePadding="12dp"
                     android:textColor="@color/black"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Address"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingTop="20dp"
-                    android:textColor="@color/main_purple"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingTop="20dp"
+                        android:textColor="@color/main_purple"/>
+
+                    <TextView
+                        android:id="@+id/add_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="Select Address"
+                        android:textColor="@color/main_purple"
+                        android:textSize="16dp"
+                        android:layout_marginStart="20dp"
+                        android:onClick="onClick"
+                        android:clickable="true"/>
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/addressEditText"

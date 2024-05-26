@@ -37,7 +37,16 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
             return;
         Map<String,Object> product = (Map<String,Object>)item.getProduct_item().get("product");
         String name = (String) product.get("name");
-        long price =(long) product.get("price");
+        Object priceObject = product.get("price");
+        double price;
+
+        if (priceObject instanceof Long) {
+            price = ((Long) priceObject).doubleValue();
+        } else if (priceObject instanceof Double) {
+            price = (Double) priceObject;
+        }
+        else
+            price=0;
         int qty = item.getQty();
         String product_image =(String) product.get("product_image");
         holder.product_name.setText(name);

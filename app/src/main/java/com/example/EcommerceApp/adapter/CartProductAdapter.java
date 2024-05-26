@@ -71,6 +71,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
         else
             price=0;
+
         int qty = item.getQty();
         String product_image =(String) product.get("product_image");
         if(qty_in_stock<1||qty_in_stock<qty)

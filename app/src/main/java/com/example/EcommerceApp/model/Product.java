@@ -1,6 +1,9 @@
 package com.example.EcommerceApp.model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
+    String id;
     String product_image;
     String name;
     String description;
@@ -8,16 +11,30 @@ public class Product {
     String category_id;
     float price;
 
-    public Product(String product_img, String name, String description, String shop_id, String category_id, float price) {
+    boolean favorite = false;
+
+
+
+    public Product(String id, String product_img, String name, String description, String shop_id, String category_id, float price, boolean favorite) {
+        this.id = id;
         this.product_image = product_img;
         this.name = name;
         this.description = description;
         this.shop_id = shop_id;
         this.category_id = category_id;
         this.price=price;
+        this.favorite=favorite;
     }
     public Product() {
+        this.favorite = false;
+    }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getProduct_image() {
@@ -72,6 +89,13 @@ public class Product {
         this.price = price;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
     @Override
     public String toString() {
         return "Product{" +
