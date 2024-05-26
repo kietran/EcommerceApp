@@ -20,6 +20,7 @@ import com.example.EcommerceApp.model.ShoppingCartItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,20 +61,38 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         Map<String,Object> product = (Map<String,Object>)item.getProduct_item().get("product");
         long qty_in_stock=(long)item.getProduct_item().get("qty_in_stock");
         String name = (String) product.get("name");
-        long price =(long) product.get("price");
+        Object priceObject = product.get("price");
+        double price;
+
+        if (priceObject instanceof Long) {
+            price = ((Long) priceObject).doubleValue();
+        } else if (priceObject instanceof Double) {
+            price = (Double) priceObject;
+        }
+        else
+            price=0;
         int qty = item.getQty();
         String product_image =(String) product.get("product_image");
         if(qty_in_stock<1||qty_in_stock<qty)
         {
             holder.nota.setVisibility(View.VISIBLE);
             holder.avai.setVisibility(View.INVISIBLE);
-            mListShoppingCartItem.get(position).setAvailable(false);
+            item.setAvailable(false);
+            if(holder.select.isChecked())
+                holder.select.setChecked(false);
+            CartItemAdapter.selectList.remove(item);
+            calculateFee();
         }
         else {
             holder.nota.setVisibility(View.INVISIBLE);
             holder.avai.setVisibility(View.VISIBLE);
-            mListShoppingCartItem.get(position).setAvailable(true);
+            item.setAvailable(true);
+            if(holder.select.isChecked()&&!CartItemAdapter.selectList.contains((item))) {
+                CartItemAdapter.selectList.add(item);
+                calculateFee();
+            }
         }
+
 
         holder.product_name.setText(name);
         String priceStr =String.valueOf(price)+"vnd";
@@ -92,8 +111,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     parentAdapter.confirmDelete(item.getId(),false);
                 else {
                     item.setQty(item.getQty() - 1);
-                    parentAdapter.notifyDataSetChanged();
-                    ShoppingCartItemRepository.updateQty(item.getId(), item.getQty());
+                    //parentAdapter.notifyDataSetChanged();
+                    notifyDataSetChanged();
+                    ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
+                    shoppingCartItemRepository.updateQty(item.getId(), item.getQty());
                 }
             }
         });
@@ -102,8 +123,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             @Override
             public void onClick(View view) {
                 item.setQty(item.getQty()+1);
-                parentAdapter.notifyDataSetChanged();
-                ShoppingCartItemRepository.updateQty(item.getId(),item.getQty());
+                //parentAdapter.notifyDataSetChanged();
+                notifyDataSetChanged();
+                ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
+                shoppingCartItemRepository.updateQty(item.getId(),item.getQty());
             }
         });
 
@@ -134,10 +157,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void setBtDelete(ImageButton btDelete) {
         this.btDelete=btDelete;
     }
-    List<ShoppingCartItem> selectList;
     @SuppressLint("NotifyDataSetChanged")
-    public void setSelectListForCalculate(List<ShoppingCartItem> selectList) {
-        this.selectList=selectList;
+    public void calculateFee() {
+        List<ShoppingCartItem> selectList=new ArrayList<>(CartItemAdapter.selectList);
         TextView total = layoutCheckout.findViewById(R.id.total);
         TextView subtotal = bottomSheetCheckOut.findViewById(R.id.subTotal);
         TextView shipping = bottomSheetCheckOut.findViewById(R.id.shipping);
@@ -153,21 +175,37 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 Map<String, Object> shop = (Map<String, Object>) product.get("shop");
                 String shop_id = (String) shop.get("id");
                 setShop.add(shop_id);
-                long price = (long) product.get("price");
+                Object priceObject = product.get("price");
+                double price;
+
+                if (priceObject instanceof Long) {
+                    price = ((Long) priceObject).doubleValue();
+                } else if (priceObject instanceof Double) {
+                    price = (Double) priceObject;
+                }
+                else
+                    price=0;
                 int qty = item.getQty();
                 sum += qty * price;
             }
             else
                 check=true;
         }
-        if(check)
+        if(check) {
+            parentAdapter.setAllAvailable(false);
             Toast.makeText(parentAdapter.getContext(), "Total price does not include unavailable products", Toast.LENGTH_SHORT).show();
+        }
+        else
+            parentAdapter.setAllAvailable(true);
+
         subtotal.setText(String.valueOf(sum));
         shipping.setText(String.valueOf(30L *setShop.size()));
         total.setText(String.valueOf(sum+ 30L *setShop.size()));
         total = bottomSheetCheckOut.findViewById(R.id.total);
         total.setText(String.valueOf(sum+ 30L *setShop.size()));
+        totalFee=sum+ 30L *setShop.size();
     }
+    public static long totalFee;
     androidx.cardview.widget.CardView layoutCheckout;
     public void setLayoutCheckout(androidx.cardview.widget.CardView layoutCheckout) {
         this.layoutCheckout=layoutCheckout;

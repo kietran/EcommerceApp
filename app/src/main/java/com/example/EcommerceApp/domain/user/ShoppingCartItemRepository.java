@@ -9,6 +9,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -18,23 +19,23 @@ import java.util.Map;
 
 public class ShoppingCartItemRepository {
     private FirebaseFirestore db;
-    private static CollectionReference shoppingCartItem;
+    private  CollectionReference shoppingCartItem;
     public ShoppingCartItemRepository() {
         this.db = FirebaseFirestore.getInstance();
         shoppingCartItem = db.collection("shopping_cart_item");
         Map<String, List<ShoppingCartItem>> listCartItem = new HashMap<>();
     }
-    public static void updateQty(String cartItemId, int qty){
+    public void updateQty(String cartItemId, int qty){
         shoppingCartItem.document(cartItemId).update("qty", qty)
                 .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Quantity updated successfully"))
                 .addOnFailureListener(e -> Log.e("ShoppingCartItemRepo", "Failed to update quantity: " + e.getMessage()));
     }
-    public static void delete(String cartItemId){
+    public void delete(String cartItemId){
         shoppingCartItem.document(cartItemId).delete()
                 .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Item deleted successfully"))
                 .addOnFailureListener(e -> Log.e("ShoppingCartItemRepo", "Failed to delete item: " + e.getMessage()));
     }
-    public static void delete(List<ShoppingCartItem> list){
+    public void delete(List<ShoppingCartItem> list){
         for(ShoppingCartItem cartItem: list) {
             shoppingCartItem.document(cartItem.getId()).delete()
                     .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Item deleted successfully"))
@@ -78,5 +79,34 @@ public class ShoppingCartItemRepository {
             }
             return groupedCartItems;
         });
+    }
+
+    public void updateQtyInStockForProductItem(String productItemId, int newQtyInStock) {
+        // Tìm các mục trong giỏ hàng có chứa product_item_id cụ thể
+        shoppingCartItem.whereEqualTo("product_item.id", productItemId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        String cartItemId = document.getId();
+                        updateQtyInStockForCartItem(cartItemId, newQtyInStock);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ShoppingCartItemRepo", "Error getting cart items: ", e);
+                });
+    }
+    public void updateQtyInStockForCartItem(String cartItemId, int newQtyInStock) {
+        // Cập nhật trường qty_in_stock mới cho mục trong giỏ hàng
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("qty_in_stock", newQtyInStock);
+
+        shoppingCartItem.document(cartItemId)
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("ShoppingCartItemRepo", "Quantity in stock updated successfully for cart item: " + cartItemId);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ShoppingCartItemRepo", "Error updating quantity in stock for cart item: " + cartItemId, e);
+                });
     }
 }

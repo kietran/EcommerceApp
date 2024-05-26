@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +33,10 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
     private Context context;
     private int countSelect;
     private boolean falseBySubSelect;
-    private List<ShoppingCartItem> selectList;
+
+
+
+    public static List<ShoppingCartItem> selectList;
     private androidx.cardview.widget.CardView layout_checkout;
     public CartItemAdapter(Map<String, List<ShoppingCartItem>> groupedCartItems, Context context) {
         this.groupedCartItems = groupedCartItems;
@@ -95,20 +99,29 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                         int countCheck=0;
                         for(int i=0;i<n;i++) {
                             View childView = holder.rcv_cart_items.getChildAt(i);
-                            CheckBox select = childView.findViewById(R.id.select);
-                            /// check for check select all by sub checkbox
-                            if(select.isChecked()) {
-                                countCheck++;
-                            }
-                            ShoppingCartItem cartItem = cartProductAdapter.getData().get(i);
+                            if(childView!=null) {
+                                CheckBox select = childView.findViewById(R.id.select);
+                                /// check for check select all by sub checkbox
+                                if (select.isChecked()) {
+                                    countCheck++;
+                                }
+                                ShoppingCartItem cartItem = cartProductAdapter.getData().get(i);
 
-                            /// update select list
-                            if(select.equals(buttonView)) {
-                                if (b)
-                                    selectList.add(cartItem);
-                                 else
-                                    selectList.remove(cartItem);
+                                /// update select list
+                                if (select.equals(buttonView)) {
+                                    if (b)
+                                        selectList.add(cartItem);
+                                    else
+                                        selectList.remove(cartItem);
+
+                                    if(b&&!cartItem.isAvailable())
+                                        Toast.makeText(context, "Total price does not include unavailable products", Toast.LENGTH_SHORT).show();
+
+                                    if (!cartItem.isAvailable())
+                                        selectList.remove(cartItem);
+                                }
                             }
+
                         }
 
 
@@ -126,7 +139,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                             holder.selectAll.setChecked(true);
 
                         updateUI();
-                        cartProductAdapter.setSelectListForCalculate(selectList);
+                        cartProductAdapter.calculateFee();
                         Log.println(Log.INFO,"select list", String.valueOf(selectList.size()));
                     }
                 });
@@ -197,8 +210,9 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //delete
+                ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
                 if(mul) {
-                    ShoppingCartItemRepository.delete(selectList);
+                    shoppingCartItemRepository.delete(selectList);
                     for(int j=0;j<selectList.size();j++) {
                         String shopIdToDelete = getShopOfItem(selectList.get(j).getId());
                         if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
@@ -216,7 +230,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                     }
                 }
                 else {
-                    ShoppingCartItemRepository.delete(id);
+                    shoppingCartItemRepository.delete(id);
 
                     String shopIdToDelete = getShopOfItem(id);
                     if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
@@ -273,6 +287,13 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
     BottomSheetDialog bottomSheetCheckOut;
     public void setSheetCheckout(BottomSheetDialog bottomSheetCheckOut) {
         this.bottomSheetCheckOut =bottomSheetCheckOut;
+    }
+    private boolean allAvailable;
+    public boolean isAllAvailable(){
+        return allAvailable;
+    }
+    public void setAllAvailable(boolean b) {
+        allAvailable=b;
     }
 
     public static class CartItemViewHolder extends RecyclerView.ViewHolder {

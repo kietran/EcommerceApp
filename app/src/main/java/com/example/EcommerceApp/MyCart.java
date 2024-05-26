@@ -1,6 +1,7 @@
 package com.example.EcommerceApp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -101,8 +102,7 @@ public class MyCart extends Fragment {
         btCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(),PaymentActivity.class);
-                startActivityForResult(i,4);
+                navigateToPayment();
             }
         });
         bottomSheetCheckOut.setContentView(bottomSheetView);
@@ -114,8 +114,7 @@ public class MyCart extends Fragment {
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(),PaymentActivity.class);
-                startActivityForResult(i,4);
+                navigateToPayment();
             }
         });
         cartItemAdapter.setLayoutCheckout(layout_checkout);
@@ -177,6 +176,27 @@ public class MyCart extends Fragment {
         return view;
     }
 
+    private void notifyUnCheck() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Checkout Error");
+        alertDialog.setMessage("Unselect unavailable products to continue checkout");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
+            }
+        });
+
+        alertDialog.show();
+    }
+    public void navigateToPayment(){
+        if(!CartItemAdapter.selectList.isEmpty()) {
+            Log.println(Log.INFO,"all available","1");
+            Intent i = new Intent(getActivity(), PaymentActivity.class);
+            startActivityForResult(i, 4);
+        }
+        else
+            notifyUnCheck();
+    }
 
 }

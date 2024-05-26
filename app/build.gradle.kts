@@ -7,7 +7,6 @@ plugins {
 android {
     namespace = "com.example.EcommerceApp"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.example.EcommerceApp"
         minSdk = 24
@@ -92,7 +91,22 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:19.2.0")
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation ("com.squareup.picasso:picasso:2.5.2")
+    implementation ("org.osmdroid:osmdroid-android:6.1.18")
+
+
+    // retrogfit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    //gson
+    implementation("com.google.code.gson:gson:2.10.1")
+    // to offer card payment
+    implementation("com.braintreepayments.api:card:4.20.0")
+    // to collect device data
+    implementation("com.braintreepayments.api:data-collector:4.20.0")
+    implementation("com.braintreepayments.api:paypal:4.20.0")
+
 
 
 }
+
 

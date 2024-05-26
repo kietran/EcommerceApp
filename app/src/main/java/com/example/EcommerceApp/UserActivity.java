@@ -23,14 +23,23 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        Intent intent = getIntent();
+        boolean isMyorder=false;
+        if(intent!=null)
+            isMyorder= intent.getBooleanExtra("order", false);
+
+
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
         HomeUserFragment homeUser = new HomeUserFragment();
         MyCart myCart = new MyCart();
         MyOrder myOrder = new MyOrder();
         UserProfileFragment userProfile = new UserProfileFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
+        if(isMyorder)
+            bottomNavigationView.setSelectedItemId(R.id.navigation_myorder);
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
 
-
+        ;
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
