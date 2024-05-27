@@ -1,11 +1,23 @@
 package com.example.EcommerceApp.model;
 
+import com.google.firebase.Timestamp;
+
 import java.util.Map;
 
 public class Order {
     String id;
     String shop;
     String status;
+
+    public Timestamp getOrderAt() {
+        return orderAt;
+    }
+
+    public void setOrderAt(Timestamp orderAt) {
+        this.orderAt = orderAt;
+    }
+
+    Timestamp orderAt;
 
     public Order() {
     }

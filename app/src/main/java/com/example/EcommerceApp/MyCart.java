@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.EcommerceApp.adapter.CartItemAdapter;
@@ -32,7 +34,7 @@ import java.util.Objects;
  * Use the {@link MyCart#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCart extends Fragment {
+public class MyCart extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -198,5 +200,16 @@ public class MyCart extends Fragment {
         else
             notifyUnCheck();
     }
+
+    public void reloadFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.detach(this);
+            fragmentTransaction.attach(this);
+            fragmentTransaction.commit();
+        }
+    }
+
 
 }

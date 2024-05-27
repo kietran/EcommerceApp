@@ -55,6 +55,8 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
         groupedCartItems=list;
         shopNames = new ArrayList<>();
         shopNames.addAll(groupedCartItems.keySet());
+        Log.i("size name",String.valueOf(shopNames));
+
         notifyDataSetChanged();
     }
 
@@ -69,8 +71,13 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
     @Override
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         String item = shopNames.get(position);
-        if(item==null)
+        if(item==null) {
+            Log.i("load","item null");
             return;
+        }
+        else
+            Log.i("load",item);
+
         holder.shopName.setText(item);
 
         ///// RECYCLER VIEW
@@ -78,6 +85,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
         cartProductAdapter.setParentAdapter(this);
         cartProductAdapter.setLayoutCheckout(layout_checkout);
         cartProductAdapter.setSheetCheckOut(bottomSheetCheckOut);
+        cartProductAdapter.setContext(context);
         holder.rcv_cart_items.setAdapter(cartProductAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         holder.rcv_cart_items.setLayoutManager(linearLayoutManager);
@@ -113,12 +121,13 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                                         selectList.add(cartItem);
                                     else
                                         selectList.remove(cartItem);
-
                                     if(b&&!cartItem.isAvailable())
                                         Toast.makeText(context, "Total price does not include unavailable products", Toast.LENGTH_SHORT).show();
 
                                     if (!cartItem.isAvailable())
                                         selectList.remove(cartItem);
+
+                                    cartProductAdapter.calculateFee();
                                 }
                             }
 
@@ -188,75 +197,81 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
         });
     }
     public void updateUI(){
-        if(countSelect!=0){
-            btDelete.setVisibility(View.VISIBLE);
+        if(!selectList.isEmpty()){
             layout_checkout.setVisibility(View.VISIBLE);
         }
         else{
-            btDelete.setVisibility(View.INVISIBLE);
             layout_checkout.setVisibility(View.INVISIBLE);
         }
+
+        if(countSelect!=0){
+            btDelete.setVisibility(View.VISIBLE);
+        }
+        else{
+            btDelete.setVisibility(View.INVISIBLE);
+        }
+
     }
-    public void confirmDelete(String id, boolean mul){
+    public void confirmDelete(String id, boolean mul) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Confirm");
-        if(mul)
-            alertDialog.setMessage("Are you sure to delete these item?");
-        else {
-            alertDialog.setMessage("Are you sure to delete this item?");
-        }
+        alertDialog.setMessage(mul ? "Are you sure to delete these items?" : "Are you sure to delete this item?");
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //delete
                 ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
-                if(mul) {
+                if (mul) {
                     shoppingCartItemRepository.delete(selectList);
-                    for(int j=0;j<selectList.size();j++) {
-                        String shopIdToDelete = getShopOfItem(selectList.get(j).getId());
+                    for (ShoppingCartItem cartItem : selectList) {
+                        String shopIdToDelete = getShopOfItem(cartItem.getId());
                         if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
                             List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);
-                            for (ShoppingCartItem item : shopItems) {
-                                if (item.getId().equals(id)) {
-                                    shopItems.remove(item);
-                                    break;
-                                }
+                            shopItems.remove(cartItem);
+                            if (shopItems.isEmpty()) {
+                                groupedCartItems.remove(shopIdToDelete);
                             }
+                        }
+                    }
+                    selectList.clear();
+                } else {
+                    shoppingCartItemRepository.delete(id);
+                    String shopIdToDelete = getShopOfItem(id);
+                    if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
+                        List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);
+                        ShoppingCartItem itemToDelete = findItemById(shopItems, id);
+                        if (itemToDelete != null) {
+                            shopItems.remove(itemToDelete);
                             if (shopItems.isEmpty()) {
                                 groupedCartItems.remove(shopIdToDelete);
                             }
                         }
                     }
                 }
-                else {
-                    shoppingCartItemRepository.delete(id);
-
-                    String shopIdToDelete = getShopOfItem(id);
-                    if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
-                        List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);
-                        for (ShoppingCartItem item : shopItems) {
-                            if (item.getId().equals(id)) {
-                                shopItems.remove(item);
-                                break;
-                            }
-                        }
-                        if (shopItems.isEmpty()) {
-                            groupedCartItems.remove(shopIdToDelete);
-                        }
-                    }
-                }
                 updateData(groupedCartItems);
             }
         });
+
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
+
         alertDialog.show();
     }
+
+
+    private ShoppingCartItem findItemById(List<ShoppingCartItem> shopItems, String id) {
+        for (ShoppingCartItem item : shopItems) {
+            if (item.getId().equals(id)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     String getShopOfItem(String itemId) {
         for (Map.Entry<String, List<ShoppingCartItem>> entry : groupedCartItems.entrySet()) {
             List<ShoppingCartItem> items = entry.getValue();

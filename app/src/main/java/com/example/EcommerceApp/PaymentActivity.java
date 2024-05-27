@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 
 import java.util.List;
 import java.util.Map;
@@ -126,7 +127,7 @@ public class PaymentActivity extends AppCompatActivity {
             String shopNames = entry.getKey();
             List<ShoppingCartItem> shoppingCartItems = entry.getValue();
             // add order
-            //createOrder(shopNames, shoppingCartItems);
+            createOrder(shopNames, shoppingCartItems);
         }
         OrderSuccess orderSuccess = OrderSuccess.newInstance();
         orderSuccess.setOnDismissListener(new OrderSuccess.OnDismissListener() {
@@ -144,7 +145,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void createOrder(String shopNames,List<ShoppingCartItem> shoppingCartItems) {
         Log.i("create order", "start");
         OrderRepository orderRepository = new OrderRepository();
-        orderRepository.create(shopNames,"ON PROGRESS",selectedAddress)  .addOnSuccessListener(new OnSuccessListener<String>() {
+        orderRepository.create(shopNames,"ON PROGRESS",selectedAddress, Timestamp.now())  .addOnSuccessListener(new OnSuccessListener<String>() {
                     @Override
                     public void onSuccess(String documentId) {
                         for (ShoppingCartItem item : shoppingCartItems) {

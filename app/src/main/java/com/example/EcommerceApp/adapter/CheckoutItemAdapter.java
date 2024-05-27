@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -74,6 +75,7 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
             return;
         holder.shopName.setText(item);
         holder.selectAll.setVisibility(View.INVISIBLE);
+        holder.iconShop.setVisibility(View.VISIBLE);
 
         ///// RECYCLER VIEW
         CheckoutProductAdapter checkoutProductAdapter = new CheckoutProductAdapter((List<ShoppingCartItem>)groupedCartItems.get(item));
@@ -97,11 +99,13 @@ public class CheckoutItemAdapter extends RecyclerView.Adapter<CheckoutItemAdapte
         TextView shopName;
         androidx.recyclerview.widget.RecyclerView rcv_cart_items;
         CheckBox selectAll;
+        ImageView iconShop;
         public CheckoutItemViewHolder(@NonNull View itemView) {
             super(itemView);
             shopName = itemView.findViewById(R.id.shopName);
             rcv_cart_items = itemView.findViewById(R.id.rcv_cart_items);
             selectAll = itemView.findViewById(R.id.selectAll);
+            iconShop=itemView.findViewById(R.id.iconShop);
 
         }
     }

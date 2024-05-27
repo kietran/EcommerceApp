@@ -148,15 +148,10 @@
             android:textSize="20dp"
             android:layout_marginVertical="4dp"/>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_checkout_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </ScrollView>
 </LinearLayout>
 
     <LinearLayout

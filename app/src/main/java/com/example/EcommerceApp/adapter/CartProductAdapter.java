@@ -1,11 +1,18 @@
 package com.example.EcommerceApp.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,9 +21,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EcommerceApp.DetailTwoAttributeActivity;
 import com.example.EcommerceApp.R;
+import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
+import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.ShoppingCartItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
@@ -59,8 +71,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         if(item==null)
             return;
         Map<String,Object> product = (Map<String,Object>)item.getProduct_item().get("product");
+        loadAttribute(item.getProduct_item(),holder);
         long qty_in_stock=(long)item.getProduct_item().get("qty_in_stock");
         String name = (String) product.get("name");
+        String product_id= (String)product.get("id");
         Object priceObject = product.get("price");
         double price;
 
@@ -74,6 +88,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         int qty = item.getQty();
         String product_image =(String) product.get("product_image");
+
+
         if(qty_in_stock<1||qty_in_stock<qty)
         {
             holder.nota.setVisibility(View.VISIBLE);
@@ -88,15 +104,19 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             holder.nota.setVisibility(View.INVISIBLE);
             holder.avai.setVisibility(View.VISIBLE);
             item.setAvailable(true);
-            if(holder.select.isChecked()&&!CartItemAdapter.selectList.contains((item))) {
-                CartItemAdapter.selectList.add(item);
-                calculateFee();
-            }
+            calculateFee();
         }
 
+        holder.select.setChecked(CartItemAdapter.selectList.contains((item)));
 
         holder.product_name.setText(name);
-        String priceStr =String.valueOf(price)+"vnd";
+        holder.product_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToDetail(product_id,item.getProduct_item());
+            }
+        });
+        String priceStr ="$"+String.valueOf(price);
         holder.product_price.setText(priceStr);
         holder.qty.setText(String.valueOf(qty));
         Picasso.get().load(product_image)
@@ -138,6 +158,87 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         });
 
+    }
+
+    private void navigateToDetail(String product_id, Map<String, Object> productItem) {
+        String size = (String) productItem.get("size");
+        String colorCode = (String) productItem.get("color");
+        if(size==null || colorCode==null)
+            return;
+
+        boolean hasSize=true;
+        boolean hasColor=true;
+        if(size.isEmpty())
+            hasSize=false;
+        if(colorCode.isEmpty())
+            hasColor=false;
+
+        ProductRepository productRepository = new ProductRepository(context);
+        boolean finalHasColor = hasColor;
+        boolean finalHasSize = hasSize;
+        productRepository.getProductByProductId(product_id).addOnCompleteListener(new OnCompleteListener<Product>() {
+            @Override
+            public void onComplete(@NonNull Task<Product> task) {
+                Product product = task.getResult();
+                Intent intent = new Intent(context, DetailTwoAttributeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object_product", product);
+                bundle.putString("id", product_id);
+                bundle.putBoolean("haveColor", finalHasColor);
+                bundle.putBoolean("haveSize", finalHasSize);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void loadAttribute(Map<String, Object> productItem, CartProductViewHolder holder) {
+        String size = (String) productItem.get("size");
+        String colorCode = (String) productItem.get("color");
+        if(size==null || colorCode==null)
+            return;
+
+        boolean hasSize=true;
+        boolean hasColor=true;
+        if(size.isEmpty())
+            hasSize=false;
+        if(colorCode.isEmpty())
+            hasColor=false;
+
+        if(hasSize&&hasColor)
+        {
+            holder.twoAttribute.setVisibility(View.VISIBLE);
+            holder.oneAttribute.setVisibility(View.INVISIBLE);
+            holder.size.setText(size);
+            int color = Color.parseColor(colorCode);
+            Drawable colorDrawable = new ColorDrawable(color);
+            holder.color.setImageDrawable(colorDrawable);
+        }
+        else if(!hasSize&&!hasColor)
+        {
+            holder.twoAttribute.setVisibility(View.INVISIBLE);
+            holder.oneAttribute.setVisibility(View.INVISIBLE);
+        }
+        else if(hasColor){
+            holder.twoAttribute.setVisibility(View.INVISIBLE);
+            holder.oneAttribute.setVisibility(View.VISIBLE);
+            holder.valueSize.setVisibility(View.INVISIBLE);
+            holder.valueColor.setVisibility(View.VISIBLE);
+            int color = Color.parseColor(colorCode);
+            Drawable colorDrawable = new ColorDrawable(color);
+            holder.valueColor.setImageDrawable(colorDrawable);
+            holder.key.setText("Color: ");
+        }
+        else {
+            holder.twoAttribute.setVisibility(View.INVISIBLE);
+            holder.oneAttribute.setVisibility(View.VISIBLE);
+            holder.valueSize.setVisibility(View.VISIBLE);
+            holder.valueColor.setVisibility(View.INVISIBLE);
+            holder.valueSize.setText(size);
+            holder.key.setText("Size: ");
+
+        }
     }
 
     @Override
@@ -215,6 +316,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void setSheetCheckOut(BottomSheetDialog bottomSheetCheckOut) {
         this.bottomSheetCheckOut=bottomSheetCheckOut;
     }
+    Context context;
+    public void setContext(Context context) {
+        this.context=context;
+    }
 
     public static class CartProductViewHolder extends RecyclerView.ViewHolder{
         private final TextView product_name;
@@ -228,6 +333,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         private final CheckBox select;
         private final TextView nota;
         private final TextView avai;
+        GridLayout twoAttribute,oneAttribute;
+        TextView size, valueSize;
+        TextView key;
+        de.hdodenhof.circleimageview.CircleImageView color, valueColor;
 
 
         public CartProductViewHolder(@NonNull View itemView) {
@@ -241,6 +350,13 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             select = itemView.findViewById(R.id.select);
             nota = itemView.findViewById(R.id.nota);
             avai = itemView.findViewById(R.id.avai);
+            twoAttribute =itemView.findViewById(R.id.twoAttribute);
+            oneAttribute =itemView.findViewById(R.id.oneAttribute);
+            size = itemView.findViewById(R.id.size);
+            valueSize =itemView.findViewById(R.id.valueSize);
+            key = itemView.findViewById(R.id.key);
+            color =itemView.findViewById(R.id.color);
+            valueColor = itemView.findViewById(R.id.valueColor);
         }
     }
 }

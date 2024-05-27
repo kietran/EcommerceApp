@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,7 +25,7 @@ public class OrderRepository {
         db = FirebaseFirestore.getInstance();
         order=db.collection("order");
     }
-    public Task<String> create(String shopName, String status, Address address) {
+    public Task<String> create(String shopName, String status, Address address, Timestamp orderAt) {
         TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
 
         Order order1 = new Order();
@@ -40,6 +41,7 @@ public class OrderRepository {
         mapAddress.put("ward", address.getWard());
         mapAddress.put("address_line", address.getAddress_line());
         order1.setAddress(mapAddress);
+        order1.setOrderAt(orderAt);
 
         order.add(order1)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

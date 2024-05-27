@@ -25,47 +25,85 @@
             android:text="product name"
             android:textStyle="bold"
             android:textSize="20dp"/>
-        <GridLayout
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rowCount="2"
-            android:columnCount="2">
-            <TextView
-                android:id="@+id/textView12"
+            android:layout_height="wrap_content">
+            <GridLayout
+                android:id="@+id/twoAttribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Color: "
-                android:textSize="16dp"
-                android:layout_gravity="left"
-                android:textColor="@color/grey_font"
-                />
-            <TextView
+                android:rowCount="2"
+                android:columnCount="2"
+                >
+                <TextView
+                    android:id="@+id/btnCong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Color: "
+                    android:textSize="16dp"
+                    android:layout_gravity="left"
+                    android:textColor="@color/grey_font"
+                    />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/color"
+                    android:layout_width="16dp"
+                    android:layout_height="20dp"
+                    android:src="@color/black"/>
 
-                android:id="@+id/color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="99"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                tools:ignore="RtlHardcoded" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/grey_font"
+                    android:text="Size: "
+                    android:layout_gravity="left"/>
 
-            <TextView
-                android:id="@+id/textView13"
+                <TextView
+                    android:id="@+id/size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:text="10"
+                    android:textStyle="bold"/>
+            </GridLayout>
+            <GridLayout
+                android:visibility="invisible"
+                android:id="@+id/oneAttribute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/grey_font"
-                android:text="Size: "
-                android:layout_gravity="left"/>
+                android:columnCount="2"
+                >
+                <TextView
+                    android:id="@+id/key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Color: "
+                    android:textSize="16dp"
+                    android:layout_gravity="left"
+                    android:textColor="@color/grey_font"
+                    />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/valueSize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="99"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        tools:ignore="RtlHardcoded" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/valueColor"
+                        android:layout_width="16dp"
+                        android:layout_height="20dp"
+                        android:src="@color/black"/>
+                </FrameLayout>
 
-            <TextView
-                android:id="@+id/size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="10"
-                android:textStyle="bold"/>
-        </GridLayout>
+
+            </GridLayout>
+        </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
