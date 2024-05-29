@@ -34,10 +34,7 @@ public class UserActivity extends AppCompatActivity {
         MyCart myCart = new MyCart();
         MyOrder myOrder = new MyOrder();
         UserProfileFragment userProfile = new UserProfileFragment();
-        if(isMyorder)
-            bottomNavigationView.setSelectedItemId(R.id.navigation_myorder);
-        else
-            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
+
 
         ;
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -65,7 +62,14 @@ public class UserActivity extends AppCompatActivity {
         });
 
 
-
+        if(isMyorder) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_myorder);
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, myOrder).commit();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
+        }
 
 
 
@@ -78,6 +82,7 @@ public class UserActivity extends AppCompatActivity {
         if (requestCode == 4) {
             if (resultCode == Activity.RESULT_OK) {
                 bottomNavigationView.setSelectedItemId(R.id.navigation_mycart);
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new MyCart()).commit();
             }
         }
     }

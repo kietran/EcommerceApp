@@ -123,6 +123,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.product_image);
 
+        long qtyPrice= (long) (qty*price);
+        String strQtyPrice ="$"+String.valueOf(qtyPrice);
+        holder.cal_price.setText(strQtyPrice);
 
         holder.sub1.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -335,7 +338,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         private final TextView avai;
         GridLayout twoAttribute,oneAttribute;
         TextView size, valueSize;
-        TextView key;
+        TextView key,cal_price;
         de.hdodenhof.circleimageview.CircleImageView color, valueColor;
 
 
@@ -357,6 +360,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             key = itemView.findViewById(R.id.key);
             color =itemView.findViewById(R.id.color);
             valueColor = itemView.findViewById(R.id.valueColor);
+            cal_price =itemView.findViewById(R.id.cal_price);
         }
     }
 }

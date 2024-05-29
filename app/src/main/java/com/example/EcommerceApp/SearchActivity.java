@@ -1,6 +1,5 @@
 package com.example.EcommerceApp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -86,8 +85,6 @@ public class SearchActivity extends AppCompatActivity  {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SearchActivity.this, UserActivity.class);
-                startActivity(i);
                 finish();
             }
         });

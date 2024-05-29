@@ -1,5 +1,7 @@
 package com.example.EcommerceApp.domain.user;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.EcommerceApp.model.Address;
@@ -10,11 +12,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderRepository {
@@ -62,5 +69,80 @@ public class OrderRepository {
         return taskCompletionSource.getTask();
     }
 
+    public Task<List<Order>> getOrdersWithStatusNotComplete() {
+        return order
+                .whereEqualTo("customer_id", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereNotEqualTo("status", "complete")
+                .get()
+                .continueWith(task -> {
+                    List<Order> orders = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Order order = document.toObject(Order.class);
+                                order.setId(document.getId());
+                                orders.add(order);
+                            }
+                        }
+                    } else {
+                        System.err.println("Error getting orders: " + task.getException());
+                    }
+                    return orders;
+                });
+    }
+
+    public Task<List<Order>> getOrdersWithStatusComplete() {
+        return order
+                .whereEqualTo("customer_id", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereEqualTo("status", "complete")
+                .get()
+                .continueWith(task -> {
+                    List<Order> orders = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Order order = document.toObject(Order.class);
+                                order.setId(document.getId());
+                                orders.add(order);
+                            }
+                        }
+                        Log.i("size order", String.valueOf(orders.size()));
+                    } else {
+                        System.err.println("Error getting orders: " + task.getException());
+                    }
+                    return orders;
+                });
+    }
+
+    public Task<Void> updateOrderStatus(String orderId, String status) {
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+
+        // Create the update map
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("status", status);
+
+        updates.put(status+"At", Timestamp.now());
+
+        order.document(orderId)
+                .update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Notify task completion source of success
+                        taskCompletionSource.setResult(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Notify task completion source of failure
+                        taskCompletionSource.setException(e);
+                    }
+                });
+
+        return taskCompletionSource.getTask();
+    }
 
 }

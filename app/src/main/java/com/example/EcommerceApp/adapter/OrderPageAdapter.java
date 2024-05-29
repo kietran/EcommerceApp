@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.EcommerceApp.MyOrderHistoryFragment;
-import com.example.EcommerceApp.MyOrderOrderFragment;
+import com.example.EcommerceApp.OrderHistoryFragment;
+import com.example.EcommerceApp.OrderOrderFragment;
 
 public class OrderPageAdapter extends FragmentStateAdapter {
     public OrderPageAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -17,11 +17,11 @@ public class OrderPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new MyOrderOrderFragment();
+                return new OrderOrderFragment();
             case 1:
-                return new MyOrderHistoryFragment();
+                return new OrderHistoryFragment();
         }
-        return new MyOrderOrderFragment(); // Trả về Fragment mặc định nếu position không hợp lệ
+        return new OrderOrderFragment(); // Trả về Fragment mặc định nếu position không hợp lệ
     }
 
     @Override

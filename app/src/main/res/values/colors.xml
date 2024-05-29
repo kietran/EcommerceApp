@@ -12,6 +12,10 @@
     <color name="grey">#F3F3F3</color>
 
     <color name="com_facebook_button_send_background_color_pressed">#4267B2</color>
+    <color name="waiting">#2596BE</color>
+    <color name="confirm">#938E03</color>
     <color name="red">#FF0000</color>
+    <color name="delivery">#BE9325</color>
+
 
 </resources>

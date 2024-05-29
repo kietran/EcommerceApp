@@ -3,18 +3,14 @@ package com.example.EcommerceApp.adapter;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.lifecycle.Lifecycle;
 
 import com.example.EcommerceApp.HomeCategoryFragment;
 import com.example.EcommerceApp.HomeHomeFragment;
 
-import java.util.List;
+public class HomePageAdapter extends FragmentStateAdapter {
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
-
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public HomePageAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 

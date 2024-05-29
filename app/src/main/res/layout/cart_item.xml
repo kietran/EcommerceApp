@@ -161,7 +161,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -213,16 +213,36 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/product_price"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="60vnd"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:layout_editor_absoluteY="19dp"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="60vnd"
+                    android:textSize="12dp"
+                    tools:layout_editor_absoluteX="186dp"
+                    tools:layout_editor_absoluteY="16dp" />
+                <TextView
+                    android:id="@+id/cal_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="60vnd"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="186dp"
+                    tools:layout_editor_absoluteY="16dp" />
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
