@@ -1,10 +1,13 @@
 package com.example.EcommerceApp.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +16,22 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.R;
+import com.example.EcommerceApp.domain.user.ProductItemRepository;
+import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.OrderItem;
+import com.example.EcommerceApp.model.ShoppingCart;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +74,25 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             holder.reBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    addToCartAgain();
+                    Map<String,Object> cartMap = orderItem.getCartItem();
+                    String cartId= (String) cartMap.get("id");
+                    Map<String,Object> productItem= (Map<String, Object>) cartMap.get("product_item");
+                    String productItemId = (String) productItem.get("id");
+                    ProductItemRepository productItemRepository = new ProductItemRepository(context);
+                    productItemRepository.getQtyInStock(productItemId).addOnCompleteListener(new OnCompleteListener<Long>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Long> task) {
+                            if(task.isSuccessful()){
+                                Long newQty = task.getResult();
+                                productItem.put("qty_in_stock",newQty);
+                                ShoppingCart shoppingCart = new ShoppingCart(FirebaseAuth.getInstance().getUid(),cartId);
+                                addToCartAgain(productItem,shoppingCart,1);
+                            }
+                            else
+                                Log.i("add to cart again", "not success");
+                        }
+                    });
+
                 }
             });
             /// remind update rate is visible for se104
@@ -111,19 +140,71 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
 
     }
 
-    private void addToCartAgain() {
-        //                    get productItem by id
-        //                    if qty_in_stock > 0
-        //                    confirm dialog: The product will be added to the cart with a quantity of 1, check the cart to continue the checkout process.
-        //                    confirm
-        //                    create cart
-        //                    get cart id
-        //                            qty=1
-        //                    productItem
-        //                            Toast
-        //                    cancel
-        //                    else
-        //                    notify dialog: This product is currently unavailable
+    private void addToCartAgain(Map<String,Object> productItem, ShoppingCart shoppingCart, int qty) {
+
+        Object qtyInStockObject = productItem.get("qty_in_stock");
+        double qty_in_stock;
+
+        if (qtyInStockObject instanceof Long) {
+            qty_in_stock = ((Long) qtyInStockObject).doubleValue();
+        } else if (qtyInStockObject instanceof Double) {
+            qty_in_stock = (Double) qtyInStockObject;
+        }
+        else
+            qty_in_stock=0;
+
+        if(qty_in_stock>0)
+        {
+            confirmAddToCart(productItem,shoppingCart,qty);
+        }
+        else {
+            notifyUnavailable();
+        }
+    }
+
+    private void confirmAddToCart(Map<String,Object> productItem, ShoppingCart shoppingCart, int qty) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm add to cart again");
+        builder.setMessage("The product will be added to the cart with a quantity of 1. Check the cart to continue the checkout process.");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                createCart(productItem,shoppingCart,qty);
+                Toast.makeText(context, "Product added to cart", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void createCart(Map<String,Object> productItem, @NonNull ShoppingCart shoppingCart, int qty) {
+        Map<String,Object> cartMap = new HashMap<>();
+        cartMap.put("id",shoppingCart.getId());
+        cartMap.put("user_id",shoppingCart.getUserID());
+        ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
+        shoppingCartItemRepository.addToCartAgain(productItem,cartMap,qty);
+    }
+
+    private void notifyUnavailable() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Product Unavailable");
+        builder.setMessage("This product is currently unavailable.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @SuppressLint("SetTextI18n")
@@ -171,7 +252,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             holder.valueColor.setVisibility(View.INVISIBLE);
             holder.valueSize.setText(size);
             holder.key.setText("Size: ");
-
         }
     }
     @Override
