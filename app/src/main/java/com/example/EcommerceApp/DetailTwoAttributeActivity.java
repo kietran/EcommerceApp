@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 public class DetailTwoAttributeActivity extends AppCompatActivity {
-    ImageView btBack, product_image;
+    ImageView btBack, product_image, btnCartDetail;
     Button btn_addtocart;
     ProductItemRepository productItemRepository = new ProductItemRepository(this);
     ColorsAdapter colorsAdapter;
@@ -84,6 +84,13 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         btnViewShop = findViewById(R.id.btnViewShop);
         shopName = findViewById(R.id.shop_name);
         shopAvt = findViewById(R.id.shop_avatar);
+        btnCartDetail = findViewById(R.id.btnCartDetail);
+        btnCartDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToCart();
+            }
+        });
         btnViewShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,6 +241,11 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         });
         //Set shop view
         setShopView();
+    }
+
+    private void navigateToCart() {
+        Intent intent = new Intent(DetailTwoAttributeActivity.this, MyCartActivity.class);
+        startActivity(intent);
     }
 
     private void setShopView() {

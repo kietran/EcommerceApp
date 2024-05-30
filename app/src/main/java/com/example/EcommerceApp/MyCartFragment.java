@@ -31,10 +31,10 @@ import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MyCart#newInstance} factory method to
+ * Use the {@link MyCartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCart extends Fragment  {
+public class MyCartFragment extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,7 +52,9 @@ public class MyCart extends Fragment  {
     private BottomSheetDialog bottomSheetCheckOut;
     androidx.cardview.widget.CardView layout_checkout;
     ImageView detailCheckout;
-    public MyCart() {
+    public ImageView btBack;
+
+    public MyCartFragment() {
         shoppingCartItemRepository=new ShoppingCartItemRepository();
     }
 
@@ -66,14 +68,16 @@ public class MyCart extends Fragment  {
      * @return A new instance of fragment Favorite.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyCart newInstance(String param1, String param2) {
-        MyCart fragment = new MyCart();
+    public static MyCartFragment newInstance(String param1, String param2) {
+        MyCartFragment fragment = new MyCartFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        fromDetail=false;
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,11 +85,13 @@ public class MyCart extends Fragment  {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            if(Objects.equals(mParam1, "fromDetail"))
+                fromDetail=true;
         }
     }
 
 
-
+    static boolean fromDetail;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -94,6 +100,20 @@ public class MyCart extends Fragment  {
         cartItemAdapter = new CartItemAdapter(new HashMap<String,List<ShoppingCartItem>>(),requireContext());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_mycart, container, false);
+        btBack=view.findViewById(R.id.btBack);
+        if(fromDetail) {
+            btBack.setVisibility(View.VISIBLE);
+
+            btBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fromDetail=false;
+                        requireActivity().finish();
+                    }
+                });
+        }
+        else
+            btBack.setVisibility(View.GONE);
         /// DELETE
         btDelete = view.findViewById(R.id.btDelete);
         cartItemAdapter.setBtnDelete(btDelete);
@@ -104,7 +124,9 @@ public class MyCart extends Fragment  {
         btCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 navigateToPayment();
+                bottomSheetCheckOut.dismiss();
             }
         });
         bottomSheetCheckOut.setContentView(bottomSheetView);

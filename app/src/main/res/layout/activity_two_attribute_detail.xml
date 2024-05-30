@@ -65,8 +65,8 @@
                     android:id="@+id/btnCartDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:layout_gravity="center"
+                    android:layout_weight="0.5"
                     app:srcCompat="@drawable/detail_cart" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

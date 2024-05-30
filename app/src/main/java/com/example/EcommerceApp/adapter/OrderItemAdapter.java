@@ -128,7 +128,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         else
             price=0;
 
-        holder.qty.setText(String.valueOf(qty));
+        holder.qty.setText(String.valueOf((int)qty));
         holder.product_name.setText(name);
         String priceStr ="$"+String.valueOf(price);
         holder.product_price.setText(priceStr);
@@ -165,12 +165,12 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     private void confirmAddToCart(Map<String,Object> productItem, ShoppingCart shoppingCart, int qty) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm add to cart again");
-        builder.setMessage("The product will be added to the cart with a quantity of 1. Check the cart to continue the checkout process.");
+        builder.setMessage("The product will be added to the cart with a quantity of 1.");
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 createCart(productItem,shoppingCart,qty);
-                Toast.makeText(context, "Product added to cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Product added to cart, check your cart to continue the checkout process.", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

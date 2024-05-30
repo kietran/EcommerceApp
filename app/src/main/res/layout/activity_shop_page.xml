@@ -30,7 +30,7 @@
                     android:id="@+id/btBack"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
-                    app:srcCompat="@drawable/back" />
+                    app:srcCompat="@drawable/baseline_arrow_back_" />
 
                 <TextView
                     android:id="@+id/textView23"

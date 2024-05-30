@@ -262,7 +262,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void setBtDelete(ImageButton btDelete) {
         this.btDelete=btDelete;
     }
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     public void calculateFee() {
         List<ShoppingCartItem> selectList=new ArrayList<>(CartItemAdapter.selectList);
         TextView total = layoutCheckout.findViewById(R.id.total);
@@ -303,11 +303,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         else
             parentAdapter.setAllAvailable(true);
 
-        subtotal.setText(String.valueOf(sum));
-        shipping.setText(String.valueOf(30L *setShop.size()));
-        total.setText(String.valueOf(sum+ 30L *setShop.size()));
+        subtotal.setText("$"+String.valueOf(sum));
+        shipping.setText("$"+String.valueOf(30L *setShop.size()));
+        total.setText("$"+String.valueOf(+sum+ 30L *setShop.size()));
         total = bottomSheetCheckOut.findViewById(R.id.total);
-        total.setText(String.valueOf(sum+ 30L *setShop.size()));
+        total.setText("$"+String.valueOf(sum+ 30L *setShop.size()));
         totalFee=sum+ 30L *setShop.size();
     }
     public static long totalFee;

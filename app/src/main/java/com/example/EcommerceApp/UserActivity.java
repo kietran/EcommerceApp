@@ -31,7 +31,7 @@ public class UserActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
         HomeUserFragment homeUser = new HomeUserFragment();
-        MyCart myCart = new MyCart();
+        MyCartFragment myCartFragment = MyCartFragment.newInstance("","");
         MyOrder myOrder = new MyOrder();
         UserProfileFragment userProfile = new UserProfileFragment();
 
@@ -47,7 +47,7 @@ public class UserActivity extends AppCompatActivity {
                 if (itemId == R.id.navigation_home)
                     selectedFragment = homeUser;
                 else if (itemId == R.id.navigation_mycart)
-                    selectedFragment = myCart;
+                    selectedFragment = myCartFragment;
                 else if (itemId == R.id.navigation_myorder)
                     selectedFragment = myOrder;
                 else if (itemId == R.id.navigation_myprofile)
@@ -82,7 +82,7 @@ public class UserActivity extends AppCompatActivity {
         if (requestCode == 4) {
             if (resultCode == Activity.RESULT_OK) {
                 bottomNavigationView.setSelectedItemId(R.id.navigation_mycart);
-                getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new MyCart()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new MyCartFragment()).commit();
             }
         }
     }
