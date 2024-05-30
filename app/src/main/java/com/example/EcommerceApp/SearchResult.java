@@ -239,17 +239,26 @@ public class SearchResult extends Fragment {
 
     private void resetFilter() {
         // Clear the checked radio button in the radio group
-        radioGroup.clearCheck();
+        if (radioGroup != null) {
+            radioGroup.clearCheck();
+        }
         // Reset the range slider to its default state
-        priceSlider.setValues(DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
-        // Update the text fields associated with the range slider
-        minValue.setText("$" + formatValue(DEFAULT_MIN_VALUE));
-        maxValue.setText("$" + formatValue(DEFAULT_MAX_VALUE));
+        if (priceSlider != null) {
+            priceSlider.setValues(DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+            // Update the text fields associated with the range slider
+            if (minValue != null) {
+                minValue.setText("$" + formatValue(DEFAULT_MIN_VALUE));
+            }
+            if (maxValue != null) {
+                maxValue.setText("$" + formatValue(DEFAULT_MAX_VALUE));
+            }
+        }
 
         List<Product> defaultProducts = productAdapter.resetFilter();
         productAdapter.updateData(defaultProducts);
         rc_result_product.setAdapter(productAdapter);
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
