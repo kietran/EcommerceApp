@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".DetailOrder"
     android:layout_marginHorizontal="24dp"
-    android:layout_marginVertical="32dp">
+    android:layout_marginVertical="40dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -338,10 +338,10 @@
     </ScrollView>
 
     <Button
-
         android:id="@+id/markDone"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Mark as Done" />
+        android:layout_height="50dp"
+        android:text="Mark as Done"
+        android:layout_marginBottom="5dp"/>
 
 </LinearLayout>
