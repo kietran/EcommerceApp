@@ -1,9 +1,11 @@
 package com.example.EcommerceApp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +24,9 @@ import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class ShopPageActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
@@ -104,7 +109,24 @@ public class ShopPageActivity extends AppCompatActivity {
         FirebaseUtil.getShopReference(shopId).get().addOnCompleteListener(task -> {
             shopModel = task.getResult().toObject(Shop.class);
             shopName.setText(shopModel.getShopName());
-            shopInfo.setText("5 Products");
+            });
+
+        getTotalProducts(shopId);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getTotalProducts(String shopId){
+        CollectionReference productsRef = FirebaseUtil.getAllProducts();
+        Query query = productsRef.whereEqualTo("shop_id", shopId);
+        query.get().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                QuerySnapshot querySnapshot = task1.getResult();
+                if (querySnapshot != null) {
+                    int totalProducts = querySnapshot.size();
+                    Log.d("Chec num", "total" + totalProducts);
+                    shopInfo.setText(Integer.toString(totalProducts) + " Products");
+                }
+            }
         });
     }
 }

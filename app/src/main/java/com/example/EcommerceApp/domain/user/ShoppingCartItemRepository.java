@@ -69,9 +69,14 @@ public class ShoppingCartItemRepository {
                     if(task.isSuccessful()){
                         List<DocumentSnapshot> documents = task.getResult().getDocuments();
                         if (!documents.isEmpty()) {
-                            DocumentSnapshot document = documents.get(0);
-                            cartItemID = document.getId();
+                            for(DocumentSnapshot document:documents) {
+                                cartItemID = document.getId();
+                            }
+                            Log.i("get cart item id",cartItemID);
                         }
+                        else
+                            Log.i("get cart item id","empty");
+
                     }
                     return cartItemID;
                 });

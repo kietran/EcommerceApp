@@ -62,4 +62,8 @@ public class FirebaseUtil {
     public static DocumentReference getShopReference(String shopId){
         return FirebaseFirestore.getInstance().collection("shop").document(shopId);
     }
+
+    public static CollectionReference getAllProducts(){
+        return FirebaseFirestore.getInstance().collection("test_product");
+    }
 }
