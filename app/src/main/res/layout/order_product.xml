@@ -155,8 +155,8 @@
                 android:layout_weight="1"
                 android:id="@+id/rate"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="12dp"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
                 android:background="@drawable/button_purple_white"
                 android:text="RATE" />
 
@@ -165,10 +165,11 @@
                 android:id="@+id/reBuy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="10sp"
                 android:textColor="@color/main_purple"
                 android:background="@drawable/button_white_purple"
-                android:text="ADD TO CART AGAIN" />
+                android:text="ADD TO CART AGAIN"
+                android:layout_marginBottom="3dp"/>
         </LinearLayout>
 
     </LinearLayout>
