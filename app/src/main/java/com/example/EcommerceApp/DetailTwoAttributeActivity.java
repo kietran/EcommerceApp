@@ -312,6 +312,15 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
                 Log.i("product_id", ""+product_id);
                 Log.i("selectcolor", ""+selectedColor);
                 Log.i("selectsize", ""+selectedSize);
+                if(colorsAdapter==null||colorsAdapter.getSellectedColor()==null)
+                    selectedColor="";
+                else
+                    selectedColor=colorsAdapter.getSellectedColor();
+
+                if(sizesAdapter==null||sizesAdapter.getSelectedSize()==null)
+                    selectedSize="";
+                else
+                    selectedSize=sizesAdapter.getSelectedSize();
                 productItemRepository.getProductItemIdByColorAndSize(product_id, selectedColor, selectedSize).addOnCompleteListener(task -> {
                     ProductItem productItem = task.getResult();
                     Log.i("product_item_id", ""+productItem.getId());

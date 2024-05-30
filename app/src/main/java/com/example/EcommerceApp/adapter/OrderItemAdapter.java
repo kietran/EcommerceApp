@@ -26,6 +26,7 @@ import com.example.EcommerceApp.domain.user.ProductItemRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.OrderItem;
 import com.example.EcommerceApp.model.ShoppingCart;
+import com.example.EcommerceApp.utils.CartNumberUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -189,7 +190,22 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         cartMap.put("id",shoppingCart.getId());
         cartMap.put("user_id",shoppingCart.getUserID());
         ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
-        shoppingCartItemRepository.addToCartAgain(productItem,cartMap,qty);
+        Log.i("product item id", (String) productItem.get("id"));
+        shoppingCartItemRepository.getCartItem((String) productItem.get("id"),shoppingCart.getId()).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+                    String cartItemId = task.getResult();
+                    if (cartItemId == null)
+                        shoppingCartItemRepository.addToCartAgain(productItem,cartMap,qty);
+                    else
+                        ShoppingCartItemRepository.updateQty2(cartItemId, 1);
+                    CartNumberUtil.getBadge_mycart();
+                }
+                else
+                    Log.i("createCart","not success");
+            }
+        });
     }
 
     private void notifyUnavailable() {

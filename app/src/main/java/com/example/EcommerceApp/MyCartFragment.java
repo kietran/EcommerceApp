@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,8 @@ public class MyCartFragment extends Fragment  {
     androidx.cardview.widget.CardView layout_checkout;
     ImageView detailCheckout;
     public ImageView btBack;
+    ProgressBar prbCart;
+    TextView noProduct;
 
     public MyCartFragment() {
         shoppingCartItemRepository=new ShoppingCartItemRepository();
@@ -101,6 +104,8 @@ public class MyCartFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_mycart, container, false);
         btBack=view.findViewById(R.id.btBack);
+        prbCart=view.findViewById(R.id.prbCart);
+        noProduct=view.findViewById(R.id.noProduct);
         if(fromDetail) {
             btBack.setVisibility(View.VISIBLE);
 
@@ -168,12 +173,24 @@ public class MyCartFragment extends Fragment  {
         /////
         rcv_cart_item = view.findViewById(R.id.rcv_cart_item);
         rcv_cart_item.setAdapter(cartItemAdapter);
+        setProductView();
+
+
+
+
+
+
+        return view;
+    }
+
+    private void setProductView() {
         shoppingCartItemRepository.getCartItemGroupByShop().addOnCompleteListener(task->{
             if(task.isSuccessful())
             {
                 groupedCartItems = task.getResult();
                 if(!groupedCartItems.isEmpty()) {
-                    view.findViewById(R.id.prbCart).setVisibility(View.INVISIBLE);
+                    prbCart.setVisibility(View.INVISIBLE);
+                    noProduct.setVisibility(View.INVISIBLE);
                     rcv_cart_item.setVisibility(View.VISIBLE);
                     cartItemAdapter.updateData(groupedCartItems);
                     Log.println(Log.ASSERT, "load shopping cart item", String.valueOf(cartItemAdapter.getItemCount()));
@@ -181,9 +198,9 @@ public class MyCartFragment extends Fragment  {
                     rcv_cart_item.setLayoutManager(linearLayoutManager);
                 }
                 else {
-                    view.findViewById(R.id.prbCart).setVisibility(View.INVISIBLE);
-                    TextView noProduct =view.findViewById(R.id.noProduct);
+                    prbCart.setVisibility(View.INVISIBLE);
                     noProduct.setVisibility(View.VISIBLE);
+                    rcv_cart_item.setVisibility(View.INVISIBLE);
                 }
             }
             else
@@ -192,12 +209,6 @@ public class MyCartFragment extends Fragment  {
             Log.println(Log.INFO,"load cart item", Objects.requireNonNull(e.getMessage()));
 
         });
-
-
-
-
-
-        return view;
     }
 
     private void notifyUnCheck() {
@@ -233,5 +244,9 @@ public class MyCartFragment extends Fragment  {
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        setProductView();
+    }
 }
