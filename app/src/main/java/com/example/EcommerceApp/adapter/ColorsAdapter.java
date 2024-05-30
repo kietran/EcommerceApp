@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,13 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorsView
             return;
         setAllPickFalse(holder);
         if (colorCode == selectedColor){
-            holder.imageShadow.setVisibility(View.VISIBLE);
-            holder.imagePicked.setVisibility(View.VISIBLE);
+            boolean a = selectedColor.equals("#FFFFFF");
+            Log.i("adapter", a+"");
+            if (selectedColor.equals("#FFFFFF"))
+                holder.imagePicked_black.setVisibility(View.VISIBLE);
+            else
+                holder.imagePicked.setVisibility(View.VISIBLE);
+
         }
 
         int color = Color.parseColor(colorCode);
@@ -74,8 +80,8 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorsView
 
     private void setAllPickFalse(ColorsViewHolder holder) {
         for (String color : mListColors){
-            holder.imageShadow.setVisibility(View.INVISIBLE);
             holder.imagePicked.setVisibility(View.INVISIBLE);
+            holder.imagePicked_black.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -91,13 +97,12 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorsView
     }
     public static class ColorsViewHolder extends RecyclerView.ViewHolder{
         private final CircleImageView imageColor;
-        private final CircleImageView imageShadow;
-        private final ImageView imagePicked;
+        private final ImageView imagePicked, imagePicked_black;
         public ColorsViewHolder(@NonNull View itemView){
             super(itemView);
             imageColor = itemView.findViewById(R.id.imageColor);
-            imageShadow = itemView.findViewById(R.id.imageShadow);
             imagePicked = itemView.findViewById(R.id.imagePicked);
+            imagePicked_black = itemView.findViewById(R.id.imagePicked_black);
         }
     }
 
