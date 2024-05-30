@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginVertical="8dp">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content" android:layout_width="0dp">
+                    <TextView
+                        android:id="@+id/shopName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Devcao"
+                        android:textStyle="bold"
+                        android:textSize="28dp"/>
+                    <TextView
+                        android:id="@+id/numProducts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4 Products"
+                        android:textSize="16dp"/>
+                </LinearLayout>
+                <FrameLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                        <TextView
+                            android:visibility="invisible"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="8dp"
+                            android:id="@+id/complete"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="COMPLETE"
+                            android:textSize="16dp"
+                            android:textColor="@color/green"
+                            android:textStyle="bold"
+                            android:background="@drawable/background_avai"/>
+                        <TextView
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="8dp"
+                            android:id="@+id/waiting"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="ON PROGRESS"
+                            android:textSize="16dp"
+                            android:textColor="@color/waiting"
+                            android:textStyle="bold"
+                            android:background="@drawable/background_waiting"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="8dp"
+                        android:id="@+id/confirm"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CONFIRMED"
+                        android:textSize="16dp"
+                        android:textColor="@color/confirm"
+                        android:textStyle="bold"
+                        android:background="@drawable/background_confirm"/>
+                    <TextView
+                        android:visibility="invisible"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="8dp"
+                        android:id="@+id/delivery"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="DELIVERY"
+                        android:textSize="16dp"
+                        android:textColor="@color/delivery"
+                        android:textStyle="bold"
+                        android:background="@drawable/background_delivery"/>
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/orderAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order at 12/12/2022 12:00"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

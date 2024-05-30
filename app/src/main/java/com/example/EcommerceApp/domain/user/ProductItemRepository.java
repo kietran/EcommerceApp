@@ -147,5 +147,18 @@ public class ProductItemRepository {
             }
         });
     }
+    public Task<ProductItem> getProductItemById(String productItemId) {
+        DocumentReference docRef = productitemsCollection.document(productItemId);
+        return docRef.get().continueWith(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                ProductItem productItem = task.getResult().toObject(ProductItem.class);
+                assert productItem != null;
+                productItem.setId(productItemId);
+                return productItem;
+            } else {
+                throw task.getException() != null ? task.getException() : new Exception("Failed to get product item with id: " + productItemId);
+            }
+        });
+    }
 }
 

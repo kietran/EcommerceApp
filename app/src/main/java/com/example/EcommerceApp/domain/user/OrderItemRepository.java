@@ -6,11 +6,16 @@ import com.example.EcommerceApp.model.OrderItem;
 import com.example.EcommerceApp.model.ShoppingCartItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderItemRepository {
@@ -45,5 +50,42 @@ public class OrderItemRepository {
                     }
                 });
 
+    }
+    public Task<Integer> getOrderItemCountByOrderId(String orderId) {
+        return orderItem
+                .whereEqualTo("order_id", orderId)
+                .get()
+                .continueWith(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            return querySnapshot.size();
+                        }
+                    } else {
+                        System.err.println("Error getting order items: " + task.getException());
+                    }
+                    return 0;
+                });
+    }
+    public Task<List<OrderItem>> getOrderItemsByOrderId(String orderId) {
+        return orderItem
+                .whereEqualTo("order_id", orderId)
+                .get()
+                .continueWith(task -> {
+                    List<OrderItem> orderItems = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                OrderItem orderItem = document.toObject(OrderItem.class);
+                                orderItem.setId(document.getId());
+                                orderItems.add(orderItem);
+                            }
+                        }
+                    } else {
+                        System.err.println("Error getting order items: " + task.getException());
+                    }
+                    return orderItems;
+                });
     }
 }

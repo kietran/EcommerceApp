@@ -1,6 +1,5 @@
 package com.example.EcommerceApp.domain.user;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.example.EcommerceApp.model.Product;
@@ -196,5 +195,16 @@ public class ShoppingCartItemRepository {
                 .addOnFailureListener(e -> {
                     Log.e("ShoppingCartItemRepo", "Error updating quantity in stock for cart item: " + cartItemId, e);
                 });
+    }
+
+    public void addToCartAgain(Map<String,Object> productItem, Map<String,Object> shoppingCart, int qty){
+        Map<String, Object> cartItem =new HashMap<>();
+        cartItem.put("cart",shoppingCart);
+        cartItem.put("product_item",productItem);
+        cartItem.put("qty",qty);
+        FirebaseFirestore.getInstance().collection("shopping_cart_item").add(cartItem)
+                .addOnSuccessListener(documentReference -> Log.d("FirebaseUtil", "Shoppingcartitem added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("FirebaseUtil", "Error adding shopping_cart_item", e));
+
     }
 }

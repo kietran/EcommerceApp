@@ -2,7 +2,6 @@ package com.example.EcommerceApp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,21 +12,12 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.EcommerceApp.adapter.ViewPagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.example.EcommerceApp.adapter.HomePageAdapter;
 
-import com.example.EcommerceApp.adapter.ViewPagerAdapter;
 import com.example.EcommerceApp.model.User;
-import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.shivtechs.maplocationpicker.LocationPickerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,7 +85,7 @@ public class HomeUserFragment extends Fragment {
         getUserData();
 
         // Tạo adapter và thiết lập cho ViewPager2
-        ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());
+        HomePageAdapter adapter = new HomePageAdapter(requireActivity());
         viewPager.setAdapter(adapter);
 
         // Kết nối ViewPager2 với TabLayout

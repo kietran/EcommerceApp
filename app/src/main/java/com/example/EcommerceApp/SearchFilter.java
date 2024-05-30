@@ -57,8 +57,6 @@
                     Exception e = task.getException();
                     if (e != null) {
                         Log.println(Log.ASSERT, "Load product", Objects.requireNonNull(e.getMessage()));
-
-                        Toast.makeText(getContext(), "Error loading products: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

@@ -4,14 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyCart"
+    tools:context=".MyCartFragment"
     android:layout_marginTop="28dp"
     android:orientation="vertical"
     >
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp">
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/btBack"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/back"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

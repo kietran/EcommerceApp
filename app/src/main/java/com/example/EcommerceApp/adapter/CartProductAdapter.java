@@ -124,6 +124,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.product_image);
 
+        long qtyPrice= (long) (qty*price);
+        String strQtyPrice ="$"+String.valueOf(qtyPrice);
+        holder.cal_price.setText(strQtyPrice);
 
         holder.sub1.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -264,7 +267,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void setBtDelete(ImageButton btDelete) {
         this.btDelete=btDelete;
     }
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     public void calculateFee() {
         List<ShoppingCartItem> selectList=new ArrayList<>(CartItemAdapter.selectList);
         TextView total = layoutCheckout.findViewById(R.id.total);
@@ -305,11 +308,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         else
             parentAdapter.setAllAvailable(true);
 
-        subtotal.setText(String.valueOf(sum));
-        shipping.setText(String.valueOf(30L *setShop.size()));
-        total.setText(String.valueOf(sum+ 30L *setShop.size()));
+        subtotal.setText("$"+String.valueOf(sum));
+        shipping.setText("$"+String.valueOf(30L *setShop.size()));
+        total.setText("$"+String.valueOf(+sum+ 30L *setShop.size()));
         total = bottomSheetCheckOut.findViewById(R.id.total);
-        total.setText(String.valueOf(sum+ 30L *setShop.size()));
+        total.setText("$"+String.valueOf(sum+ 30L *setShop.size()));
         totalFee=sum+ 30L *setShop.size();
     }
     public static long totalFee;
@@ -340,7 +343,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         private final TextView avai;
         GridLayout twoAttribute,oneAttribute;
         TextView size, valueSize;
-        TextView key;
+        TextView key,cal_price;
         de.hdodenhof.circleimageview.CircleImageView color, valueColor;
 
 
@@ -362,6 +365,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             key = itemView.findViewById(R.id.key);
             color =itemView.findViewById(R.id.color);
             valueColor = itemView.findViewById(R.id.valueColor);
+            cal_price =itemView.findViewById(R.id.cal_price);
         }
     }
 }

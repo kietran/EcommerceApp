@@ -2,9 +2,10 @@ package com.example.EcommerceApp.model;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Order {
+public class Order implements Serializable {
     String id;
     String shop;
     String status;
@@ -18,6 +19,34 @@ public class Order {
     }
 
     Timestamp orderAt;
+    Timestamp confirmAt;
+
+    public Timestamp getConfirmAt() {
+        return confirmAt;
+    }
+
+    public void setConfirmAt(Timestamp confirmAt) {
+        this.confirmAt = confirmAt;
+    }
+
+    public Timestamp getDeliveryAt() {
+        return deliveryAt;
+    }
+
+    public void setDeliveryAt(Timestamp deliveryAt) {
+        this.deliveryAt = deliveryAt;
+    }
+
+    public Timestamp getCompleteAt() {
+        return completeAt;
+    }
+
+    public void setCompleteAt(Timestamp completeAt) {
+        this.completeAt = completeAt;
+    }
+
+    Timestamp deliveryAt;
+    Timestamp completeAt;
 
     public Order() {
     }

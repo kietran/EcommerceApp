@@ -45,13 +45,10 @@ public class UserActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation_view);
         HomeUserFragment homeUser = new HomeUserFragment();
-        MyCart myCart = new MyCart();
+        MyCartFragment myCartFragment = MyCartFragment.newInstance("","");
         MyOrder myOrder = new MyOrder();
         UserProfileFragment userProfile = new UserProfileFragment();
-        if(isMyorder)
-            bottomNavigationView.setSelectedItemId(R.id.navigation_myorder);
-        else
-            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
+
 
         CartNumberUtil.setBadge_mycart(binding.bottomNavigationView.getOrCreateBadge(R.id.navigation_mycart));
         CartNumberUtil.getBadge_mycart().setBackgroundColor(Color.RED);
@@ -69,7 +66,7 @@ public class UserActivity extends AppCompatActivity {
                 if (itemId == R.id.navigation_home)
                     selectedFragment = homeUser;
                 else if (itemId == R.id.navigation_mycart)
-                    selectedFragment = myCart;
+                    selectedFragment = myCartFragment;
                 else if (itemId == R.id.navigation_myorder)
                     selectedFragment = myOrder;
                 else if (itemId == R.id.navigation_myprofile)
@@ -82,9 +79,21 @@ public class UserActivity extends AppCompatActivity {
                 return true;
             }
         });
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_mycart, R.id.navigation_myorder, R.id.navigation_myprofile).build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_hos)
+
+
+
+        if(isMyorder) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_myorder);
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, myOrder).commit();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            getSupportFragmentManager().beginTransaction().replace(R.id.user_container, homeUser).commit();
+        }
+
+
+
+
 
     }
     @Override
@@ -93,7 +102,11 @@ public class UserActivity extends AppCompatActivity {
         if (requestCode == 4) {
             if (resultCode == Activity.RESULT_OK) {
                 bottomNavigationView.setSelectedItemId(R.id.navigation_mycart);
+
                 CartNumberUtil.getCartNumber();
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.user_container, new MyCartFragment()).commit();
+
             }
         }
     }

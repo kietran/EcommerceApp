@@ -227,6 +227,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
 //                    CartNumberUtil.setQty_in_cart(CartNumberUtil.getQty_in_cart() + 1);
                     CartNumberUtil.getCartNumber();
                     for (ShoppingCartItem cartItem : selectList) {
+                        countSelect--;
                         String shopIdToDelete = getShopOfItem(cartItem.getId());
                         if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
                             List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);
@@ -240,6 +241,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                 } else {
                     shoppingCartItemRepository.delete(id);
                     CartNumberUtil.getCartNumber();
+                    countSelect--;
                     String shopIdToDelete = getShopOfItem(id);
                     if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
                         List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);
@@ -253,6 +255,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                     }
                 }
                 updateData(groupedCartItems);
+                updateUI();
             }
         });
 
