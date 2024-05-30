@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -28,6 +29,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    viewBinding {
+        enable = true
+    }
+    dataBinding{
+        enable = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -110,6 +117,7 @@ dependencies {
     implementation ("com.github.shivpujan12:LocationPicker:2.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.android.volley:volley:1.2.0")
+    implementation("com.google.android.material:material:1.12.0")
 }
 
 

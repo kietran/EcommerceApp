@@ -25,7 +25,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
 
                 <ImageView
                     android:id="@+id/btnBackDetail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:layout_gravity="center"
@@ -60,14 +60,45 @@
                     android:textSize="16sp"
                     android:layout_gravity="center"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/btnCartDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/detail_cart" />
+                    android:layout_weight="0.5">
+
+                    <ImageView
+                        android:id="@+id/btnCartDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="0.5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/detail_cart" />
+
+                    <TextView
+                        android:id="@+id/qty_in_cart"
+                        android:layout_width="25dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-5dp"
+                        android:textColor="@color/white"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="-5dp"
+                        android:background="@drawable/background_qty_in_cart"
+                        android:text="1"
+                        android:visibility="invisible"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toTopOf="@id/btnCartDetail"
+                        app:layout_constraintStart_toEndOf="@id/btnCartDetail"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

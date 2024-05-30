@@ -26,6 +26,7 @@ import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.ProductItem;
 import com.example.EcommerceApp.model.Shop;
 import com.example.EcommerceApp.model.ShoppingCart;
+import com.example.EcommerceApp.utils.CartNumberUtil;
 import com.google.common.collect.Sets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -38,10 +39,11 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
     ImageView btBack, product_image;
     Button btn_addtocart;
     ProductItemRepository productItemRepository = new ProductItemRepository(this);
+    ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
     ColorsAdapter colorsAdapter;
     SizesAdapter sizesAdapter;
-    int count = 1, qty = 0;
-    TextView productCount, product_name, product_description, price, status, btnTru, btnCong;
+    int count = 1, qty = 0, qty_in_Cart = 0;
+    TextView productCount, product_name, product_description, price, status, btnTru, btnCong, qty_in_cart;
     RecyclerView rcColor, rcSize;
 
     String selectedColor = "", selectedSize = "";
@@ -84,6 +86,19 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         btnViewShop = findViewById(R.id.btnViewShop);
         shopName = findViewById(R.id.shop_name);
         shopAvt = findViewById(R.id.shop_avatar);
+        qty_in_cart = findViewById(R.id.qty_in_cart);
+        shoppingCartItemRepository.getQTYinCartByUserID(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(task -> {
+            qty_in_Cart = task.getResult();
+            if (qty_in_Cart > 0){
+                CartNumberUtil.setQty_in_cart(qty_in_Cart);
+                qty_in_cart.setText(CartNumberUtil.getQty_in_cart()+"");
+                qty_in_cart.setVisibility(View.VISIBLE);
+            }
+            else{
+                CartNumberUtil.setQty_in_cart(0);
+                qty_in_cart.setVisibility(View.INVISIBLE);
+            }
+        });
         btnViewShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,6 +287,8 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
                     createShoppingCartItem(cartID);
             }
         });
+        qty_in_Cart += count;
+        qty_in_cart.setText(qty_in_Cart+"");
         Toast.makeText(getApplicationContext(), "Add to cart success!", Toast.LENGTH_LONG).show();
     }
 
@@ -293,10 +310,12 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
                         shopRepository.getShopByShopID(product.getShop_id()).addOnCompleteListener(task2 -> {
                             Shop shop = task2.getResult();
                             shoppingCartItemRepository.addNewCartItem(cart, productItem, product, shop, count);
+
                         });
                     }
                     else{
                         shoppingCartItemRepository.updateQty2(cartItemId, count);
+
                     }
                 });
             }

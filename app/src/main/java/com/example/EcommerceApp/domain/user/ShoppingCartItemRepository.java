@@ -98,6 +98,21 @@ public class ShoppingCartItemRepository {
         }).addOnFailureListener(e -> Log.e("ShoppingCartItemRepo", "Failed to get document: " + e.getMessage()));
     }
 
+    public Task<Integer> getQTYinCartByUserID(String user_id){
+        return shoppingCartItem
+                .whereEqualTo("cart.user_id", user_id)
+                .get().continueWith(task -> {
+                    int qty_in_cart = 0;
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            ShoppingCartItem shoppingCartItem1 = document.toObject(ShoppingCartItem.class);
+                            qty_in_cart += shoppingCartItem1.getQty();
+                        }
+                    }
+                    return qty_in_cart;
+                });
+    }
+
     public void updateQty(String cartItemId, int qty){
         shoppingCartItem.document(cartItemId).update("qty", qty)
                 .addOnSuccessListener(aVoid -> Log.d("ShoppingCartItemRepo", "Quantity updated successfully"))

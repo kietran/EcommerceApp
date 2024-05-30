@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.ShoppingCartItem;
+import com.example.EcommerceApp.utils.CartNumberUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -201,7 +202,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
             layout_checkout.setVisibility(View.VISIBLE);
         }
         else{
-            layout_checkout.setVisibility(View.INVISIBLE);
+            layout_checkout.setVisibility(View.GONE);
         }
 
         if(countSelect!=0){
@@ -223,6 +224,8 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                 ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
                 if (mul) {
                     shoppingCartItemRepository.delete(selectList);
+//                    CartNumberUtil.setQty_in_cart(CartNumberUtil.getQty_in_cart() + 1);
+                    CartNumberUtil.getCartNumber();
                     for (ShoppingCartItem cartItem : selectList) {
                         String shopIdToDelete = getShopOfItem(cartItem.getId());
                         if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
@@ -236,6 +239,7 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
                     selectList.clear();
                 } else {
                     shoppingCartItemRepository.delete(id);
+                    CartNumberUtil.getCartNumber();
                     String shopIdToDelete = getShopOfItem(id);
                     if (shopIdToDelete != null && groupedCartItems.containsKey(shopIdToDelete)) {
                         List<ShoppingCartItem> shopItems = groupedCartItems.get(shopIdToDelete);

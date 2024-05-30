@@ -27,6 +27,7 @@ import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.ShoppingCartItem;
+import com.example.EcommerceApp.utils.CartNumberUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -133,6 +134,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 else {
                     item.setQty(item.getQty() - 1);
                     //parentAdapter.notifyDataSetChanged();
+                    CartNumberUtil.setQty_in_cart(CartNumberUtil.getQty_in_cart() - 1);
+                    CartNumberUtil.getCartNumber();
                     notifyDataSetChanged();
                     ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
                     shoppingCartItemRepository.updateQty(item.getId(), item.getQty());
@@ -145,6 +148,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             public void onClick(View view) {
                 item.setQty(item.getQty()+1);
                 //parentAdapter.notifyDataSetChanged();
+                CartNumberUtil.setQty_in_cart(CartNumberUtil.getQty_in_cart() + 1);
+                CartNumberUtil.getCartNumber();
                 notifyDataSetChanged();
                 ShoppingCartItemRepository shoppingCartItemRepository = new ShoppingCartItemRepository();
                 shoppingCartItemRepository.updateQty(item.getId(),item.getQty());
