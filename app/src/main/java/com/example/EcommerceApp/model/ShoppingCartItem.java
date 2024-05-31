@@ -1,6 +1,7 @@
 package com.example.EcommerceApp.model;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class ShoppingCartItem
 {
@@ -87,5 +88,12 @@ public class ShoppingCartItem
 
     public void setProduct_item(Map<String, Object> product_item) {
         this.product_item = product_item;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShoppingCartItem cartItem = (ShoppingCartItem) o;
+        return Objects.equals(id, cartItem.id);
     }
 }

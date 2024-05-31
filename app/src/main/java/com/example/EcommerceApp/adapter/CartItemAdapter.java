@@ -37,14 +37,13 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemAdapter.CartI
 
 
 
-    public static List<ShoppingCartItem> selectList;
+    public static List<ShoppingCartItem> selectList=new ArrayList<>();;
     private androidx.cardview.widget.CardView layout_checkout;
     public CartItemAdapter(Map<String, List<ShoppingCartItem>> groupedCartItems, Context context) {
         this.groupedCartItems = groupedCartItems;
         this.context = context;
         countSelect=0;
         falseBySubSelect=false;
-        selectList=new ArrayList<>();
         updateData(groupedCartItems);
     }
     public Context getContext()

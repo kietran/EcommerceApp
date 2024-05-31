@@ -16,12 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EcommerceApp.adapter.ColorsAdapter;
 import com.example.EcommerceApp.adapter.SizesAdapter;
-import com.example.EcommerceApp.domain.user.ShopRepository;
-import com.example.EcommerceApp.domain.user.ShoppingCartRepository;
 import com.example.EcommerceApp.domain.user.ProductItemRepository;
+import com.example.EcommerceApp.domain.user.ShopRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
+import com.example.EcommerceApp.domain.user.ShoppingCartRepository;
 import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.ProductItem;
 import com.example.EcommerceApp.model.Shop;
@@ -118,9 +119,11 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
                 product_name.setText(product.getName());
                 product_description.setText(product.getDescription());
                 price.setText(product.getPrice()+"");
-                Picasso.get().load(product.getProduct_image())
-                        .placeholder(R.drawable.ic_launcher_foreground)
-                        .into(product_image);
+
+                Glide.with(this)
+                    .load(product.getProduct_image())
+                    .override(product_image.getWidth(), product_image.getHeight())
+                    .into(product_image);
                 if (isHaveSize && isHaveColor) {
                     layoutForSizeAndColor.setVisibility(View.VISIBLE);
                     colorsAdapter = new ColorsAdapter(this, new ArrayList<>());

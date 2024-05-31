@@ -249,7 +249,8 @@ public class AddressSetting extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Address> task) {
                             Address address1 = task.getResult();
-                            addressRepository.updateAddress(address1.getId(), address1.getProvince(), address1.getWard(), address1.getDistrict(), address1.getAddress_line(), address1.getReceiver_name(), address1.getPhone(), FirebaseUtil.currentUserId(), false);
+                            if(address1!=null)
+                                addressRepository.updateAddress(address1.getId(), address1.getProvince(), address1.getWard(), address1.getDistrict(), address1.getAddress_line(), address1.getReceiver_name(), address1.getPhone(), FirebaseUtil.currentUserId(), false);
                             addressRepository.updateAddress(addressId, AddressUtil.province, AddressUtil.ward, AddressUtil.district, addressInput, nameInput, phoneInput, FirebaseUtil.currentUserId(), isDefault);
                         }
                     });

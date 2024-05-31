@@ -5,23 +5,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 
+import com.example.EcommerceApp.adapter.CartItemAdapter;
 import com.example.EcommerceApp.databinding.ActivityUserBinding;
-import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
-import com.example.EcommerceApp.model.ShoppingCartItem;
 import com.example.EcommerceApp.utils.CartNumberUtil;
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 
 public class UserActivity extends AppCompatActivity {
@@ -72,6 +67,8 @@ public class UserActivity extends AppCompatActivity {
                 else if (itemId == R.id.navigation_myprofile)
                     selectedFragment = userProfile;
 
+                if(selectedFragment!=myCartFragment)
+                    CartItemAdapter.selectList=new ArrayList<>();
 
                 if (selectedFragment != null)
                     getSupportFragmentManager().beginTransaction().replace(R.id.user_container, selectedFragment).commitAllowingStateLoss();

@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -128,6 +129,7 @@ public class PaymentActivity extends AppCompatActivity {
             List<ShoppingCartItem> shoppingCartItems = entry.getValue();
             // add order
             createOrder(shopNames, shoppingCartItems);
+            CartItemAdapter.selectList=new ArrayList<>();
         }
         OrderSuccess orderSuccess = OrderSuccess.newInstance();
         orderSuccess.setOnDismissListener(new OrderSuccess.OnDismissListener() {
@@ -245,6 +247,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
     private void setTextAddress(Address address)
     {
+        layout_yes.setVisibility(View.VISIBLE);
+        layout_no.setVisibility(View.INVISIBLE);
         dfName.setText(address.getReceiver_name());
         dfPhone.setText(address.getPhone());
         String text_address = address.getAddress_line()+", "+address.getWard()+", "+address.getDistrict()+", "+address.getProvince();
@@ -256,6 +260,7 @@ public class PaymentActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String address_id = data.getStringExtra("address_id");
+                Log.i("payment receiver address id",address_id);
                 refreshAddress(address_id);
             }
             else
@@ -263,6 +268,11 @@ public class PaymentActivity extends AppCompatActivity {
                 setDefaultAddress();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void refreshAddress(String addressId) {

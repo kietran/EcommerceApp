@@ -25,6 +25,7 @@ import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.ShoppingCartItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +114,7 @@ public class MyCartFragment extends Fragment  {
                     @Override
                     public void onClick(View view) {
                         fromDetail=false;
+                        CartItemAdapter.selectList=new ArrayList<>();
                         requireActivity().finish();
                     }
                 });
@@ -196,6 +198,7 @@ public class MyCartFragment extends Fragment  {
                     Log.println(Log.ASSERT, "load shopping cart item", String.valueOf(cartItemAdapter.getItemCount()));
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     rcv_cart_item.setLayoutManager(linearLayoutManager);
+                    Log.i("selected list",CartItemAdapter.selectList.size()+"");
                 }
                 else {
                     prbCart.setVisibility(View.INVISIBLE);
