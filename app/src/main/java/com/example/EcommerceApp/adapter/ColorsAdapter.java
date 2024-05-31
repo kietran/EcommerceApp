@@ -49,9 +49,7 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorsView
             return;
         setAllPickFalse(holder);
         if (colorCode == selectedColor){
-            boolean a = selectedColor.equals("#FFFFFF");
-            Log.i("adapter", a+"");
-            if (selectedColor.equals("#FFFFFF"))
+            if (selectedColor.equals("#FFFFFF") || selectedColor.equals("#ffffff"))
                 holder.imagePicked_black.setVisibility(View.VISIBLE);
             else
                 holder.imagePicked.setVisibility(View.VISIBLE);
