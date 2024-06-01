@@ -110,6 +110,12 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
 
         holder.select.setChecked(CartItemAdapter.selectList.contains((item)));
+        if (CartItemAdapter.selectList.contains(item)) {
+            int index = CartItemAdapter.selectList.indexOf(item);
+            CartItemAdapter.selectList.set(index, item);
+            parentAdapter.updateUI();
+        }
+
 
         holder.product_name.setText(name);
         holder.product_name.setOnClickListener(new View.OnClickListener() {
