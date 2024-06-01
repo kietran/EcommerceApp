@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.EcommerceApp.adapter.OrderItemAdapter;
 import com.example.EcommerceApp.domain.user.OrderItemRepository;
 import com.example.EcommerceApp.domain.user.OrderRepository;
+import com.example.EcommerceApp.domain.user.ShopRepository;
 import com.example.EcommerceApp.model.Order;
 import com.example.EcommerceApp.model.OrderItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -242,6 +243,25 @@ public class DetailOrder extends AppCompatActivity {
     private void setHeader() {
         shopName.setText(order.getShop());
         orderCode.setText("Order code: "+order.getId());
+        ShopRepository shopRepository=new ShopRepository(this);
+        shopRepository.getIdByName(order.getShop()).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()) {
+                    String shopId=task.getResult();
+                    if(shopId!=null) {
+                        shopName.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(DetailOrder.this, ShopPageActivity.class);
+                                i.putExtra("shopID", shopId);
+                                startActivity(i);
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     private void setWidgets() {

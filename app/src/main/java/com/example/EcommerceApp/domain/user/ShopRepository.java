@@ -2,11 +2,9 @@ package com.example.EcommerceApp.domain.user;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.Shop;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
@@ -106,4 +104,15 @@ public class ShopRepository {
             return shop;
         });
     }
+    public Task<String> getIdByName(String name) {
+        return shopCollection.whereEqualTo("shopName", name).get().continueWith(task -> {
+            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                return document.getId();
+            } else {
+                return null;
+            }
+        });
+    }
+
 }

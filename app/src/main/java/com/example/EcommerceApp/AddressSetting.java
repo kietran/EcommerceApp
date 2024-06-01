@@ -186,7 +186,7 @@ public class AddressSetting extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if(isValidPhone((String) charSequence)) {
+                    if(isValidPhone(charSequence.toString())) {
                         phone.setError("");
                         phone.setHelperText("Phone is valid");
                     }

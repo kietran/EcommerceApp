@@ -131,6 +131,8 @@
                         android:id="@+id/addAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/button_white_purple"
+                        android:textColor="@color/main_purple"
                         android:text="SETTING ADDRESS"
                         android:layout_gravity="right"/>
                 </LinearLayout>

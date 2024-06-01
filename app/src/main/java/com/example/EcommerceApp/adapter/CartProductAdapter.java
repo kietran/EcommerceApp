@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -271,11 +272,14 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void calculateFee() {
         List<ShoppingCartItem> selectList=new ArrayList<>(CartItemAdapter.selectList);
         TextView total = layoutCheckout.findViewById(R.id.total);
+        TextView shipping1 = layoutCheckout.findViewById(R.id.shipping);
         TextView subtotal = bottomSheetCheckOut.findViewById(R.id.subTotal);
         TextView shipping = bottomSheetCheckOut.findViewById(R.id.shipping);
+        Button btsCheckout2 = bottomSheetCheckOut.findViewById(R.id.btCheckout);
+        Button loCheckout = layoutCheckout.findViewById(R.id.btCheckOut1);
         long sum = 0;
         Set<String> setShop = new HashSet<>();
-
+        int qtySelect=0;
         boolean check = false;
         for(int i=0;i<selectList.size();i++)
         {
@@ -297,6 +301,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     price=0;
                 int qty = item.getQty();
                 sum += qty * price;
+                qtySelect+=qty;
             }
             else
                 check=true;
@@ -310,10 +315,19 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         subtotal.setText("$"+String.valueOf(sum));
         shipping.setText("$"+String.valueOf(30L *setShop.size()));
-        total.setText("$"+String.valueOf(+sum+ 30L *setShop.size()));
+        total.setText("Subtotal:$"+String.valueOf(sum));
+        shipping1.setText("Shipping("+String.valueOf(setShop.size())+") $"+String.valueOf( 30L *setShop.size()));
         total = bottomSheetCheckOut.findViewById(R.id.total);
         total.setText("$"+String.valueOf(sum+ 30L *setShop.size()));
         totalFee=sum+ 30L *setShop.size();
+        if(qtySelect>1) {
+            loCheckout.setText(("CHECKOUT\n(" + String.valueOf(qtySelect) + " items)"));
+            btsCheckout2.setText(("CHECKOUT (" + String.valueOf(qtySelect) + " items)"));
+        }
+        else if(qtySelect==1) {
+            loCheckout.setText(("CHECKOUT\n(" + String.valueOf(qtySelect) + " item)"));
+            btsCheckout2.setText(("CHECKOUT (" + String.valueOf(qtySelect) + " item)"));
+        }
     }
     public static long totalFee;
     androidx.cardview.widget.CardView layoutCheckout;

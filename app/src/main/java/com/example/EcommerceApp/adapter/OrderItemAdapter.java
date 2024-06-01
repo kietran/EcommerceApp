@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EcommerceApp.DetailTwoAttributeActivity;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.domain.user.ProductItemRepository;
+import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.OrderItem;
+import com.example.EcommerceApp.model.Product;
 import com.example.EcommerceApp.model.ShoppingCart;
 import com.example.EcommerceApp.utils.CartNumberUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -139,6 +144,48 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.product_image);
 
+        String product_id = (String) product.get("id");
+        if (product_id!=null)
+        {
+            holder.product_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigateToDetail(product_id,product_item);
+                }
+            });
+        }
+
+    }
+    private void navigateToDetail(String product_id, Map<String, Object> productItem) {
+        String size = (String) productItem.get("size");
+        String colorCode = (String) productItem.get("color");
+        if(size==null || colorCode==null)
+            return;
+
+        boolean hasSize=true;
+        boolean hasColor=true;
+        if(size.isEmpty())
+            hasSize=false;
+        if(colorCode.isEmpty())
+            hasColor=false;
+
+        ProductRepository productRepository = new ProductRepository(context);
+        boolean finalHasColor = hasColor;
+        boolean finalHasSize = hasSize;
+        productRepository.getProductByProductId(product_id).addOnCompleteListener(new OnCompleteListener<Product>() {
+            @Override
+            public void onComplete(@NonNull Task<Product> task) {
+                Product product = task.getResult();
+                Intent intent = new Intent(context, DetailTwoAttributeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("object_product", product);
+                bundle.putString("id", product_id);
+                bundle.putBoolean("haveColor", finalHasColor);
+                bundle.putBoolean("haveSize", finalHasSize);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void addToCartAgain(Map<String,Object> productItem, ShoppingCart shoppingCart, int qty) {
