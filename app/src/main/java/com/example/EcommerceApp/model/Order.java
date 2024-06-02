@@ -19,6 +19,25 @@ public class Order implements Serializable {
     }
 
     Timestamp orderAt;
+    Timestamp cancelAt;
+
+    public Timestamp getCancelAt() {
+        return cancelAt;
+    }
+
+    public void setCancelAt(Timestamp cancelAt) {
+        this.cancelAt = cancelAt;
+    }
+
+    public String getReasonCancel() {
+        return reasonCancel;
+    }
+
+    public void setReasonCancel(String reasonCancel) {
+        this.reasonCancel = reasonCancel;
+    }
+
+    String reasonCancel;
     Timestamp confirmAt;
 
     public Timestamp getConfirmAt() {

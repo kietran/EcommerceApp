@@ -336,12 +336,23 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/markDone"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Mark as Done"
-        android:layout_marginBottom="5dp"/>
+        android:layout_height="wrap_content">
+
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/markDone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Mark as Done"
+            android:layout_marginBottom="5dp"/>
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="CANCEL"
+            android:layout_marginBottom="5dp"/>
+    </FrameLayout>
 
 </LinearLayout>

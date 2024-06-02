@@ -2,6 +2,7 @@ package com.example.EcommerceApp.domain.user;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -128,6 +129,24 @@ public class ProductItemRepository {
                         System.err.println("Error updating quantity in stock: " + e.getMessage());
                     }
                 });
+    }
+    public void updatePlusQtyInStock(String productItemId, int qtyToAdd){
+        DocumentReference docRef = productitemsCollection.document(productItemId);
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Long currentQty = documentSnapshot.getLong("qty_in_stock");
+                if (currentQty != null) {
+                    long newQty = currentQty + qtyToAdd;
+                    docRef.update("qty_in_stock", (int)newQty)
+                            .addOnSuccessListener(aVoid -> Log.d("ProductItemRepository", "Quantity updated successfully"))
+                            .addOnFailureListener(e -> Log.e("ProductItemRepository", "Failed to update quantity: " + e.getMessage()));
+                } else {
+                    Log.e("ProductItemRepository", "Current quantity is null");
+                }
+            } else {
+                Log.e("ProductItemRepository", "Document does not exist");
+            }
+        }).addOnFailureListener(e -> Log.e("ProductItemRepository", "Failed to get document: " + e.getMessage()));
     }
 
     public Task<Long> getQtyInStock(String productItemId) {

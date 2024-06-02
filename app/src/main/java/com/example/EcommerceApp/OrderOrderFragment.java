@@ -82,9 +82,10 @@ public class OrderOrderFragment extends Fragment {
         setWidgets(view);
         setOrderView();
         // Register broadcast receiver
-        IntentFilter intentFilter = new IntentFilter("order_completed");
-        if (intentFilter != null)
-            requireActivity().registerReceiver(orderCompletedReceiver, intentFilter);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("order_completed");
+        intentFilter.addAction("order_canceled");
+        requireActivity().registerReceiver(orderCompletedReceiver, intentFilter);
         return view;
     }
 
@@ -141,6 +142,10 @@ public class OrderOrderFragment extends Fragment {
             if (intent.getAction().equals("order_completed")) {
                 setOrderView();
                 Toast.makeText(getContext(),"Mark order done successfully!", Toast.LENGTH_LONG).show();
+            }
+            else if(intent.getAction().equals("order_canceled")){
+                setOrderView();
+                Toast.makeText(getContext(), "Order cancel successfully", Toast.LENGTH_SHORT).show();
             }
         }
     };

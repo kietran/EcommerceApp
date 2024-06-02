@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.EcommerceApp.adapter.OrderItemAdapter;
 import com.example.EcommerceApp.domain.user.OrderItemRepository;
 import com.example.EcommerceApp.domain.user.OrderRepository;
+import com.example.EcommerceApp.domain.user.ProductItemRepository;
 import com.example.EcommerceApp.domain.user.ShopRepository;
 import com.example.EcommerceApp.model.Order;
 import com.example.EcommerceApp.model.OrderItem;
@@ -36,10 +38,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class DetailOrder extends AppCompatActivity {
     ImageView btBack;
-    Button markDone;
+    Button markDone,cancel;
     androidx.recyclerview.widget.RecyclerView rcv_product_item;
     TextView shopName, orderCode, statusWaiting, statusConfirm, statusDelivery, statusComplete, rcvName, phone, address, subTotal, total;
     Order order;
@@ -66,17 +69,39 @@ public class DetailOrder extends AppCompatActivity {
         }
         setWidgets();
 
-        if(isComplete)
+        if(isComplete) {
             markDone.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+        }
         else {
-            /// remind update this case use in delivery for se104
-            markDone.setVisibility(View.VISIBLE);
-            markDone.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    confirmMarkAsDone();
-                }
-            });
+            if(Objects.equals(order.getStatus(), "ON PROGRESS"))
+            {
+                // waiting case
+                markDone.setVisibility(View.GONE);
+                cancel.setVisibility(View.VISIBLE);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        handleCancel(order.getId());
+                    }
+                });
+            }
+            else if(Objects.equals(order.getStatus(), "confirm"))
+            {
+                markDone.setVisibility(View.GONE);
+                cancel.setVisibility(View.GONE);
+            }
+            else if(Objects.equals(order.getStatus(), "delivery"))
+            {
+                cancel.setVisibility(View.GONE);
+                markDone.setVisibility(View.VISIBLE);
+                markDone.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        confirmMarkAsDone();
+                    }
+                });
+            }
         }
         setHeader();
         setTracking();
@@ -89,6 +114,12 @@ public class DetailOrder extends AppCompatActivity {
             }
         });
     }
+
+    private void handleCancel(String id) {
+        CancelOrder cancelOrder = CancelOrder.newInstance(id);
+        cancelOrder.show(getSupportFragmentManager(),"cancel order");
+    }
+
     private ProgressDialog progressDialog;
 
     private void confirmMarkAsDone() {
@@ -131,6 +162,48 @@ public class DetailOrder extends AppCompatActivity {
         progressDialog.cancel();
         finish();
     }
+
+    void performCancel(String orderId, String reason) {
+        OrderItemRepository orderItemRepository = new OrderItemRepository();
+        orderItemRepository.getOrderItemsByOrderId(orderId).addOnCompleteListener(new OnCompleteListener<List<OrderItem>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<OrderItem>> task) {
+                if(task.isSuccessful()) {
+                    List<OrderItem> orderItems = task.getResult();
+                    if(orderItems != null && !orderItems.isEmpty()) {
+                        for(OrderItem orderItem : orderItems) {
+                            Map<String, Object> cartMap = orderItem.getCartItem();
+                            Object qtyObject = cartMap.get("qty");
+                            double qty;
+                            if (qtyObject instanceof Long) {
+                                qty = ((Long) qtyObject).doubleValue();
+                            } else if (qtyObject instanceof Double) {
+                                qty = (Double) qtyObject;
+                            } else {
+                                qty = 0;
+                            }
+                            Map<String, Object> product_item = (Map<String, Object>) cartMap.get("product_item");
+                            String productItemId = (String) product_item.get("id");
+                            ProductItemRepository productItemRepository = new ProductItemRepository(DetailOrder.this);
+                            productItemRepository.updatePlusQtyInStock(productItemId, (int) qty);
+                        }
+                        OrderRepository orderRepository = new OrderRepository();
+                        orderRepository.cancelOrder(orderId, reason).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent("order_canceled");
+                                getApplicationContext().sendBroadcast(intent);
+                                finish();
+                            }
+                        });
+                    }
+                } else {
+                    Log.i("get order item", "fail");
+                }
+            }
+        });
+    }
+
 
     private void setProductView() {
         OrderItemRepository orderItemRepository = new OrderItemRepository();
@@ -279,5 +352,6 @@ public class DetailOrder extends AppCompatActivity {
         address = findViewById(R.id.address);
         subTotal = findViewById(R.id.subTotal);
         total = findViewById(R.id.total);
+        cancel=findViewById(R.id.cancel);
     }
 }

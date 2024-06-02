@@ -82,7 +82,10 @@ public class OrderRepository {
                             for (QueryDocumentSnapshot document : querySnapshot) {
                                 Order order = document.toObject(Order.class);
                                 order.setId(document.getId());
-                                orders.add(order);
+                                // Filter out orders with status "cancel"
+                                if (!"cancel".equals(order.getStatus())) {
+                                    orders.add(order);
+                                }
                             }
                         }
                     } else {
@@ -124,6 +127,32 @@ public class OrderRepository {
         updates.put("status", status);
 
         updates.put(status+"At", Timestamp.now());
+
+        order.document(orderId)
+                .update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Notify task completion source of success
+                        taskCompletionSource.setResult(null);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Notify task completion source of failure
+                        taskCompletionSource.setException(e);
+                    }
+                });
+
+        return taskCompletionSource.getTask();
+    }
+    public Task<Void> cancelOrder(String orderId, String reason) {
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("status", "cancel");
+        updates.put("cancelAt", Timestamp.now());
+        updates.put("reasonCancel",reason);
 
         order.document(orderId)
                 .update(updates)
