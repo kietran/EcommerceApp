@@ -3,4 +3,6 @@
     <item name="navigation_myorder" type="id" />
     <item name="rc_cart_item" type="id" />
     <item name="detail" type="id" />
+    <item name="showAddress" type="id" />
+    <item name="hideAddress" type="id" />
 </resources>

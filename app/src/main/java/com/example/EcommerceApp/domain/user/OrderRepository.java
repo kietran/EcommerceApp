@@ -118,6 +118,29 @@ public class OrderRepository {
                     return orders;
                 });
     }
+    public Task<List<Order>> getOrdersByShop(String shopName) {
+        return order
+                .whereEqualTo("shop", shopName)
+                .get()
+                .continueWith(task -> {
+                    List<Order> orders = new ArrayList<>();
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Order order = document.toObject(Order.class);
+                                order.setId(document.getId());
+                                orders.add(order);
+                            }
+                        }
+                        Log.i("size order", String.valueOf(orders.size()));
+                    } else {
+                        System.err.println("Error getting orders: " + task.getException());
+                    }
+                    return orders;
+                });
+    }
+
 
     public Task<Void> updateOrderStatus(String orderId, String status) {
         TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();

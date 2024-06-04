@@ -138,23 +138,46 @@
                         android:paddingStart="20dp"
                         android:text="Legal and Policies"
                         android:textAlignment="viewStart" />
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/sellOn23Button"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginEnd="32dp"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        style="@android:style/Widget.Button"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_background_1"
-                        android:drawableStart="@drawable/ic_avd_logo"
-                        android:drawablePadding="10dp"
-                        android:paddingStart="10dp"
-                        android:drawableEnd="@drawable/baseline_arrow_forward"
-                        android:text="Sell on 23"
-                        android:textAlignment="viewStart" />
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:visibility="gone"
+                            android:id="@+id/sellOn23Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginEnd="32dp"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            style="@android:style/Widget.Button"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/btn_background_1"
+                            android:drawableStart="@drawable/ic_avd_logo"
+                            android:drawablePadding="10dp"
+                            android:paddingStart="10dp"
+                            android:drawableEnd="@drawable/baseline_arrow_forward"
+                            android:text="Sell on 23"
+                            android:textAlignment="viewStart" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/orderManagement"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginEnd="32dp"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            style="@android:style/Widget.Button"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/btn_background_1"
+                            android:drawableStart="@drawable/ic_avd_logo"
+                            android:drawablePadding="10dp"
+                            android:paddingStart="10dp"
+                            android:drawableEnd="@drawable/baseline_arrow_forward"
+                            android:text="Order Management"
+                            android:textAlignment="viewStart" />
+                    </FrameLayout>
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/logoutButton"
                         android:layout_width="match_parent"

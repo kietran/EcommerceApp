@@ -3,10 +3,6 @@ package com.example.EcommerceApp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +10,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.EcommerceApp.domain.user.ShopRepository;
+import com.example.EcommerceApp.model.Shop;
 import com.example.EcommerceApp.model.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -29,7 +33,7 @@ public class UserProfileFragment extends Fragment {
     Button changePassword;
     Button legalAndPolicies;
     Button logout;
-    Button sellOn23;
+    Button sellOn23,orderManagement;
     TextView username;
     TextView email;
     ImageView profilePic;
@@ -67,9 +71,10 @@ public class UserProfileFragment extends Fragment {
         email = view.findViewById(R.id.emailTextView);
         profilePic = view.findViewById(R.id.profileImageView);
         sellOn23 = view.findViewById(R.id.sellOn23Button);
+        orderManagement = view.findViewById(R.id.orderManagement);
 
         getUserData();
-
+        getShop();
         editProfile.setOnClickListener(view1->{
             startActivity(new Intent(getContext(), EditProfileActivity.class));
         });
@@ -117,5 +122,38 @@ public class UserProfileFragment extends Fragment {
             email.setText(currentUserModel.getEmail());
         });
     }
+    void getShop(){
+        ShopRepository shopRepository = new ShopRepository(getContext());
+        shopRepository.getShopByUserId().addOnCompleteListener(new OnCompleteListener<Shop>() {
+            @Override
+            public void onComplete(@NonNull Task<Shop> task) {
+                Shop shop= task.getResult();
+                if(task.isSuccessful()){
+                    if(shop!=null){
+                        sellOn23.setVisibility(View.GONE);
+                        orderManagement.setVisibility(View.VISIBLE);
+                        orderManagement.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(getActivity(), OrderManagement.class);
+                                i.putExtra("shopName", shop.getShopName());
+                                startActivity(i);
+                            }
+                        });
+                    }
+                    else{
+                        sellOn23.setVisibility(View.VISIBLE);
+                        orderManagement.setVisibility(View.GONE);
+                    }
+                }
 
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getShop();
+    }
 }

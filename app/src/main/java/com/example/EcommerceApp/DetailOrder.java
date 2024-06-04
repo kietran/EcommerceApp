@@ -313,6 +313,7 @@ public class DetailOrder extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         return status+" "+dateFormat.format(date);
     }
+    @SuppressLint("SetTextI18n")
     private void setHeader() {
         shopName.setText(order.getShop());
         orderCode.setText("Order code: "+order.getId());

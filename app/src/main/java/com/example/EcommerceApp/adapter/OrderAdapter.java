@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>  {
     List<Order> orderList;
 
     public OrderAdapter(List<Order> orderList) {
@@ -62,11 +62,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.shopName.setText(order.getShop());
         holder.orderAt.setText(generateTextOrderAt(order.getOrderAt()));
 
-        if(order.getStatus().equals("complete")){
-            setViewStatus(holder, holder.complete);
+        switch (order.getStatus()) {
+            case "complete":
+                setViewStatus(holder, holder.complete);
+                break;
+            case "ON PROGRESS":
+                setViewStatus(holder, holder.waiting);
+                break;
+            case "confirm":
+                setViewStatus(holder, holder.confirm);
+                break;
+            case "delivery":
+                setViewStatus(holder, holder.delivery);
+                break;
         }
-        else
-            setViewStatus(holder, holder.waiting);
+
 
         OrderItemRepository orderItemRepository=new OrderItemRepository();
         orderItemRepository.getOrderItemCountByOrderId(order.getId()).addOnCompleteListener(new OnCompleteListener<Integer>() {
@@ -122,6 +132,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         return 0;
     }
 
+
+
     static class OrderViewHolder extends RecyclerView.ViewHolder{
         TextView shopName, orderAt, numProducts, complete, waiting, confirm, delivery;
         androidx.cardview.widget.CardView bound;
@@ -138,4 +150,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             bound=itemView.findViewById(R.id.bound);
         }
     }
+
+
 }
