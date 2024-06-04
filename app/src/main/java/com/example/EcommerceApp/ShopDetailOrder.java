@@ -48,6 +48,7 @@ public class ShopDetailOrder extends AppCompatActivity {
     Spinner spinner;
     LinearLayout updateStatus,layout_cancel;
     List<OrderItem> orderItemList;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +69,13 @@ public class ShopDetailOrder extends AppCompatActivity {
         setAddress();
         setProductView();
         orderAt.setText(generateTimestamp(order.getOrderAt(),"Order at"));
-        orderCode.setText(order.getId());
+        orderCode.setText("Order code: "+order.getId());
         if(Objects.equals(order.getStatus(), "cancel"))
         {
             layout_cancel.setVisibility(View.VISIBLE);
             updateStatus.setVisibility(View.GONE);
             cancelAt.setText(generateTimestamp(order.getCancelAt(),"Cancel at"));
-            reason.setText(order.getReasonCancel());
+            reason.setText("Reason: "+order.getReasonCancel());
         }
         else if(!Objects.equals(order.getStatus(), "complete")){
             layout_cancel.setVisibility(View.GONE);

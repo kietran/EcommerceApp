@@ -27,15 +27,13 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class EditProfileActivity extends AppCompatActivity {
-    private static final int ADDRESS_PICKER_REQUEST = 99;
     ImageView profilePic;
     ImageView backButton;
     EditText usernameInput;
-    EditText addressInput;
     EditText phoneInput;
     EditText emailInput;
     Button updateProfileButton;
-    TextView addAddress;
+    Button addressBook;
     ProgressBar progressBar;
     User currentUserModel;
     ActivityResultLauncher<Intent> imagePickLauncher;
@@ -49,15 +47,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
         profilePic = findViewById(R.id.profieImageView);
         usernameInput = findViewById(R.id.userNameEditText);
-        addressInput = findViewById(R.id.addressEditText);
         phoneInput = findViewById(R.id.phoneNumberEditText);
         emailInput = findViewById(R.id.emailEditText);
         updateProfileButton = findViewById(R.id.updateProfileButton);
-        addAddress = (TextView) findViewById(R.id.add_address);
         backButton = findViewById(R.id.backImageView);
         progressBar = findViewById(R.id.progressBar);
-        // Create an underline for the text in the TextView
-        addAddress.setPaintFlags(addAddress.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        addressBook = findViewById(R.id.addressBookButton);
 
         getUserData();
 
@@ -69,9 +64,9 @@ public class EditProfileActivity extends AppCompatActivity {
             updateBtnClick();
         }));
 
-        addAddress.setOnClickListener((v -> {
-            Intent i = new Intent(this, LocationPickerActivity.class);
-            startActivityForResult(i, ADDRESS_PICKER_REQUEST);
+        addressBook.setOnClickListener((v -> {
+            Intent i = new Intent(this, AddressActivity.class);
+            startActivity(i);
         }));
 
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -117,7 +112,6 @@ public class EditProfileActivity extends AppCompatActivity {
             else
                 usernameInput.setText(FirebaseUtil.currentUserId());
             phoneInput.setText(currentUserModel.getPhone());
-            addressInput.setText(currentUserModel.getAddress());
             emailInput.setText(currentUserModel.getEmail());
         });
     }
@@ -134,7 +128,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
     void updateBtnClick(){
         String newUsername = usernameInput.getText().toString();
-        String newAddress = addressInput.getText().toString();
         String newPhoneNumber = phoneInput.getText().toString();
 
 
@@ -151,14 +144,8 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        if(newAddress.isEmpty()){
-            addressInput.setError("Address should not be empty");
-            return;
-        }
-
         currentUserModel.setUsername(newUsername);
         currentUserModel.setPhone(newPhoneNumber);
-        currentUserModel.setAddress(newAddress);
         setInProgress(true);
 
 
@@ -182,33 +169,4 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ADDRESS_PICKER_REQUEST) {
-            try {
-                if (data != null && data.getStringExtra(MapUtility.ADDRESS) != null) {
-                    String address = data.getStringExtra(MapUtility.ADDRESS);
-                    double currentLatitude = data.getDoubleExtra(MapUtility.LATITUDE, 0.0);
-                    double currentLongitude = data.getDoubleExtra(MapUtility.LONGITUDE, 0.0);
-                    Bundle completeAddress =data.getBundleExtra("fullAddress");
-                    /* data in completeAddress bundle
-                    "fulladdress"
-                    "city"
-                    "state"
-                    "postalcode"
-                    "country"
-                    "addressline1"
-                    "addressline2"
-                     */
-                    addressInput.setText(new StringBuilder().append(completeAddress.getString("addressline2")).toString());
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
 }
