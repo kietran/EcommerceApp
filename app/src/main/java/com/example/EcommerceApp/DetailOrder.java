@@ -140,8 +140,7 @@ public class DetailOrder extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     orderItemList=task.getResult();
                     setBillView();
-                    OrderItemAdapter orderItemAdapter = new OrderItemAdapter(orderItemList);
-                    orderItemAdapter.setContext(DetailOrder.this);
+                    OrderItemAdapter orderItemAdapter = new OrderItemAdapter(DetailOrder.this, orderItemList);
                     orderItemAdapter.setComplete(isComplete);
                     rcv_product_item.setAdapter(orderItemAdapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailOrder.this);
