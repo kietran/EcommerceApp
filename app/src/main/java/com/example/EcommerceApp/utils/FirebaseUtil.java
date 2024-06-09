@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseUtil {
-
+    public static FirebaseUser currentUser(){return FirebaseAuth.getInstance().getCurrentUser();}
     public static void addFavorite(String productId, String userId) {
         Map<String, Object> favorite = new HashMap<>();
         favorite.put("product_id", productId);
