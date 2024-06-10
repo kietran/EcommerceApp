@@ -1,9 +1,5 @@
 package com.example.EcommerceApp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,11 +17,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.EcommerceApp.domain.user.UserRepository;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -234,38 +235,53 @@ public class SignIn_Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==1234)
-        {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
+            try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 String userEmail = account.getEmail();
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful())
-                                {
+                                if (task.isSuccessful()) {
                                     UserRepository userRepository = new UserRepository(SignIn_Activity.this);
-                                    userRepository.createUserWithEmail(userEmail);
-                                    ProgressBar progressBar = findViewById(R.id.prbGG);
+                                    userRepository.createUserWithEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Intent i = new Intent(SignIn_Activity.this, UserActivity.class);
+                                                startActivity(i);
+                                                finishAffinity();
+                                            }
+                                        }
+                                    });
 
 
-                                    Intent i = new Intent(SignIn_Activity.this, UserActivity.class);
-                                    startActivity((i));
-                                }
-                                else
-                                {
-                                    Toast.makeText(SignIn_Activity.this, Objects.requireNonNull(task.getException()).getMessage(),Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(SignIn_Activity.this, "Authentication failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                     findViewById(R.id.prbGG).setVisibility(View.INVISIBLE);
                                     btnSignInWithGoogle.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
             } catch (ApiException e) {
-                throw new RuntimeException(e);
+                // Handle specific error codes
+                switch (e.getStatusCode()) {
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        Toast.makeText(this, "Sign-in cancelled", Toast.LENGTH_SHORT).show();
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        Toast.makeText(this, "Sign-in failed", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(this, "Error: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                findViewById(R.id.prbGG).setVisibility(View.INVISIBLE);
+                btnSignInWithGoogle.setVisibility(View.VISIBLE);
             }
         }
 

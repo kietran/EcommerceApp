@@ -12,12 +12,14 @@ import com.example.EcommerceApp.UserActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
@@ -62,18 +64,33 @@ public class UserRepository {
             }
         });
     }
-    public void createUserWithEmail(String email) {
+    public Task<Void> createUserWithEmail(String email) {
         //
-        Query query = db.collection("users").whereEqualTo("email", email);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.getResult().isEmpty()) {
-                    String userId = auth.getCurrentUser().getUid();
-                    String userName = email.substring(0,email.indexOf('@'));
-                    saveUser(userId,userName,email,null, timestamp);
-                }
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
 
+        Task<QuerySnapshot> queryTask = db.collection("users").whereEqualTo("email", email).get();
+        return queryTask.continueWithTask(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().isEmpty()) {
+                    FirebaseUser currentUser = auth.getCurrentUser();
+                    if (currentUser != null) {
+                        String userId = currentUser.getUid();
+                        String userName = email.substring(0, email.indexOf('@'));
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("username", userName);
+                        user.put("password", null);
+                        user.put("email", email);
+                        user.put("createdTimestamp", timestamp);
+
+                        return db.collection("users").document(userId).set(user);
+                    } else {
+                        return Tasks.forException(new IllegalStateException("User not authenticated"));
+                    }
+                } else {
+                    return Tasks.forResult(null); // User already exists, no new user creation needed
+                }
+            } else {
+                return Tasks.forException(task.getException());
             }
         });
     }
