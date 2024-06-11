@@ -1,21 +1,19 @@
 package com.example.EcommerceApp;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.EcommerceApp.adapter.SearchAdapter;
-import com.example.EcommerceApp.model.Search;
 import com.example.EcommerceApp.domain.user.SearchRepository;
+import com.example.EcommerceApp.model.Search;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;
@@ -104,11 +102,8 @@ public class SearchView extends Fragment {
                 }
                 else
                 {
-                    LinearLayout linearLayout = view.findViewById(R.id.layout_popular_search);
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
-                    params.addRule(RelativeLayout.BELOW, 0);
-                    linearLayout.setLayoutParams(params);
-
+                    LinearLayout linearLayout = view.findViewById(R.id.layout_last_search);
+                    linearLayout.setVisibility(View.GONE);
                 }
                 lastSearchAdapter.updateData(searches,searchView,searchFilter);
                 rc_last_search.setAdapter(lastSearchAdapter);

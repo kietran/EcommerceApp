@@ -22,6 +22,10 @@ import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,8 +98,33 @@ public class UserProfileFragment extends Fragment {
         logout.setOnClickListener(view1->{
             onClickLogOut();
         });
-
+        getUserSignInMethod();
         return view;
+    }
+    public void getUserSignInMethod() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            List<? extends UserInfo> providerData = user.getProviderData();
+
+            for (UserInfo userInfo : providerData) {
+                String providerId = userInfo.getProviderId();
+                switch (providerId) {
+                    case "password":
+                        System.out.println("User signed in using Email/Password");
+                        break;
+                    case "google.com":
+                        changePassword.setVisibility(View.GONE);
+                        System.out.println("User signed in using Google");
+                        break;
+                    default:
+                        System.out.println("User signed in using another provider: " + providerId);
+                        break;
+                }
+            }
+        } else {
+            System.out.println("No user is signed in");
+        }
     }
 
     void onClickLogOut() {

@@ -9,13 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EcommerceApp.adapter.HomePageAdapter;
-
+import com.example.EcommerceApp.domain.user.ShopRepository;
+import com.example.EcommerceApp.model.Shop;
 import com.example.EcommerceApp.model.User;
 import com.example.EcommerceApp.utils.FirebaseUtil;
+import com.example.EcommerceApp.utils.ShopUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -83,21 +88,36 @@ public class HomeUserFragment extends Fragment {
         hiName = rootView.findViewById(R.id.hiName);
 
         getUserData();
+        ShopRepository shopRepository= new ShopRepository(getContext());
+        shopRepository.getShopByUserId().addOnCompleteListener(new OnCompleteListener<Shop>() {
+            @Override
+            public void onComplete(@NonNull Task<Shop> task) {
+                if(task.isSuccessful()){
+                    if(task.isComplete()){
+                        Shop shop= task.getResult();
+                        if(shop!=null)
+                            ShopUtil.setShopId(shop.getShopId());
+                        else
+                            ShopUtil.setShopId("");
+                        // Tạo adapter và thiết lập cho ViewPager2
+                        HomePageAdapter adapter = new HomePageAdapter(requireActivity());
+                        viewPager.setAdapter(adapter);
 
-        // Tạo adapter và thiết lập cho ViewPager2
-        HomePageAdapter adapter = new HomePageAdapter(requireActivity());
-        viewPager.setAdapter(adapter);
-
-        // Kết nối ViewPager2 với TabLayout
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    if (position == 0) {
-                        tab.setText("Home");
-                    } else if (position == 1) {
-                        tab.setText("Category");
+                        // Kết nối ViewPager2 với TabLayout
+                        new TabLayoutMediator(tabLayout, viewPager,
+                                (tab, position) -> {
+                                    if (position == 0) {
+                                        tab.setText("Home");
+                                    } else if (position == 1) {
+                                        tab.setText("Category");
+                                    }
+                                }
+                        ).attach();
                     }
                 }
-        ).attach();
+            }
+        });
+
 
         btnSearch = rootView.findViewById(R.id.btSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {

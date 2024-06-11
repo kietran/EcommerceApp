@@ -3,6 +3,7 @@ package com.example.EcommerceApp.domain.user;
 import android.content.Context;
 
 import com.example.EcommerceApp.model.Product;
+import com.example.EcommerceApp.utils.ShopUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductRepository {
     private FirebaseFirestore db;
@@ -30,7 +32,8 @@ public class ProductRepository {
                 for (DocumentSnapshot document : task.getResult()) {
                     Product product = document.toObject(Product.class);
                     product.setId(document.getId());
-                    productsList.add(product);
+                    if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                        productsList.add(product);
                 }
             }
             return productsList;
@@ -45,7 +48,8 @@ public class ProductRepository {
                 for (DocumentSnapshot document : task.getResult()) {
                     Product product = document.toObject(Product.class);
                     product.setId(document.getId());
-                    productsList.add(product);
+                    if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                        productsList.add(product);
                 }
             }
             return productsList;
@@ -53,13 +57,15 @@ public class ProductRepository {
     }
 
     public Task<List<Product>> get2ProductsAsList() {
-        return productsCollection.limit(2).get().continueWith(task -> {
+        return productsCollection.get().continueWith(task -> {
             List<Product> productsList = new ArrayList<>();
             if (task.isSuccessful()) {
                 for (DocumentSnapshot document : task.getResult()) {
                     Product product = document.toObject(Product.class);
                     product.setId(document.getId());
-                    productsList.add(product);
+
+                    if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                        productsList.add(product);
                     if (productsList.size() == 2) {
                         break;
                     }
@@ -78,7 +84,8 @@ public class ProductRepository {
                         for (DocumentSnapshot document : task.getResult()) {
                             Product product = document.toObject(Product.class);
                             product.setId(document.getId());
-                            productsList.add(product);
+                            if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                                productsList.add(product);
                         }
                     }
                     return productsList;
@@ -125,7 +132,8 @@ public class ProductRepository {
                         for (DocumentSnapshot document : task.getResult()) {
                             Product product = document.toObject(Product.class);
                             product.setId(document.getId());
-                            productsList.add(product);
+                            if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                                productsList.add(product);
                         }
                     }
                     return productsList;
@@ -142,7 +150,10 @@ public class ProductRepository {
                         if (document.exists()) {
                             Product product = document.toObject(Product.class);
                             product.setId(document.getId());
-                            return product;
+                            if(!Objects.equals(ShopUtil.getShopId(), product.getShop_id()))
+                                return product;
+                            else
+                                return null;
                         }
                     }
                     return null;
