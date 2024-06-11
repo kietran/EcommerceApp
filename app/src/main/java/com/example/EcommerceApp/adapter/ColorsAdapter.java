@@ -45,38 +45,40 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorsView
     @Override
     public void onBindViewHolder(@NonNull ColorsViewHolder holder, int position) {
         String colorCode = mListColors.get(position);
-        if (colorCode == null)
+        if (colorCode == null || colorCode.isEmpty()) {
+            // Handle the case where colorCode is null or empty
+            holder.imageColor.setImageDrawable(null);  // Clear the image color if invalid color code
             return;
+        }
         setAllPickFalse(holder);
-        if (colorCode == selectedColor){
+        if (colorCode.equals(selectedColor)){
             boolean a = selectedColor.equals("#FFFFFF");
             Log.i("adapter", a+"");
             if (selectedColor.equals("#FFFFFF"))
                 holder.imagePicked_black.setVisibility(View.VISIBLE);
             else
                 holder.imagePicked.setVisibility(View.VISIBLE);
-
         }
 
-        int color = Color.parseColor(colorCode);
-        Drawable colorDrawable = new ColorDrawable(color);
-        holder.imageColor.setImageDrawable(colorDrawable);
+        try {
+            int color = Color.parseColor(colorCode);
+            Drawable colorDrawable = new ColorDrawable(color);
+            holder.imageColor.setImageDrawable(colorDrawable);
+        } catch (IllegalArgumentException e) {
+            // Handle the case where colorCode is not a valid color
+            Log.e("adapter", "Invalid color code: " + colorCode, e);
+            holder.imageColor.setImageDrawable(null);  // Clear the image color if invalid color code
+        }
+
         holder.imageColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (holder.imageShadow.getVisibility() == View.INVISIBLE){
-//                    holder.imageShadow.setVisibility(View.VISIBLE);
-//                    holder.imagePicked.setVisibility(View.VISIBLE);
-//                }
-//                else{
-//                    holder.imageShadow.setVisibility(View.INVISIBLE);
-//                    holder.imagePicked.setVisibility(View.INVISIBLE);
-//                }
                 selectedColor = colorCode;
                 notifyDataSetChanged();
             }
         });
     }
+
 
     private void setAllPickFalse(ColorsViewHolder holder) {
         for (String color : mListColors){
