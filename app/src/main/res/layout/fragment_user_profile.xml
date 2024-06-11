@@ -140,6 +140,7 @@
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
                         android:textStyle="bold"
+                        android:textSize="17sp"
                         android:text="Legal and Policies"
                         android:textAlignment="viewStart" />
                     <FrameLayout

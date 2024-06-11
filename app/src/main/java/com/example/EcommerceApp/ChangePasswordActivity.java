@@ -1,17 +1,24 @@
 package com.example.EcommerceApp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.EcommerceApp.model.User;
 import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     ImageView backButton;
@@ -81,6 +88,31 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         currentUserModel.setPassword(newPassword);
+        currentUserModel.setPassword(newPassword);
+        FirebaseUser user = FirebaseUtil.currentUser();
+        Log.d("PASSWORD", "Password updated " + user);
+        AuthCredential credential = EmailAuthProvider.getCredential(currentUserModel.getEmail(), currentPassword);
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("PASSWORD", "Password updated");
+                                    } else {
+                                        Log.d("PASSWORD", "Error password not updated");
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d("PASSWORD", "Error auth failed");
+                        }
+                    }
+                });
         setInProgress(true);
         updateToFirestore();
     }
