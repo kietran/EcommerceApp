@@ -50,13 +50,17 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder>{
-    Context context;
     List<OrderItem> orderItemList;
 
-    public OrderItemAdapter(Context context, List<OrderItem> orderItemList) {
-        this.context = context;
+    public OrderItemAdapter(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
     }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    Context context ;
 
     public void setComplete(Boolean complete) {
         isComplete = complete;
