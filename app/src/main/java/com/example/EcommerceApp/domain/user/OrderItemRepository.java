@@ -29,6 +29,7 @@ public class OrderItemRepository {
     public void create(String order_id, ShoppingCartItem cartItem)
     {
         OrderItem orderItem1 = new OrderItem();
+        orderItem1.setRated(false);
         orderItem1.setOrder_id(order_id);
         Map<String,Object> mapCartItem = new HashMap<>();
         mapCartItem.put("id",cartItem.getId());

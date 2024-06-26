@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,17 +25,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EcommerceApp.DetailTwoAttributeActivity;
+import com.example.EcommerceApp.OrderHistoryFragment;
 import com.example.EcommerceApp.R;
 import com.example.EcommerceApp.domain.user.ProductItemRepository;
 import com.example.EcommerceApp.domain.user.ProductRepository;
 import com.example.EcommerceApp.domain.user.ShoppingCartItemRepository;
 import com.example.EcommerceApp.model.OrderItem;
 import com.example.EcommerceApp.model.Product;
+import com.example.EcommerceApp.model.Shop;
 import com.example.EcommerceApp.model.ShoppingCart;
+import com.example.EcommerceApp.utils.AndroidUtil;
 import com.example.EcommerceApp.utils.CartNumberUtil;
+import com.example.EcommerceApp.utils.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -42,24 +50,19 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder>{
+    Context context;
     List<OrderItem> orderItemList;
 
-    public OrderItemAdapter(List<OrderItem> orderItemList) {
+    public OrderItemAdapter(Context context, List<OrderItem> orderItemList) {
+        this.context = context;
         this.orderItemList = orderItemList;
     }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    Context context ;
 
     public void setComplete(Boolean complete) {
         isComplete = complete;
     }
 
     Boolean isComplete;
-
 
     @NonNull
     @Override
@@ -77,6 +80,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         if(isComplete) {
             holder.complete.setVisibility(View.VISIBLE);
             holder.reBuy.setVisibility(View.VISIBLE);
+            holder.rate.setVisibility(View.VISIBLE);
             holder.reBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -98,11 +102,68 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
                                 Log.i("add to cart again", "not success");
                         }
                     });
-
                 }
             });
-            /// remind update rate is visible for se104
-            holder.rate.setVisibility(View.INVISIBLE);
+
+            Log.d("ISRated", "check " + orderItem.getOrder_id());
+            Log.d("ISRated", "check " + orderItem.isRated());
+            if (orderItem.isRated()) {
+                holder.rate.setVisibility(View.GONE);}
+            else{
+                holder.rate.setVisibility(View.VISIBLE);
+                holder.rate.setOnClickListener(v1 -> {
+                    Log.d("Check context", "Rate called");
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    View dialogView = inflater.inflate(R.layout.bottom_sheet_rating, null);
+
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+                    bottomSheetDialog.setContentView(dialogView);
+
+                    RatingBar ratingBar = dialogView.findViewById(R.id.rating_bar);
+                    Button confirmButton = dialogView.findViewById(R.id.confirm_butt);
+
+                    confirmButton.setOnClickListener(v2 -> {
+                        FirebaseUtil.getOrderItemReference(orderItem.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    // Document found
+                                    DocumentSnapshot document = task.getResult();
+
+                                    Map<String, Object> cartMap = (Map<String, Object>) document.get("cartItem");
+                                    Map<String, Object> productItemMap = (Map<String, Object>) cartMap.get("product_item");
+                                    Map<String, Object> productMap = (Map<String, Object>) productItemMap.get("product");
+                                    String productId = (String) productMap.get("id");
+
+                                    DocumentReference productRef = FirebaseUtil.getProductReference(productId);
+                                    productRef.get().addOnCompleteListener(task1 -> {
+                                        Product product = new Product();
+                                        product = task1.getResult().toObject(Product.class);
+
+                                        float currentRating = product.getRating();
+                                        int currentNumberOfRatings = product.getNumberOfRatings();
+
+                                        float newRating = currentRating + ratingBar.getRating();
+                                        int newNumberOfRatings = currentNumberOfRatings + 1;
+
+
+                                        productRef.update(
+                                                "rating", newRating,
+                                                "numberOfRatings", newNumberOfRatings
+                                        );
+                                        bottomSheetDialog.dismiss();
+                                        holder.rate.setVisibility(View.GONE);
+                                        FirebaseUtil.getOrderItemReference(orderItem.getId()).update("rated", true);
+                                    });
+                                }
+                            }
+                        });
+                    });
+                    // Display the bottom sheet
+                    bottomSheetDialog.show();
+                });
+            }
+
         }
         else{
             holder.complete.setVisibility(View.GONE);

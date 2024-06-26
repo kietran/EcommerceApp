@@ -10,6 +10,8 @@
     <color name="blue">#2BACBF</color>
     <color name="green">#00D261</color>
     <color name="grey">#F3F3F3</color>
+    <color name="light_grey">#C3C3C3</color>
+
 
     <color name="com_facebook_button_send_background_color_pressed">#4267B2</color>
     <color name="waiting">#2596BE</color>

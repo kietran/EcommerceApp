@@ -26,7 +26,18 @@ public class DetailOneAttributeActivity extends AppCompatActivity {
         TextView product_description = findViewById(R.id.product_description);
         TextView price = findViewById(R.id.price);
         ImageView product_image = findViewById(R.id.product_image);
+        TextView rate = findViewById(R.id.star);
+        TextView review = findViewById(R.id.review);
 
+        if (product.getRating() != 0 && product.getNumberOfRatings() != 0){
+            float rating = (product.getRating()/product.getNumberOfRatings());
+            String formattedRating = String.format("%.1f", rating);
+            rate.setText(formattedRating);
+            review.setText("(" + String.format("%d", product.getNumberOfRatings()) + " Reviews)");
+        }else{
+            review.setText("(0 Review)");
+            rate.setText("0");
+        }
         product_name.setText(product.getName());
         product_description.setText(product.getDescription());
         price.setText(product.getPrice()+"");

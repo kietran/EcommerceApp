@@ -67,4 +67,12 @@ public class FirebaseUtil {
     public static CollectionReference getAllProducts(){
         return FirebaseFirestore.getInstance().collection("test_product");
     }
+
+    public static DocumentReference getOrderItemReference(String orderItem){
+        return FirebaseFirestore.getInstance().collection("order_item").document(orderItem);
+    }
+
+    public static DocumentReference getProductReference(String productId){
+        return FirebaseFirestore.getInstance().collection("test_product").document(productId);
+    }
 }

@@ -88,6 +88,18 @@ public class DetailTwoAttributeActivity extends AppCompatActivity {
         shopName = findViewById(R.id.shop_name);
         shopAvt = findViewById(R.id.shop_avatar);
         qty_in_cart = findViewById(R.id.qty_in_cart);
+        TextView rate = findViewById(R.id.star);
+        TextView review = findViewById(R.id.review);
+
+        if (product.getRating() != 0 && product.getNumberOfRatings() != 0){
+            float rating = (product.getRating()/product.getNumberOfRatings());
+            String formattedRating = String.format("%.1f", rating);
+            rate.setText(formattedRating);
+            review.setText("(" + String.format("%d", product.getNumberOfRatings()) + " Reviews)");
+        }else{
+            review.setText("(0 Review)");
+            rate.setText("0");
+        }
         shoppingCartItemRepository.getQTYinCartByUserID(FirebaseAuth.getInstance().getUid()).addOnCompleteListener(task -> {
             qty_in_Cart = task.getResult();
             if (qty_in_Cart > 0){

@@ -9,13 +9,14 @@ public class Product implements Serializable {
     String description;
     String shop_id;
     String category_id;
+    float rating;
+    int numberOfRatings;
     float price;
-
     boolean favorite = false;
 
 
 
-    public Product(String id, String product_img, String name, String description, String shop_id, String category_id, float price, boolean favorite) {
+    public Product(String id, String product_img, String name, String description, String shop_id, String category_id, float price, boolean favorite, float rating, int numberOfRatings) {
         this.id = id;
         this.product_image = product_img;
         this.name = name;
@@ -24,6 +25,8 @@ public class Product implements Serializable {
         this.category_id = category_id;
         this.price=price;
         this.favorite=favorite;
+        this.rating = rating;
+        this.numberOfRatings = numberOfRatings;
     }
     public Product() {
         this.favorite = false;
@@ -106,5 +109,21 @@ public class Product implements Serializable {
                 ", category_id='" + category_id + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(int numberofRatings) {
+        this.numberOfRatings = numberofRatings;
     }
 }
